@@ -11,6 +11,7 @@ export default {
         secondary: 'rgba(225, 225, 225, 255)',
         black: 'rgba(0, 0, 0, 255)',
         white: 'rgba(255, 255, 255, 255)',
+        primary_90: 'rgba(230, 56, 37, 0.9)',
       },
     },
   },
