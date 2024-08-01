@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout';
 import HomePage from './pages/HomePage';
 import ErrorPage from './pages/ErrorPage';
@@ -6,34 +6,20 @@ import AnalysisPage from './pages/AnalysisPage';
 import GoalPage from './pages/GoalPage';
 import MenuPage from './pages/MenuPage';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <MainLayout />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "/",
-        element: <HomePage />,
-      },
-      {
-        path: "/analysis",
-        element: <AnalysisPage />,
-      },
-      {
-        path: "/goal",
-        element: <GoalPage />,
-      },
-      {
-        path: "/menu",
-        element: <MenuPage />,
-      },
-    ],
-  },
-]);
-
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="analysis" element={<AnalysisPage />} />
+          <Route path="goal" element={<GoalPage />} />
+          <Route path="menu" element={<MenuPage />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Route>
+      </Routes>
+    </HashRouter>
+  )
 }
 
 export default App
