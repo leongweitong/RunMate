@@ -32,12 +32,15 @@ const HomePage = () => {
     return (
         <div>
             <Weather />
-            <div className='mt-6 bg-white p-4 rounded-lg shadow'>
-                <h2 className='text-xl font-bold mb-2'>Motivational Quote</h2>
-                <p>"The only bad run is the one that didn't happen."</p>
+            <div className="mt-6 px-4">
+                <div className='bg-white p-4 shadow'>
+                    <h2 className='text-4xl font-bold'>"</h2>
+                    <p className='text-xl italic font-bold'>The only bad run is the one that didn't happen."</p>
+                    <p className='mt-2 font-bold opacity-70 text-lg italic'>- Don Norman</p>
+                </div>
             </div>
 
-            <div className='mt-4'>
+            <div className='mt-4 px-4'>
                 <button className='w-full bg-primary text-white py-3 rounded-lg flex items-center justify-center text-lg'>
                 <BsPlayFill className='mr-2' /> Start Run
                 </button>
