@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import Weather from '../components/Weather'
 import MoticationQuote from '../components/MoticationQuote'
 import { BsPlayFill } from 'react-icons/bs'
-import RunMateImage from '../assets/runmate.png'
 
 const HomePage = () => {
     const API_KEY = 'aa65f7513f5c6a1d66f50a855fe2632b'
@@ -61,7 +60,7 @@ const HomePage = () => {
                     <div className='underline underline-offset-2 text-primary'>See all</div>
                 </div>
                 <div className='bg-white p-4 rounded-lg shadow flex gap-2 mb-2'>
-                    <img src={RunMateImage} alt="runmate-image" className='rounded-xl' />
+                    <img src="/runmateIcon.png" alt="runmate-image" className='rounded-xl' />
                     <div>
                         <p className='font-bold opacity-80'>Running - 02-08-2024</p>
                         <p className='font-bold text-xl'>5.35 Km</p>
@@ -69,7 +68,7 @@ const HomePage = () => {
                     </div>
                 </div>
                 <div className='bg-white p-4 rounded-lg shadow flex gap-2'>
-                    <img src={RunMateImage} alt="runmate-image" className='rounded-xl' />
+                    <img src="/runmateIcon.png" alt="runmate-image" className='rounded-xl' />
                     <div>
                         <p className='font-bold opacity-80'>Running - 02-08-2024</p>
                         <p className='font-bold text-xl'>5.35 Km</p>
