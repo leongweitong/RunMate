@@ -3,14 +3,14 @@ import { BsDropletFill, BsWind, BsEyeFill, BsGeoAltFill } from 'react-icons/bs'
 
 const Weather = () => {
   return (
-    <div className="bg-primary p-4 rounded-b-3xl p-4 h-60 mb-20">
+    <div className="bg-primary p-4 rounded-b-3xl h-60">
         <div className="flex gap-2 items-center justify-center mb-4">
             <BsGeoAltFill className='text-white text-2xl' />
             <div className='text-white text-2xl'>Kampung Ayer Keroh</div>
         </div>
         <div className='bg-white p-4 rounded-3xl shadow'>
             <div className="flex items-center justify-center">
-                <img src="http://openweathermap.org/img/wn/04d@2x.png" alt='' className="flex-1 w-32 h-32" />
+                <img src="https://openweathermap.org/img/wn/04d@2x.png" alt='' className="flex-1 w-32 h-32" />
                 <div className="flex-1 text-md">
                     <div className='font-bold opacity-50'>Today</div>
                     <div className='flex text-primary font-bold'>

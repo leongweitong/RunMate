@@ -59,16 +59,16 @@ const HomePage = () => {
                     <div className='font-bold'>Recent Activity</div>
                     <div className='underline underline-offset-2 text-primary'>See all</div>
                 </div>
-                <div className='bg-white p-4 rounded-lg shadow flex gap-2 mb-2'>
-                    <img src="/runmateIcon.png" alt="runmate-image" className='rounded-xl' />
+                <div className='bg-white p-4 rounded-lg shadow flex items-center gap-2 mb-2'>
+                    <img src="/runmateIcon.png" alt="runmate-image" className='h-16 w-16 rounded-xl' />
                     <div>
                         <p className='font-bold opacity-80'>Running - 02-08-2024</p>
                         <p className='font-bold text-xl'>5.35 Km</p>
                         <p>00-25-20</p>
                     </div>
                 </div>
-                <div className='bg-white p-4 rounded-lg shadow flex gap-2'>
-                    <img src="/runmateIcon.png" alt="runmate-image" className='rounded-xl' />
+                <div className='bg-white p-4 rounded-lg shadow flex items-center gap-2'>
+                    <img src="/runmateIcon.png" alt="runmate-image" className='h-16 w-16 rounded-xl' />
                     <div>
                         <p className='font-bold opacity-80'>Running - 02-08-2024</p>
                         <p className='font-bold text-xl'>5.35 Km</p>
