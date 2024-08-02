@@ -2,19 +2,13 @@ import React, {useState, useEffect } from 'react'
 import Weather from '../components/Weather'
 import MoticationQuote from '../components/MoticationQuote'
 import { BsPlayFill } from 'react-icons/bs'
-import { SyncLoader } from 'react-spinners'
 
 const HomePage = () => {
-    const [loading, setLoading] = useState(true)
-    const [color, setColor] = useState('rgba(230, 56, 37, 0.95)')
 
     return (
-        <div className={loading?'blurred-content':''}>
-            {loading && <div className='full-screen-loader'>
-                <SyncLoader color={color} loading={loading} size={20} aria-label="Loading Spinner"/>
-            </div>}
-            <Weather setLoading={setLoading} />
-            <MoticationQuote setLoading={setLoading} />
+        <div>
+            <Weather />
+            <MoticationQuote />
 
             <div className='mt-6 px-4'>
                 <button className='w-full bg-primary text-white py-3 rounded-lg flex items-center justify-center text-lg'>

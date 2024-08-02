@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import { BsDropletFill, BsWind, BsEyeFill, BsGeoAltFill } from 'react-icons/bs'
+import { SyncLoader } from 'react-spinners'
 
-const Weather = ({setLoading}) => {
+const Weather = () => {
+    const [loading, setLoading] = useState(false)
+    const [color, setColor] = useState('rgba(230, 56, 37, 0.95)')
     const [weatherData, setWeatherData] = useState(null);
     const API_WEATHER_KEY = import.meta.env.VITE_WEATHER_API_KEY
     const API_WEATHER_URL = import.meta.env.VITE_WEATHER_API_URL
@@ -28,44 +31,51 @@ const Weather = ({setLoading}) => {
         }
     }, [])
 
-    if (!weatherData) return null
-
     return (
         <div className="bg-primary p-4 rounded-b-3xl h-60 mb-24">
-            <div className="flex gap-2 items-center justify-center mb-4">
-                <BsGeoAltFill className='text-white text-xl' />
-                <div className='text-white text-xl'>{weatherData.name}</div>
-            </div>
-            <div className='bg-white p-4 rounded-3xl shadow'>
-                <div className="flex items-center justify-center">
-                    <img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt='' className="flex-1 h-32" />
-                    <div className="flex-1 text-md">
-                        <div className='font-bold opacity-50'>Today</div>
-                        <div className='flex text-primary font-bold'>
-                            <div className='text-4xl'>{(weatherData.main.temp - 273.15).toFixed(0)}°</div>
-                            <div className='text-xl leading-none self-end'>/{(weatherData.main.feels_like - 273.55).toFixed(0)}°</div>
+            {loading && <div className='bg-white p-4 rounded-3xl shadow relative'>
+                <div className='absolute inset-0 flex items-center justify-center bg-opacity-75'>
+                    <SyncLoader color={color} loading={loading} size={8} aria-label="Loading Spinner"/>
+                </div>
+            </div>}
+            {!loading && weatherData && (
+                <>
+                <div className="flex gap-2 items-center justify-center mb-4">
+                    <BsGeoAltFill className='text-white text-xl' />
+                    <div className='text-white text-xl'>{weatherData.name}</div>
+                </div>
+                <div className='bg-white p-4 rounded-3xl shadow'>
+                    <div className="flex items-center justify-center">
+                        <img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt='' className="flex-1 h-32" />
+                        <div className="flex-1 text-md">
+                            <div className='font-bold opacity-50'>Today</div>
+                            <div className='flex text-primary font-bold'>
+                                <div className='text-4xl'>{(weatherData.main.temp - 273.15).toFixed(0)}°</div>
+                                <div className='text-xl leading-none self-end'>/{(weatherData.main.feels_like - 273.55).toFixed(0)}°</div>
+                            </div>
+                            <div className='font-bold opacity-50 capitalize'>{weatherData.weather[0].main}</div>
                         </div>
-                        <div className='font-bold opacity-50 capitalize'>{weatherData.weather[0].main}</div>
+                    </div>
+                    <div className="flex gap-2 justify-content mt-2">
+                        <div className='flex flex-1 flex-col items-center'>
+                            <BsDropletFill className="text-primary mb-1" />
+                            <div className='font-bold opacity-80'>{weatherData.main.humidity}%</div>
+                            <div className='opacity-70'>Humidity</div>
+                        </div>
+                        <div className='flex flex-1 flex-col items-center'>
+                            <BsWind className="text-primary font-bold mb-1" />
+                            <div className='font-bold opacity-80'>{weatherData.wind.speed}m/s</div>
+                            <div className='opacity-70'>Wind</div>
+                        </div>
+                        <div className='flex flex-1 flex-col items-center'>
+                            <BsEyeFill className="text-primary mb-1" />
+                            <div className='font-bold opacity-80'>{(weatherData.visibility / 1000).toFixed(0)}km</div>
+                            <div className='opacity-70'>Visibility</div>
+                        </div>
                     </div>
                 </div>
-                <div className="flex gap-2 justify-content mt-2">
-                    <div className='flex flex-1 flex-col items-center'>
-                        <BsDropletFill className="text-primary mb-1" />
-                        <div className='font-bold opacity-80'>{weatherData.main.humidity}%</div>
-                        <div className='opacity-70'>Humidity</div>
-                    </div>
-                    <div className='flex flex-1 flex-col items-center'>
-                        <BsWind className="text-primary font-bold mb-1" />
-                        <div className='font-bold opacity-80'>{weatherData.wind.speed}m/s</div>
-                        <div className='opacity-70'>Wind</div>
-                    </div>
-                    <div className='flex flex-1 flex-col items-center'>
-                        <BsEyeFill className="text-primary mb-1" />
-                        <div className='font-bold opacity-80'>{(weatherData.visibility / 1000).toFixed(0)}km</div>
-                        <div className='opacity-70'>Visibility</div>
-                    </div>
-                </div>
-            </div>
+                </>
+            )}
         </div>
     )
 }
