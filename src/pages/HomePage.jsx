@@ -4,28 +4,6 @@ import MoticationQuote from '../components/MoticationQuote'
 import { BsPlayFill } from 'react-icons/bs'
 
 const HomePage = () => {
-    useEffect(() => {
-        const getWeatherData = async () => {
-            const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`)
-            const data = await res.json()
-            console.log(data)
-        }
-        // getWeatherData()
-
-        const getMotivationQuote = async () => {
-            const res = await fetch(`https://api.api-ninjas.com/v1/quotes?category=fitness`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Api-Key": "z1fGBOOa4vvKpYMMjJR7AA==gcinf1KSohU2jn5R"
-                }
-            })
-            const data = await res.json()
-            console.log(data)
-        }
-        // getMotivationQuote()
-    }, [])
-
     return (
         <div>
             <Weather />
