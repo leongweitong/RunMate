@@ -25,7 +25,7 @@ const Weather = () => {
     if (!weatherData) return null
 
     return (
-        <div className="bg-primary p-4 rounded-b-3xl h-60">
+        <div className="bg-primary p-4 rounded-b-3xl h-60 mb-20">
             <div className="flex gap-2 items-center justify-center mb-4">
                 <BsGeoAltFill className='text-white text-xl' />
                 <div className='text-white text-xl'>{weatherData.name}</div>

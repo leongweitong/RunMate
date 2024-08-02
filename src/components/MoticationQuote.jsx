@@ -24,11 +24,11 @@ const MoticationQuote = () => {
   if (!moticationQuote) return null
 
   return (
-    <div className="mt-24 px-4">
+    <div className="mt-6 px-4">
         <div className='bg-white p-4 shadow border-x-2 border-primary'>
-            <h2 className='text-4xl font-bold'>"</h2>
+            <h2 className='text-2xl font-bold'>"</h2>
             <p className='text-lg italic font-bold'>{moticationQuote.quote}"</p>
-            <p className='mt-2 font-bold opacity-70 text-md italic'>- {moticationQuote.author}</p>
+            <p className='mt-2 font-bold opacity-70 italic'>- {moticationQuote.author}</p>
         </div>
     </div>
   )
