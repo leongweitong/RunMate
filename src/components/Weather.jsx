@@ -1,17 +1,23 @@
 import React, {useState, useEffect} from 'react'
 import { BsDropletFill, BsWind, BsEyeFill, BsGeoAltFill } from 'react-icons/bs'
 
-const Weather = () => {
+const Weather = ({setLoading}) => {
     const [weatherData, setWeatherData] = useState(null);
     const API_WEATHER_KEY = import.meta.env.VITE_WEATHER_API_KEY
     const API_WEATHER_URL = import.meta.env.VITE_WEATHER_API_URL
 
     useEffect(() => {
         const getWeatherData = async (latitude, longitude) => {
-            const res = await fetch(`${API_WEATHER_URL}?lat=${latitude}&lon=${longitude}&appid=${API_WEATHER_KEY}`)
-            const data = await res.json()
-            setWeatherData(data)
-            console.log(data)
+            try{
+                setLoading(true)
+                const res = await fetch(`${API_WEATHER_URL}?lat=${latitude}&lon=${longitude}&appid=${API_WEATHER_KEY}`)
+                const data = await res.json()
+                setWeatherData(data)
+            } catch(err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
         }
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(position => {
@@ -25,14 +31,14 @@ const Weather = () => {
     if (!weatherData) return null
 
     return (
-        <div className="bg-primary p-4 rounded-b-3xl h-60 mb-20">
+        <div className="bg-primary p-4 rounded-b-3xl h-60 mb-24">
             <div className="flex gap-2 items-center justify-center mb-4">
                 <BsGeoAltFill className='text-white text-xl' />
                 <div className='text-white text-xl'>{weatherData.name}</div>
             </div>
             <div className='bg-white p-4 rounded-3xl shadow'>
                 <div className="flex items-center justify-center">
-                    <img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt='' className="flex-1 w-32 h-32" />
+                    <img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt='' className="flex-1 h-32" />
                     <div className="flex-1 text-md">
                         <div className='font-bold opacity-50'>Today</div>
                         <div className='flex text-primary font-bold'>

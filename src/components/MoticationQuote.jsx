@@ -1,23 +1,29 @@
 import React, {useState, useEffect} from 'react'
 
-const MoticationQuote = () => {
+const MoticationQuote = ({setLoading}) => {
   const API_KEY = import.meta.env.VITE_NINJAS_API_KEY
   const API_URL = import.meta.env.VITE_NINJAS_API_URL
   const [moticationQuote, setMotivationQuote] = useState(null)
 
   useEffect(() => {
     const getMotivationQuote = async () => {
+      try{
+        setLoading(true)
         const res = await fetch(`${API_URL}?category=fitness`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Api-Key": API_KEY
-            }
-          })
-          const data = await res.json()
-          setMotivationQuote(data[0])
-          console.log(data[0])
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json",
+              "X-Api-Key": API_KEY
+          }
+        })
+        const data = await res.json()
+        setMotivationQuote(data[0])
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoading(false)
       }
+    }
       getMotivationQuote()
   }, [])
 
