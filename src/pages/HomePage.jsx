@@ -4,10 +4,6 @@ import MoticationQuote from '../components/MoticationQuote'
 import { BsPlayFill } from 'react-icons/bs'
 
 const HomePage = () => {
-    const API_KEY = 'aa65f7513f5c6a1d66f50a855fe2632b'
-    const lat = '2.306000'
-    const lon = '102.317871'
-
     useEffect(() => {
         const getWeatherData = async () => {
             const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`)
