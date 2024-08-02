@@ -8,28 +8,49 @@ const Weather = () => {
     const [weatherData, setWeatherData] = useState(null);
     const API_WEATHER_KEY = import.meta.env.VITE_WEATHER_API_KEY
     const API_WEATHER_URL = import.meta.env.VITE_WEATHER_API_URL
+    const LOCAL_STORAGE_TIME = parseInt(import.meta.env.VITE_LOCAL_STORAGE_TIME, 10)
 
     useEffect(() => {
         const getWeatherData = async (latitude, longitude) => {
-            try{
-                setLoading(true)
-                const res = await fetch(`${API_WEATHER_URL}?lat=${latitude}&lon=${longitude}&appid=${API_WEATHER_KEY}`)
-                const data = await res.json()
-                setWeatherData(data)
-            } catch(err) {
-                console.error(err)
+            try {
+                setLoading(true);
+                const res = await fetch(`${API_WEATHER_URL}?lat=${latitude}&lon=${longitude}&appid=${API_WEATHER_KEY}`);
+                const data = await res.json();
+                setWeatherData(data);
+                const weatherCache = {
+                    data,
+                    timestamp: new Date().getTime(),
+                };
+                localStorage.setItem('weather', JSON.stringify(weatherCache));
+            } catch (err) {
+                console.error(err);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
-        }
-        if ("geolocation" in navigator) {
+        };
+
+        const fetchWeatherData = (latitude, longitude) => {
+            const cachedWeather = localStorage.getItem('weather');
+            if (cachedWeather) {
+                const weatherCache = JSON.parse(cachedWeather);
+                const currentTime = new Date().getTime();
+
+                if (currentTime - weatherCache.timestamp < LOCAL_STORAGE_TIME) {
+                    setWeatherData(weatherCache.data);
+                    return;
+                }
+            }
+            getWeatherData(latitude, longitude);
+        };
+
+        if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition(position => {
-                getWeatherData(position.coords.latitude, position.coords.longitude)
-            })
+                fetchWeatherData(position.coords.latitude, position.coords.longitude);
+            });
         } else {
-            console.log("Geolocation is not available.");
+            console.log('Geolocation is not available.');
         }
-    }, [])
+    }, []);
 
     return (
         <div className="bg-primary p-4 rounded-b-3xl h-60 mb-24">

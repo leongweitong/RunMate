@@ -6,29 +6,50 @@ const MoticationQuote = () => {
   const [color, setColor] = useState('rgba(230, 56, 37, 0.95)')
   const API_KEY = import.meta.env.VITE_NINJAS_API_KEY
   const API_URL = import.meta.env.VITE_NINJAS_API_URL
+  const LOCAL_STORAGE_TIME = parseInt(import.meta.env.VITE_LOCAL_STORAGE_TIME, 10)
   const [moticationQuote, setMotivationQuote] = useState(null)
 
   useEffect(() => {
     const getMotivationQuote = async () => {
-      try{
-        setLoading(true)
-        const res = await fetch(`${API_URL}?category=fitness`, {
-          method: "GET",
-          headers: {
-              "Content-Type": "application/json",
-              "X-Api-Key": API_KEY
-          }
-        })
-        const data = await res.json()
-        setMotivationQuote(data[0])
-      } catch (err) {
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
-      getMotivationQuote()
-  }, [])
+        try {
+            setLoading(true);
+            const res = await fetch(`${API_URL}?category=fitness`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Api-Key': API_KEY,
+                },
+            });
+            const data = await res.json();
+            setMotivationQuote(data[0]);
+            const quoteCache = {
+                data: data[0],
+                timestamp: new Date().getTime(),
+            };
+            localStorage.setItem('quote', JSON.stringify(quoteCache));
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchMotivationQuote = () => {
+        const cachedQuote = localStorage.getItem('quote');
+        if (cachedQuote) {
+            const quoteCache = JSON.parse(cachedQuote);
+            const currentTime = new Date().getTime();
+
+            if (currentTime - quoteCache.timestamp < LOCAL_STORAGE_TIME) {
+                setMotivationQuote(quoteCache.data);
+                return;
+            }
+        }
+        getMotivationQuote();
+    };
+
+    fetchMotivationQuote();
+}, [])
 
   return (
     <div className="mt-6 px-4">
