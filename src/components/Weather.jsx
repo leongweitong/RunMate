@@ -9,6 +9,8 @@ const Weather = () => {
     const API_WEATHER_KEY = import.meta.env.VITE_WEATHER_API_KEY
     const API_WEATHER_URL = import.meta.env.VITE_WEATHER_API_URL
     const LOCAL_STORAGE_TIME = parseInt(import.meta.env.VITE_LOCAL_STORAGE_TIME, 10)
+    const [showWeather, setShowWeather] = useState(true)
+    const _ = undefined;
 
     useEffect(() => {
         const getWeatherData = async (latitude, longitude) => {
@@ -40,17 +42,68 @@ const Weather = () => {
                     return;
                 }
             }
-            getWeatherData(latitude, longitude);
-        };
-
-        if ('geolocation' in navigator) {
-            navigator.geolocation.getCurrentPosition(position => {
-                fetchWeatherData(position.coords.latitude, position.coords.longitude);
-            });
-        } else {
-            console.log('Geolocation is not available.');
+            getWeatherData(latitude, longitude)
         }
-    }, []);
+
+        const showAlert = (title = 'Error', message = 'Something Wrong.') => {
+            if(window.cordova) {
+                navigator.notification.alert(
+                    message,
+                    () => {},
+                    title,
+                    'OK'
+                )
+                return 
+            }
+            console.error(title, message)
+        }
+
+        const fetchGeolocation = (useHighAccuracy = false) => {
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    fetchWeatherData(position.coords.latitude, position.coords.longitude);
+                }, (err) => {
+                    setShowWeather(false)
+                    // showAlert(_, 'cannot get current position.')
+                }, {
+                    enableHighAccuracy: useHighAccuracy,
+                    timeout: 3000,
+                });
+            } else {
+                setShowWeather(false)
+                // showAlert(_, 'Geolocation is not available.')
+            }
+        }
+
+        const requestLocationPermission = () => {
+            if (window.cordova) {
+                const permissions = cordova.plugins.permissions
+                const permissionFineLocation = permissions.ACCESS_FINE_LOCATION
+                const permissionCoarseLocation = permissions.ACCESS_COARSE_LOCATION
+
+                const success = (status) => {
+                    // Check both permissions individually
+                    permissions.checkPermission(permissionFineLocation, (fineStatus) => {
+                        if (fineStatus.hasPermission) fetchGeolocation(true)
+                        else {
+                            permissions.checkPermission(permissionCoarseLocation, (coarseStatus) => {
+                                if (coarseStatus.hasPermission) fetchGeolocation(false)
+                                else showAlert('Location Permission', 'To use the full functionality of the RunMate, please manually turn on the location permission')
+                            })
+                        }
+                    })
+                }  
+
+                permissions.requestPermissions([permissionFineLocation, permissionCoarseLocation], success, showAlert)
+            } 
+            else fetchGeolocation()
+        }
+
+        requestLocationPermission()
+
+    }, [])
+
+    if(!showWeather) return 
 
     return (
         <div className="bg-primary p-4 rounded-b-3xl h-60 mb-24">
