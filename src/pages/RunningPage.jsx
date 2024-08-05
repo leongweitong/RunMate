@@ -58,7 +58,7 @@ const RunningPage = () => {
 
     return (
         position && (<>
-            <MapContainer ref={mapRef} center={position} doubleClickZoom={false} dragging={false} zoom={18} zoomControl={false} scrollWheelZoom={false}>
+            <MapContainer ref={mapRef} center={position} doubleClickZoom={false} dragging={false} touchZoom={false} boxZoom={false} zoom={18} zoomControl={false} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
