@@ -5,6 +5,7 @@ import ErrorPage from './pages/ErrorPage';
 import AnalysisPage from './pages/AnalysisPage';
 import GoalPage from './pages/GoalPage';
 import MenuPage from './pages/MenuPage';
+import RunningPage from './pages/RunningPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="menu" element={<MenuPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
+        <Route path="/running" element={<RunningPage />} />
       </Routes>
     </HashRouter>
   )
