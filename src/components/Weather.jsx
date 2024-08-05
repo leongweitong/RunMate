@@ -67,7 +67,7 @@ const Weather = () => {
                     // showAlert(_, 'cannot get current position.')
                 }, {
                     enableHighAccuracy: useHighAccuracy,
-                    timeout: 3000,
+                    timeout: 5000,
                 });
             } else {
                 setShowWeather(false)
