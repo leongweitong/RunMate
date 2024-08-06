@@ -8,9 +8,9 @@ import { SyncLoader } from 'react-spinners'
 
 const RunningPage = () => {
     const myIcon = new L.Icon({
-        iconSize: [35,35],
+        iconSize: [20,20],
         iconUrl: 'marker.png',
-        iconAnchor: [17.5, 17.5],
+        iconAnchor: [10, 10],
     })
 
     const navigate = useNavigate()
@@ -58,12 +58,13 @@ const RunningPage = () => {
 
     return (
         position && (<>
-            <MapContainer ref={mapRef} center={position} doubleClickZoom={false} dragging={false} touchZoom={false} boxZoom={false} zoom={18} zoomControl={false} scrollWheelZoom={false}>
+            <MapContainer ref={mapRef} center={position} doubleClickZoom={false} dragging={false} touchZoom={false} boxZoom={false} zoom={17} zoomControl={false} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 />
                 <Marker position={position} icon={ myIcon }></Marker>
+                <MapUpdater position={position} />
             </MapContainer>
 
             <div className="fixed bottom-10 left-0 w-full p-4 text-white z-10">
@@ -90,6 +91,18 @@ const RunningPage = () => {
             </div>
         </>)
     )
+}
+
+const MapUpdater = ({ position }) => {
+    const map = useMap()
+
+    useEffect(() => {
+        if (position) {
+            map.setView(position, map.getZoom())
+        }
+    }, [position])
+
+    return null
 }
 
 export default RunningPage
