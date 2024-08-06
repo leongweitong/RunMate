@@ -5,12 +5,17 @@ import { useNavigate } from 'react-router-dom'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { SyncLoader } from 'react-spinners'
+import 'leaflet-rotatedmarker';
 
 const RunningPage = () => {
     const myIcon = new L.Icon({
         iconSize: [20,20],
-        iconUrl: 'marker.png',
+        // iconUrl: 'marker.png',
+        iconUrl: 'arrow-marker.png',
+        shadowSize: [80, 80],
+        shadowUrl: 'shadowIcon.png',
         iconAnchor: [10, 10],
+        shadowAnchor: [40, 40],
     })
 
     const navigate = useNavigate()
@@ -18,7 +23,9 @@ const RunningPage = () => {
     const [loading, setLoading] = useState(true)
     const [color, setColor] = useState('rgba(230, 56, 37, 0.95)')
     const [position, setPosition] = useState(null)
+    const [heading, setHeading] = useState(0)
     const [isPlaying, setIsPlaying] = useState(false)
+    const [prevPosition, setPrevPosition] = useState(null)
 
     useEffect(() => {
         const getMapLocation = () => {
@@ -29,9 +36,15 @@ const RunningPage = () => {
         }
     
         const onMapSuccess = (pos) => {
-          const { latitude, longitude } = pos.coords
-          setPosition([latitude, longitude])
-          setLoading(false)
+            const { latitude, longitude } = pos.coords
+            const newPosition = [latitude, longitude]
+            if (prevPosition) {
+                const userDirection = getCurrentDirection(prevPosition[0], prevPosition[1], latitude, longitude);
+                setHeading(userDirection);
+            }
+            setPrevPosition(newPosition)
+            setPosition(newPosition)
+            setLoading(false)
         }
     
         const onMapError = (error) => {
@@ -40,6 +53,19 @@ const RunningPage = () => {
     
         getMapLocation()
     }, [position])
+
+    function getCurrentDirection(previousLat, previousLng, currentLat, currentLng) {
+        const diffLat = currentLat - previousLat
+        const diffLng = currentLng - previousLng
+        const anticlockwiseAngleFromEast = convertToDegrees(Math.atan2(diffLat, diffLng))
+        const clockwiseAngleFromNorth = 90 - anticlockwiseAngleFromEast
+        console.log(clockwiseAngleFromNorth)
+        return clockwiseAngleFromNorth
+
+        function convertToDegrees(radian) {
+          return (radian * 180) / Math.PI; 
+        }
+    }
 
     const togglePlayPause = () => {
         setIsPlaying(!isPlaying);
@@ -63,7 +89,7 @@ const RunningPage = () => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 />
-                <Marker position={position} icon={ myIcon }></Marker>
+                <Marker position={position} icon={ myIcon } rotationAngle={heading}></Marker>
                 <MapUpdater position={position} />
             </MapContainer>
 
@@ -98,7 +124,7 @@ const MapUpdater = ({ position }) => {
 
     useEffect(() => {
         if (position) {
-            map.setView(position, map.getZoom())
+            map.flyTo(position, map.getZoom())
         }
     }, [position])
 
