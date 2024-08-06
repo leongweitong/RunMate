@@ -126,7 +126,7 @@ const MapUpdater = ({ position }) => {
         if (position) {
             map.flyTo(position, map.getZoom())
         }
-    }, [position])
+    }, [position, map])
 
     return null
 }
