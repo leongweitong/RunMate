@@ -11,6 +11,7 @@ const Weather = () => {
     const LOCAL_STORAGE_TIME = parseInt(import.meta.env.VITE_LOCAL_STORAGE_TIME, 10)
     const [showWeather, setShowWeather] = useState(true)
     const _ = undefined;
+    const cachedWeather = localStorage.getItem('weather') ? JSON.parse(localStorage.getItem('weather')) : null
 
     useEffect(() => {
         const getWeatherData = async (latitude, longitude) => {
@@ -32,13 +33,12 @@ const Weather = () => {
         };
 
         const fetchWeatherData = (latitude, longitude) => {
-            const cachedWeather = localStorage.getItem('weather');
             if (cachedWeather) {
-                const weatherCache = JSON.parse(cachedWeather);
-                const currentTime = new Date().getTime();
+                const currentTime = new Date().getTime()
 
-                if (currentTime - weatherCache.timestamp < LOCAL_STORAGE_TIME) {
-                    setWeatherData(weatherCache.data);
+                if (currentTime - cachedWeather.timestamp < LOCAL_STORAGE_TIME) {
+                    console.log(cachedWeather.data)
+                    setWeatherData(cachedWeather.data);
                     return;
                 }
             }
@@ -99,8 +99,18 @@ const Weather = () => {
             else fetchGeolocation()
         }
 
-        requestLocationPermission()
+        const checkWeatherData = () => {
+            if(cachedWeather) {
+                const currentTime = new Date().getTime()
+                if (currentTime - cachedWeather.timestamp < LOCAL_STORAGE_TIME) {
+                    setWeatherData(cachedWeather.data)
+                    return
+                }
+            }
+            requestLocationPermission()
+        }
 
+        checkWeatherData()
     }, [])
 
     if(!showWeather) return 
