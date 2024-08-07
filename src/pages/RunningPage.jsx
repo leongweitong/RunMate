@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef } from 'react'
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
+import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 import { BsPauseFill, BsStopFill, BsCaretRightFill } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import L from 'leaflet'
@@ -19,7 +19,6 @@ const RunningPage = () => {
     })
 
     const navigate = useNavigate()
-    const mapRef = useRef()
     const [loading, setLoading] = useState(true)
     const [color, setColor] = useState('rgba(230, 56, 37, 0.95)')
     const [position, setPosition] = useState(null)
@@ -30,19 +29,25 @@ const RunningPage = () => {
     useEffect(() => {
         const getMapLocation = () => {
             if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(onMapSuccess, onMapError, { enableHighAccuracy: true })
-            navigator.geolocation.watchPosition(onMapSuccess, onMapError, { enableHighAccuracy: true })
+                navigator.geolocation.getCurrentPosition(onMapSuccess, onMapError, { enableHighAccuracy: true })
+                const watchID = navigator.geolocation.watchPosition(onMapSuccess, onMapError, { enableHighAccuracy: true })
+
+                // Clear the geolocation watch on component unmount
+                // return () => navigator.geolocation.clearWatch(watchID)
             }
         }
     
         const onMapSuccess = (pos) => {
             const { latitude, longitude } = pos.coords
             const newPosition = [latitude, longitude]
-            if (prevPosition) {
-                const userDirection = getCurrentDirection(prevPosition[0], prevPosition[1], latitude, longitude);
-                setHeading(userDirection);
-            }
-            setPrevPosition(newPosition)
+        
+            setPrevPosition((prevPosition) => {
+                if (prevPosition) {
+                    const userDirection = getCurrentDirection(prevPosition[0], prevPosition[1], latitude, longitude)
+                    setHeading(userDirection)
+                }
+                return newPosition
+            })
             setPosition(newPosition)
             setLoading(false)
         }
@@ -52,14 +57,13 @@ const RunningPage = () => {
         }
     
         getMapLocation()
-    }, [position])
+    }, [])
 
     function getCurrentDirection(previousLat, previousLng, currentLat, currentLng) {
         const diffLat = currentLat - previousLat
         const diffLng = currentLng - previousLng
         const anticlockwiseAngleFromEast = convertToDegrees(Math.atan2(diffLat, diffLng))
         const clockwiseAngleFromNorth = 90 - anticlockwiseAngleFromEast
-        console.log(clockwiseAngleFromNorth)
         return clockwiseAngleFromNorth
 
         function convertToDegrees(radian) {
@@ -84,12 +88,13 @@ const RunningPage = () => {
 
     return (
         position && (<>
-            <MapContainer ref={mapRef} center={position} doubleClickZoom={false} dragging={false} touchZoom={false} boxZoom={false} zoom={17} zoomControl={false} scrollWheelZoom={false}>
+            <MapContainer center={position} doubleClickZoom={false} dragging={false} touchZoom={false} boxZoom={false} zoom={17} zoomControl={false} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 />
-                <Marker position={position} icon={ myIcon } rotationAngle={heading}></Marker>
+                {/* <Marker position={position} icon={ myIcon } rotationAngle={heading}></Marker> */}
+                <RotatingMarker position={position} icon={myIcon} rotationAngle={heading} />
                 <MapUpdater position={position} />
             </MapContainer>
 
@@ -117,6 +122,18 @@ const RunningPage = () => {
             </div>
         </>)
     )
+}
+
+const RotatingMarker = ({ position, icon, rotationAngle }) => {
+    const markerRef = useRef()
+
+    useEffect(() => {
+        if (markerRef.current) {
+            markerRef.current.setRotationAngle(rotationAngle)
+        }
+    }, [rotationAngle])
+
+    return <Marker ref={markerRef} position={position} icon={icon} rotationAngle={rotationAngle} />
 }
 
 const MapUpdater = ({ position }) => {
