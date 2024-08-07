@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react'
 import Weather from '../components/Weather'
-import MoticationQuote from '../components/MoticationQuote'
+import MotivationQuote from '../components/MotivationQuote'
 import { BsPlayFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
@@ -9,7 +9,7 @@ const HomePage = () => {
     return (
         <div>
             <Weather />
-            <MoticationQuote />
+            <MotivationQuote />
 
             <div className='mt-6 px-4'>
                 <Link to="/running" className='w-full bg-primary text-white py-3 rounded-lg flex items-center justify-center text-lg'>
