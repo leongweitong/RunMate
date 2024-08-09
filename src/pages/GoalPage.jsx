@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
 import { BsPlusLg, BsCalendar, BsChevronRight } from 'react-icons/bs'
 import ModalCreateGoal from '../components/ModalCreateGoal'
+import { useTranslation } from "react-i18next";
 
 const GoalPage = () => {
+  const { t } = useTranslation();
   const [tab, setTab] = useState(0)
   const [showModal, setShowModal] = useState(false)
 
@@ -12,7 +14,7 @@ const GoalPage = () => {
     <div className='flex flex-col gap-4'>
       <div className="border-b border-secondary px-4 py-3">
         <div className="flex gap-2 items-center justify-between">
-            <div className='text-primary text-xl font-semibold'>Goal</div>
+            <div className='text-primary text-xl font-semibold'>{t("goal")}</div>
             <button onClick={() => setShowModal(true)}>
               <BsPlusLg className='text-3xl text-primary' />
             </button>
@@ -21,9 +23,9 @@ const GoalPage = () => {
 
       <div className="px-4">
         <div className='flex items-center justify-between gap-2'>
-          <button onClick={() => setTab(0)} className={`${activeTab(0)} px-4 py-2`}>On going</button>
-          <button onClick={() => setTab(1)} className={`${activeTab(1)} px-4 py-2`}>Completed</button>
-          <button onClick={() => setTab(2)} className={`${activeTab(2)} px-4 py-2`}>Failed</button>
+          <button onClick={() => setTab(0)} className={`${activeTab(0)} px-4 py-2`}>{t("on-going")}</button>
+          <button onClick={() => setTab(1)} className={`${activeTab(1)} px-4 py-2`}>{t("completed")}</button>
+          <button onClick={() => setTab(2)} className={`${activeTab(2)} px-4 py-2`}>{t("failed")}</button>
         </div>
       </div>
 
@@ -40,7 +42,7 @@ const GoalPage = () => {
           </div>
           <div className='px-4 py-2 border-t flex items-center gap-2'>
             <BsCalendar className='opacity-70' />
-            <span>End Time - 2024-08-20</span>
+            <span>{t("end-time")} - 2024-08-20</span>
           </div>
         </div>
       </div>

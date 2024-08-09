@@ -1,5 +1,30 @@
 {
+    "analysis": "分析",
+
     "goal": "目标",
+    "current-goals": "当前目标",
+    "recent-activity": "最近活动",
+    "create-goal": "创建目标",
+    "goal-name": "目标名字",
+    "on-going": "正在进行",
+    "completed": "完成",
+    "failed": "失败",
+    "end-time": "结束时间",
+
     "menu": "菜单",
-    "languages": "语言"
+    "languages": "语言",
+
+    "general": {
+        "create": "创建",
+        "start": "开始",
+        "see-all": "查看全部",
+        "today": "今天",
+        "duration": "时长",
+        "kilometers": "公里"
+    },
+    "weather": {
+        "visibility": "能见度",
+        "wind": "风",
+        "humidity": "湿度"
+    }
 }

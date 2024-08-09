@@ -1,5 +1,30 @@
 {
+    "analysis": "Analysis",
+
     "goal": "Goal",
+    "current-goals": "Current Goals",
+    "recent-activity": "Recent Activity",
+    "create-goal": "Create Goal",
+    "goal-name": "Goal name",
+    "on-going": "On going",
+    "completed": "Completed",
+    "failed": "Failed",
+    "end-time": "End time",
+
     "menu": "Menu",
-    "languages": "Languages"
+    "languages": "Languages",
+
+    "general": {
+        "create": "Create",
+        "start": "Start",
+        "see-all": "See All",
+        "today": "Today",
+        "duration": "Duration",
+        "kilometers": "Kilometers"
+    },
+    "weather": {
+        "visibility": "Visibility",
+        "wind": "Wind",
+        "humidity": "Humidity"
+    }
 }

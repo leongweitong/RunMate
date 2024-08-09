@@ -1,8 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { BsPauseFill, BsStopFill, BsCaretRightFill } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from "react-i18next";
 
 const RunningControls = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate()
     const [isPlaying, setIsPlaying] = useState(false)
     const [elapsedTime, setElapsedTime] = useState(0);
@@ -49,9 +51,9 @@ const RunningControls = () => {
             <div className="bg-black p-4 flex justify-between items-center rounded-xl">
                 <div>
                     <div>
-                        Duration: <span className='font-bold'>{formatTime(elapsedTime)}</span>
+                    {t("general.duration")}: <span className='font-bold'>{formatTime(elapsedTime)}</span>
                     </div>
-                    <div>Kilometers: <span className='font-bold'>0.0 KM</span></div>
+                    <div>{t("general.kilometers")}: <span className='font-bold'>0.0 KM</span></div>
                 </div>
                 <div className="flex gap-6">
                     <div className='rounded-full bg-white p-2' onClick={togglePlayPause}>

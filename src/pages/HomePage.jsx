@@ -3,8 +3,10 @@ import Weather from '../components/Weather'
 import MotivationQuote from '../components/MotivationQuote'
 import { BsPlayFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
+    const { t } = useTranslation();
 
     return (
         <div>
@@ -13,14 +15,14 @@ const HomePage = () => {
 
             <div className='mt-6 px-4'>
                 <Link to="/running" className='w-full bg-primary text-white py-3 rounded-lg flex items-center justify-center text-lg'>
-                    <BsPlayFill className='mr-2' /> Start Run
+                    <BsPlayFill className='text-2xl mr-2' /> {t("general.start")}
                 </Link>
             </div>
 
             <div className='mt-6 px-4'>
                 <div className='flex justify-between mb-2'>
-                    <div className='font-bold'>Current Goals</div>
-                    <div className='underline underline-offset-2 text-primary'>See all</div>
+                    <div className='font-bold'>{t("current-goals")}</div>
+                    <div className='underline underline-offset-2 text-primary'>{t("general.see-all")}</div>
                 </div>
                 <div className='bg-white rounded-lg shadow p-4'>
                     <p className='mb-1 font-bold opacity-80'>Run 100 km in July</p>
@@ -32,8 +34,8 @@ const HomePage = () => {
 
             <div className='mt-6 px-4'>
                 <div className='flex justify-between mb-2'>
-                    <div className='font-bold'>Recent Activity</div>
-                    <div className='underline underline-offset-2 text-primary'>See all</div>
+                    <div className='font-bold'>{t("recent-activity")}</div>
+                    <div className='underline underline-offset-2 text-primary'>{t("general.see-all")}</div>
                 </div>
                 <div className='bg-white p-4 rounded-lg shadow flex items-center gap-2 mb-2'>
                     <img src="/runmateIcon.png" alt="runmate-image" className='h-16 w-16 rounded-xl' />

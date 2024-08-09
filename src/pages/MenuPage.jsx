@@ -1,22 +1,15 @@
 import React, {useEffect} from 'react'
-import "../i18n";
 import { useTranslation } from "react-i18next";
 import { BsTranslate } from 'react-icons/bs';
 
 const MenuPage = () => {
-  const { t, i18n  } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const changeLanguage = (event) => {
     const newLanguage = event.target.value;
     i18n.changeLanguage(newLanguage);
     localStorage.setItem('language', newLanguage);
   };
-
-  useEffect(() => {
-    const storedLanguage = localStorage.getItem('language');
-    if (storedLanguage) i18n.changeLanguage(storedLanguage); 
-    else localStorage.setItem('language', 'en');
-  }, []);
 
   return (
     <div>
