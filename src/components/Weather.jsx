@@ -14,7 +14,7 @@ const Weather = () => {
     const [showWeather, setShowWeather] = useState(true)
     const _ = undefined;
     const cachedWeather = localStorage.getItem('weather') ? JSON.parse(localStorage.getItem('weather')) : null
-    console.log(cachedWeather)
+
     useEffect(() => {
         const getWeatherData = async (latitude, longitude) => {
             try {
