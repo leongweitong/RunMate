@@ -20,8 +20,8 @@ const GoalPage = () => {
       </div>
 
       <div className="px-4">
-        <div className='flex items-center justify-between gap-4'>
-          <button onClick={() => setTab(0)} className={`${activeTab(0)} px-4 py-2`}>In Progress</button>
+        <div className='flex items-center justify-between gap-2'>
+          <button onClick={() => setTab(0)} className={`${activeTab(0)} px-4 py-2`}>On going</button>
           <button onClick={() => setTab(1)} className={`${activeTab(1)} px-4 py-2`}>Completed</button>
           <button onClick={() => setTab(2)} className={`${activeTab(2)} px-4 py-2`}>Failed</button>
         </div>

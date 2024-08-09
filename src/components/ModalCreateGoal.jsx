@@ -37,11 +37,11 @@ const ModalCreateGoal = ({setShowModal}) => {
                 <form onSubmit={handleSubmit}>
                 <div className='flex flex-col mb-2'>
                     <label htmlFor="name">Goal Name</label>
-                    <input id='name' type="text" className='border border-primary rounded outline-none px-2 py-1' placeholder='Running 10 km' required />
+                    <input id='name' type="text" className='w-full border border-primary rounded outline-none px-2 py-1' placeholder='Running 10 km' required />
                 </div>
                 <div className='flex flex-col mb-2'>
                     <label htmlFor="endTime">End Time</label>
-                    <input id='endTime' type="date" min={minDate} className='border border-primary rounded outline-none px-2 py-1' required />
+                    <input id='endTime' type="date" min={minDate} className='w-full border border-primary rounded outline-none px-2 py-1' required />
                 </div>
                 <div className='flex flex-col mt-6 mb-4'>
                     <button className='w-full bg-primary text-white py-1 rounded'>Create</button>
