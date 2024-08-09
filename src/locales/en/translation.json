@@ -25,6 +25,21 @@
     "weather": {
         "visibility": "Visibility",
         "wind": "Wind",
-        "humidity": "Humidity"
+        "humidity": "Humidity",
+        "clouds": "Clouds",
+        "clear": "Clear",
+        "mist": "Mist",
+        "smoke": "Smoke",
+        "haze": "Haze",
+        "dust": "Dust",
+        "fog": "Fog",
+        "sand": "Sand",
+        "ash": "Ash",
+        "squall": "Squall",
+        "tornado": "Tornado",
+        "snow": "Snow",
+        "rain": "Rain",
+        "drizzle": "Drizzle",
+        "thunderstorm": "Thunderstorm"
     }
 }

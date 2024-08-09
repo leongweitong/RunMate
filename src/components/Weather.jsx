@@ -14,7 +14,7 @@ const Weather = () => {
     const [showWeather, setShowWeather] = useState(true)
     const _ = undefined;
     const cachedWeather = localStorage.getItem('weather') ? JSON.parse(localStorage.getItem('weather')) : null
-
+    console.log(cachedWeather)
     useEffect(() => {
         const getWeatherData = async (latitude, longitude) => {
             try {
@@ -139,7 +139,7 @@ const Weather = () => {
                                 <div className='text-4xl'>{(weatherData.main.temp - 273.15).toFixed(0)}°</div>
                                 <div className='text-xl leading-none self-end'>/{(weatherData.main.feels_like - 273.55).toFixed(0)}°</div>
                             </div>
-                            <div className='font-bold opacity-50 capitalize'>{weatherData.weather[0].main}</div>
+                            <div className='font-bold opacity-50 capitalize'>{t(`weather.${(weatherData.weather[0].main).toLowerCase()}`)}</div>
                         </div>
                     </div>
                     <div className="flex gap-2 justify-content mt-2">

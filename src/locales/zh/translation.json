@@ -25,6 +25,21 @@
     "weather": {
         "visibility": "能见度",
         "wind": "风",
-        "humidity": "湿度"
+        "humidity": "湿度",
+        "clouds": "多云",
+        "clear": "晴朗",
+        "mist": "薄雾",
+        "smoke": "烟雾",
+        "haze": "霾",
+        "dust": "尘土",
+        "fog": "雾",
+        "sand": "沙尘",
+        "ash": "灰烬",
+        "squall": "狂风",
+        "tornado": "龙卷风",
+        "snow": "雪",
+        "rain": "雨",
+        "drizzle": "毛毛雨",
+        "thunderstorm": "雷暴"
     }
 }
