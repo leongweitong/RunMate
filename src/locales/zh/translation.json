@@ -24,7 +24,8 @@
         "kilometers": "公里",
         "no-record": "没有结果",
         "type": "类型",
-        "status": "状态"
+        "status": "状态",
+        "loading": "加载中"
     },
     "weather": {
         "visibility": "能见度",

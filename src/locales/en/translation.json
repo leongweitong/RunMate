@@ -24,7 +24,8 @@
         "kilometers": "Kilometers",
         "no-record": "No Records",
         "type": "Type",
-        "status": "Status"
+        "status": "Status",
+        "loading": "Loading"
     },
     "weather": {
         "visibility": "Visibility",

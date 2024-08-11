@@ -18,7 +18,7 @@ const GoalDetailsPage = () => {
         if(!userConfirmed) return 
         
         deleteRecord(Number(id)).then((event) => {
-            alert(`Goal ${event.name} deleted successfully!`);
+            alert(`Goal deleted successfully!`);
             navigate('/goal');
         }).catch((error) => {
             console.error("Error deleting goal:", error);
@@ -71,7 +71,7 @@ const GoalDetailsPage = () => {
                         </div>
                     </div>
                 ) : (
-                    <p>{t("loading-goal")}</p>
+                    <p className='text-center'>{t("general.loading")} ...</p>
                 )}
             </div>
         </div>
