@@ -2,6 +2,7 @@
     "analysis": "分析",
 
     "goal": "目标",
+    "goal-details": "目标详情",
     "current-goals": "当前目标",
     "recent-activity": "最近活动",
     "create-goal": "创建目标",
@@ -21,7 +22,9 @@
         "today": "今天",
         "duration": "时长",
         "kilometers": "公里",
-        "no-record": "没有结果"
+        "no-record": "没有结果",
+        "type": "类型",
+        "status": "状态"
     },
     "weather": {
         "visibility": "能见度",

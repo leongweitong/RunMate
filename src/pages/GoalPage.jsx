@@ -3,6 +3,7 @@ import { BsPlusLg, BsCalendar, BsChevronRight } from 'react-icons/bs'
 import ModalCreateGoal from '../components/ModalCreateGoal'
 import { useTranslation } from "react-i18next";
 import { getGoalsByStatus } from '../indexedDBUtils';
+import { Link } from 'react-router-dom';
 
 const GoalPage = () => {
   const { t } = useTranslation();
@@ -48,19 +49,21 @@ const GoalPage = () => {
         {goals && goals.length > 0 ? (
           goals.map((goal) => (
             <div key={goal.id} className="bg-white rounded-lg shadow mb-4">
-              <div className="px-4 py-2">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="font-semibold">{goal.name}</p>
-                  <BsChevronRight className="text-lg" />
+              <Link to={`${goal.id}`}>
+                <div className="px-4 py-2">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-semibold">{goal.name}</p>
+                    <BsChevronRight className="text-lg" />
+                  </div>
+                  <div className="w-full bg-gray-200 h-3 rounded mb-2">
+                    {/* Calculate progress width dynamically */}
+                    <div
+                      className="bg-primary h-3 rounded"
+                      style={{ width: `${goal.currentDistance || 0}%` }}
+                    ></div>
+                  </div>
                 </div>
-                <div className="w-full bg-gray-200 h-3 rounded mb-2">
-                  {/* Calculate progress width dynamically */}
-                  <div
-                    className="bg-primary h-3 rounded"
-                    style={{ width: `${goal.currentDistance || 0}%` }}
-                  ></div>
-                </div>
-              </div>
+              </Link>
               <div className="px-4 py-2 border-t flex items-center gap-2">
                 <BsCalendar className="opacity-70" />
                 <span>{t("end-time")} - {goal.endTime}</span>

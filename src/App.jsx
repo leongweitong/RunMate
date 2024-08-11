@@ -7,6 +7,7 @@ import AnalysisPage from './pages/AnalysisPage';
 import GoalPage from './pages/GoalPage';
 import MenuPage from './pages/MenuPage';
 import RunningPage from './pages/RunningPage';
+import GoalDetailsPage from './pages/GoalDetailsPage';
 import "./i18n";
 import { useTranslation } from "react-i18next";
 import { DBConfig } from "./DBConfig";
@@ -30,6 +31,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="analysis" element={<AnalysisPage />} />
           <Route path="goal" element={<GoalPage />} />
+          <Route path="goal/:id" element={<GoalDetailsPage />} />
           <Route path="menu" element={<MenuPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
