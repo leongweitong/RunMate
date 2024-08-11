@@ -20,7 +20,8 @@
         "see-all": "See All",
         "today": "Today",
         "duration": "Duration",
-        "kilometers": "Kilometers"
+        "kilometers": "Kilometers",
+        "no-record": "No Records"
     },
     "weather": {
         "visibility": "Visibility",

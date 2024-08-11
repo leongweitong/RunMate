@@ -12,16 +12,16 @@ const GoalPage = () => {
 
   const activeTab = (index) => index === tab ? 'bg-primary text-white rounded' : ''
 
-  useEffect(() => {
-    const fetchGoals = async () => {
-      try {
-        const results = await getGoalsByStatus(tab);
-        setGoals(results);
-      } catch (error) {
-        console.error('Error fetching goals:', error);
-      }
-    };
+  const fetchGoals = async () => {
+    try {
+      const results = await getGoalsByStatus(tab);
+      setGoals(results);
+    } catch (error) {
+      console.error('Error fetching goals:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchGoals();
   }, [tab]);
   
@@ -47,7 +47,7 @@ const GoalPage = () => {
       <div className="px-4">
         {goals && goals.length > 0 ? (
           goals.map((goal) => (
-            <div key={goal.id} className="bg-white rounded-lg shadow mb-2">
+            <div key={goal.id} className="bg-white rounded-lg shadow mb-4">
               <div className="px-4 py-2">
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-semibold">{goal.name}</p>
@@ -68,11 +68,11 @@ const GoalPage = () => {
             </div>
           ))
         ) : (
-          <p>{t("no-goals")}</p> // Display message if no goals
+          <p className='text-center'>{t("general.no-record")}</p> // Display message if no goals
         )}
       </div>
 
-      {showModal && <ModalCreateGoal setShowModal={setShowModal} />}
+      {showModal && <ModalCreateGoal setShowModal={setShowModal} refreshGoals={fetchGoals} />}
 
     </div>
   )

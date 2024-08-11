@@ -3,7 +3,7 @@ import { BsXLg } from 'react-icons/bs'
 import { useTranslation } from "react-i18next";
 import { useIndexedDB } from "react-indexed-db-hook";
 
-const ModalCreateGoal = ({setShowModal}) => {
+const ModalCreateGoal = ({setShowModal, refreshGoals}) => {
     const { t } = useTranslation();
     const [minDate, setMinDate] = useState("");
 
@@ -37,6 +37,7 @@ const ModalCreateGoal = ({setShowModal}) => {
             (event) => {
                 console.log("Goal ID Generated: ", event);
                 setShowModal(false);
+                refreshGoals()
             },
             (error) => {
                 console.error("Error adding goal: ", error);

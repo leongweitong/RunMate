@@ -20,7 +20,8 @@
         "see-all": "查看全部",
         "today": "今天",
         "duration": "时长",
-        "kilometers": "公里"
+        "kilometers": "公里",
+        "no-record": "没有结果"
     },
     "weather": {
         "visibility": "能见度",
