@@ -1,10 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import { BsXLg } from 'react-icons/bs'
 import { useTranslation } from "react-i18next";
+import { useIndexedDB } from "react-indexed-db-hook";
 
 const ModalCreateGoal = ({setShowModal}) => {
     const { t } = useTranslation();
     const [minDate, setMinDate] = useState("");
+
+    const { add } = useIndexedDB("goal");
+    const [name, setName] = useState('')
+    const [endTime, setEndTime] = useState('')
+    const [type, setType] = useState('running')
+    const [status, setStatus] = useState('0')
 
     useEffect(() => {
         const getTomorrowDate = () => {
@@ -24,8 +31,17 @@ const ModalCreateGoal = ({setShowModal}) => {
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log('submit')
+        e.preventDefault();
+
+        add({name, endTime, type, status}).then(
+            (event) => {
+                console.log("Goal ID Generated: ", event);
+                setShowModal(false);
+            },
+            (error) => {
+                console.error("Error adding goal: ", error);
+            }
+        );
     }
 
     return (
@@ -39,11 +55,16 @@ const ModalCreateGoal = ({setShowModal}) => {
                 <form onSubmit={handleSubmit}>
                 <div className='flex flex-col mb-2'>
                     <label htmlFor="name">{t("goal-name")}</label>
-                    <input id='name' type="text" className='w-full border border-primary rounded outline-none px-2 py-1' placeholder='Running 10 km' required />
+                    <input id='name' type="text" value={name} onChange={(e) => setName(e.target.value)} 
+                        className='w-full border border-primary rounded outline-none px-2 py-1' 
+                        placeholder='Running 10 km' required 
+                    />
                 </div>
                 <div className='flex flex-col mb-2'>
                     <label htmlFor="endTime">{t("end-time")}</label>
-                    <input id='endTime' type="date" min={minDate} className='w-full border border-primary rounded outline-none px-2 py-1' required />
+                    <input id='endTime' type="date" value={endTime} onChange={(e) => setEndTime(e.target.value)} min={minDate} 
+                        className='w-full border border-primary rounded outline-none px-2 py-1' required 
+                    />
                 </div>
                 <div className='flex flex-col mt-6 mb-4'>
                     <button className='w-full bg-primary text-white py-1 rounded'>{t("general.create")}</button>

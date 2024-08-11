@@ -9,6 +9,10 @@ import MenuPage from './pages/MenuPage';
 import RunningPage from './pages/RunningPage';
 import "./i18n";
 import { useTranslation } from "react-i18next";
+import { DBConfig } from "./DBConfig";
+import { initDB } from "react-indexed-db-hook";
+
+initDB(DBConfig);
 
 function App() {
   const { i18n } = useTranslation();

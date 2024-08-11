@@ -1,14 +1,29 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { BsPlusLg, BsCalendar, BsChevronRight } from 'react-icons/bs'
 import ModalCreateGoal from '../components/ModalCreateGoal'
 import { useTranslation } from "react-i18next";
+import { getGoalsByStatus } from '../indexedDBUtils';
 
 const GoalPage = () => {
   const { t } = useTranslation();
-  const [tab, setTab] = useState(0)
+  const [tab, setTab] = useState('0')
   const [showModal, setShowModal] = useState(false)
+  const [goals, setGoals] = useState(null)
 
   const activeTab = (index) => index === tab ? 'bg-primary text-white rounded' : ''
+
+  useEffect(() => {
+    const fetchGoals = async () => {
+      try {
+        const results = await getGoalsByStatus(tab);
+        setGoals(results);
+      } catch (error) {
+        console.error('Error fetching goals:', error);
+      }
+    };
+
+    fetchGoals();
+  }, [tab]);
   
   return (
     <div className='flex flex-col gap-4'>
@@ -23,28 +38,38 @@ const GoalPage = () => {
 
       <div className="px-4">
         <div className='flex items-center justify-between gap-2'>
-          <button onClick={() => setTab(0)} className={`${activeTab(0)} px-4 py-2`}>{t("on-going")}</button>
-          <button onClick={() => setTab(1)} className={`${activeTab(1)} px-4 py-2`}>{t("completed")}</button>
-          <button onClick={() => setTab(2)} className={`${activeTab(2)} px-4 py-2`}>{t("failed")}</button>
+          <button onClick={() => setTab('0')} className={`${activeTab('0')} px-4 py-2`}>{t("on-going")}</button>
+          <button onClick={() => setTab('1')} className={`${activeTab('1')} px-4 py-2`}>{t("completed")}</button>
+          <button onClick={() => setTab('2')} className={`${activeTab('2')} px-4 py-2`}>{t("failed")}</button>
         </div>
       </div>
 
       <div className="px-4">
-        <div className='bg-white rounded-lg shadow mb-2'>
-          <div className='px-4 py-2'>
-              <div className="flex items-center justify-between mb-2">
-                <p className='font-semibold'>Running 10 KM In Aug</p>
-                <BsChevronRight className='text-lg' />
+        {goals && goals.length > 0 ? (
+          goals.map((goal) => (
+            <div key={goal.id} className="bg-white rounded-lg shadow mb-2">
+              <div className="px-4 py-2">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="font-semibold">{goal.name}</p>
+                  <BsChevronRight className="text-lg" />
+                </div>
+                <div className="w-full bg-gray-200 h-3 rounded mb-2">
+                  {/* Calculate progress width dynamically */}
+                  <div
+                    className="bg-primary h-3 rounded"
+                    style={{ width: `${goal.currentDistance || 0}%` }}
+                  ></div>
+                </div>
               </div>
-              <div className='w-full bg-gray-200 h-3 rounded mb-2'>
-                  <div className='bg-primary h-3 rounded' style={{ width: '40%' }}></div>
+              <div className="px-4 py-2 border-t flex items-center gap-2">
+                <BsCalendar className="opacity-70" />
+                <span>{t("end-time")} - {goal.endTime}</span>
               </div>
-          </div>
-          <div className='px-4 py-2 border-t flex items-center gap-2'>
-            <BsCalendar className='opacity-70' />
-            <span>{t("end-time")} - 2024-08-20</span>
-          </div>
-        </div>
+            </div>
+          ))
+        ) : (
+          <p>{t("no-goals")}</p> // Display message if no goals
+        )}
       </div>
 
       {showModal && <ModalCreateGoal setShowModal={setShowModal} />}
