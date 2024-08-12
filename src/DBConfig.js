@@ -12,5 +12,14 @@ export const DBConfig = {
           { name: "status", keypath: "status", options: { unique: false } },
         ],
       },
+      {
+        store: "activity",
+        storeConfig: { keyPath: "id", autoIncrement: true },
+        storeSchema: [
+            { name: "type", keypath: "type", options: { unique: false } },
+            { name: "totalDistance", keypath: "totalDistance", options: { unique: false } },
+            { name: "path", keypath: "path", options: { unique: false } },
+        ],
+      },
     ],
 };

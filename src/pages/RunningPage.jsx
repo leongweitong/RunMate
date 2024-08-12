@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef } from 'react'
-import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
+import { MapContainer, Marker, TileLayer, useMap, Polyline } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { SyncLoader } from 'react-spinners'
@@ -21,6 +21,9 @@ const RunningPage = () => {
     const [position, setPosition] = useState(null)
     const [heading, setHeading] = useState(0)
     const [prevPosition, setPrevPosition] = useState(null)
+    const [path, setPath] = useState([]);
+    const [totalDistance, setTotalDistance] = useState(0);
+    const [keepTrack, setKeepTrack] = useState(false);
 
     useEffect(() => {
         const getMapLocation = () => {
@@ -38,10 +41,21 @@ const RunningPage = () => {
                 if (prevPosition) {
                     const userDirection = getCurrentDirection(prevPosition[0], prevPosition[1], latitude, longitude)
                     setHeading(userDirection)
+
+                    if(keepTrack) {
+                        const prevLatLng = L.latLng(prevPosition[0], prevPosition[1]);
+                        const currentLatLng = L.latLng(latitude, longitude);
+                        const distance = prevLatLng.distanceTo(currentLatLng); // Distance in meters
+    
+                        setTotalDistance((prevDistance) => prevDistance + distance);
+                        // console.log(totalDistance)
+                    }
                 }
                 return newPosition
             })
             setPosition(newPosition)
+            // console.log(path)
+            keepTrack && setPath((prevPath) => [...prevPath, newPosition]);
             setLoading(false)
         }
     
@@ -77,14 +91,19 @@ const RunningPage = () => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 />
+                <PolylineUpdater pathOptions={{color: 'red'}} positions={path}/>
                 <RotatingMarker position={position} icon={myIcon} rotationAngle={heading} />
                 <MapUpdater position={position} />
             </MapContainer>
 
-            <RunningControls />
+            <RunningControls keepTrack={keepTrack} setKeepTrack={setKeepTrack} totalDistance={totalDistance} path={path} />
         </>)
     )
 }
+
+const PolylineUpdater = ({pathOptions, positions}) => {
+    return <Polyline pathOptions={pathOptions} positions={positions} />
+} 
 
 const RotatingMarker = ({ position, icon, rotationAngle }) => {
     const markerRef = useRef()

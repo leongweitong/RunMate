@@ -2,16 +2,17 @@ import React, {useState, useEffect, useRef} from 'react'
 import { BsPauseFill, BsStopFill, BsCaretRightFill } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
+import { useIndexedDB } from "react-indexed-db-hook";
 
-const RunningControls = () => {
+const RunningControls = ({keepTrack, setKeepTrack, totalDistance, path}) => {
+    const { add } = useIndexedDB("activity");
     const { t } = useTranslation();
     const navigate = useNavigate()
-    const [isPlaying, setIsPlaying] = useState(false)
     const [elapsedTime, setElapsedTime] = useState(0);
     const timerRef = useRef(null);
 
     useEffect(() => {
-        if (isPlaying) {
+        if (keepTrack) {
             timerRef.current = setInterval(() => {
                 setElapsedTime((prevTime) => prevTime + 1000);
             }, 1000);
@@ -20,11 +21,11 @@ const RunningControls = () => {
         }
 
         return () => clearInterval(timerRef.current);
-    }, [isPlaying]);
+    }, [keepTrack]);
 
     const togglePlayPause = () => {
-        setIsPlaying((prevState) => !prevState);
-        if (!isPlaying) {
+        setKeepTrack((prevState) => !prevState);
+        if (!keepTrack) {
             setElapsedTime(elapsedTime);
         } else {
             console.lo
@@ -33,9 +34,26 @@ const RunningControls = () => {
     };
 
     const endRunning = () => {
+        if(!keepTrack && totalDistance === 0) {
+            clearInterval(timerRef.current);
+            navigate('/')
+            return
+        }
+
+        const userConfirmed = window.confirm('Are you sure you want to store this activity?');
+        if (userConfirmed && keepTrack) {
+            add({type: 'running', totalDistance, path}).then(
+                (event) => {
+                    console.log("Activity ID Generated: ", event);
+                },
+                (error) => {
+                    console.error("Error adding activity: ", error);
+                }
+            );
+        }
+
         clearInterval(timerRef.current);
-        navigate('/')
-        return
+        navigate('/');
     }
 
     const formatTime = (time) => {
@@ -53,11 +71,11 @@ const RunningControls = () => {
                     <div>
                     {t("general.duration")}: <span className='font-bold'>{formatTime(elapsedTime)}</span>
                     </div>
-                    <div>{t("general.kilometers")}: <span className='font-bold'>0.0 KM</span></div>
+                    <div>{t("general.kilometers")}: <span className='font-bold'>{totalDistance.toFixed(0)} M</span></div>
                 </div>
                 <div className="flex gap-6">
                     <div className='rounded-full bg-white p-2' onClick={togglePlayPause}>
-                        {isPlaying ? (
+                        {keepTrack ? (
                         <BsPauseFill className='text-4xl text-primary' />
                         ) : (
                         <BsCaretRightFill className='text-4xl text-primary' />
