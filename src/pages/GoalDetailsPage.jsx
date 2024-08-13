@@ -62,11 +62,15 @@ const GoalDetailsPage = () => {
                             <BsFlag className="mr-2" />
                             <span>{t("general.status")}: {goal.status === "0" ? t("on-going") : goal.status === "1" ? t("completed") : t("failed")}</span>
                         </div>
+                        <div className="flex items-center mb-4">
+                            <BsFlag className="mr-2" />
+                            <span>{t("general.totalDistance")}: {goal.totalDistance}</span>
+                        </div>
                         <div className="w-full bg-gray-200 h-3 rounded">
                             {/* Calculate progress width dynamically */}
                             <div
                                 className="bg-primary h-3 rounded"
-                                style={{ width: `${goal.currentDistance || 0}%` }}
+                                style={{ width: `${(goal.currentDistance / goal.totalDistance) * 100 || 0}%` }}
                             ></div>
                         </div>
                     </div>

@@ -3,8 +3,10 @@ import { useIndexedDB  } from "react-indexed-db-hook";
 import { useParams } from 'react-router-dom';
 import { MapContainer, TileLayer, Polyline } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import { useTranslation } from "react-i18next";
 
 const ActivityDetailsPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const { getByID } = useIndexedDB("activity");
   const [activity, setActivity] = useState(null)
@@ -32,6 +34,20 @@ const ActivityDetailsPage = () => {
         />
         <Polyline pathOptions={{ color: 'red' }} positions={activity.path} />
       </MapContainer>
+
+      <div className="fixed bottom-10 left-0 w-full p-4 text-white z-10">
+          <div className="bg-white p-4 flex justify-between items-center rounded-xl">
+              <div>
+                  <div>
+                  {t("general.duration")}: <span className='font-bold'>00:00:00</span>
+                  </div>
+                  <div>{t("general.kilometers")}: <span className='font-bold'>1800 M</span></div>
+              </div>
+              <div className="flex gap-6">
+                  
+              </div>
+          </div>
+      </div>
     </>
   );
 }

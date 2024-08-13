@@ -26,7 +26,10 @@
         "type": "类型",
         "status": "状态",
         "loading": "加载中",
-        "activity": "活动"
+        "activity": "活动",
+        "running": "跑步",
+        "daily": "日常",
+        "totalDistance": "总距离"
     },
     "weather": {
         "visibility": "能见度",

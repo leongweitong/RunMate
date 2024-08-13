@@ -26,7 +26,10 @@
         "type": "Type",
         "status": "Status",
         "loading": "Loading",
-        "activity": "Activity"
+        "activity": "Activity",
+        "running": "Running",
+        "daily": "Daily",
+        "totalDistance": "Total distance"
     },
     "weather": {
         "visibility": "Visibility",

@@ -42,7 +42,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
 
         const userConfirmed = window.confirm('Are you sure you want to store this activity?');
         if (userConfirmed && keepTrack) {
-            add({type: 'running', totalDistance, path}).then(
+            add({type: 'running', time: elapsedTime, totalDistance, path}).then(
                 (event) => {
                     console.log("Activity ID Generated: ", event);
                 },

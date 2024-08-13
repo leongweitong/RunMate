@@ -43,7 +43,7 @@ const ActivityPage = () => {
                         <div key={activity.id} className='border-b border-secondary py-2 mb-4'>
                             <div className='flex items-center justify-between'>
                                 <div>
-                                    <div className='text-lg font-semibold capitalize'>{activity.type}</div>
+                                    <div className='text-lg font-semibold capitalize'>{activity.type} - {activity.time}</div>
                                     <div className='text-sm text-gray-500'>{`Distance: ${activity.totalDistance} meters`}</div>
                                 </div>
                                 <Link to={`/activity/${activity.id}`} className='text-primary text-xl'>
