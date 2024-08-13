@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import { useIndexedDB } from "react-indexed-db-hook";
 
-const RunningControls = ({keepTrack, setKeepTrack, totalDistance, path}) => {
+const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}) => {
     const { add } = useIndexedDB("activity");
     const { t } = useTranslation();
     const navigate = useNavigate()
@@ -24,11 +24,11 @@ const RunningControls = ({keepTrack, setKeepTrack, totalDistance, path}) => {
     }, [keepTrack]);
 
     const togglePlayPause = () => {
-        setKeepTrack((prevState) => !prevState);
+        handleChangeKeepTrack(!keepTrack);
+        
         if (!keepTrack) {
             setElapsedTime(elapsedTime);
         } else {
-            console.lo
             clearInterval(timerRef.current);
         }
     };

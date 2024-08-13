@@ -24,6 +24,7 @@ const RunningPage = () => {
     const [path, setPath] = useState([]);
     const [totalDistance, setTotalDistance] = useState(0);
     const [keepTrack, setKeepTrack] = useState(false);
+    const keepTrackRef = useRef(keepTrack);
 
     useEffect(() => {
         const getMapLocation = () => {
@@ -42,20 +43,19 @@ const RunningPage = () => {
                     const userDirection = getCurrentDirection(prevPosition[0], prevPosition[1], latitude, longitude)
                     setHeading(userDirection)
 
-                    if(keepTrack) {
+                    if(keepTrackRef.current) {
                         const prevLatLng = L.latLng(prevPosition[0], prevPosition[1]);
                         const currentLatLng = L.latLng(latitude, longitude);
                         const distance = prevLatLng.distanceTo(currentLatLng); // Distance in meters
     
                         setTotalDistance((prevDistance) => prevDistance + distance);
-                        // console.log(totalDistance)
+                        console.log('keep track user data')
                     }
                 }
                 return newPosition
             })
             setPosition(newPosition)
-            // console.log(path)
-            keepTrack && setPath((prevPath) => [...prevPath, newPosition]);
+            keepTrackRef.current && setPath((prevPath) => [...prevPath, newPosition]);
             setLoading(false)
         }
     
@@ -65,6 +65,17 @@ const RunningPage = () => {
     
         getMapLocation()
     }, [])
+
+    useEffect(() => {
+        keepTrackRef.current = keepTrack;
+    }, [keepTrack]);
+
+    const handleChangeKeepTrack = (data) => {
+        console.log("Before update - keepTrack:", keepTrack);
+        setKeepTrack(data);
+        console.log("After update - keepTrack:", data);
+    };
+    
 
     function getCurrentDirection(previousLat, previousLng, currentLat, currentLng) {
         const diffLat = currentLat - previousLat
@@ -96,7 +107,7 @@ const RunningPage = () => {
                 <MapUpdater position={position} />
             </MapContainer>
 
-            <RunningControls keepTrack={keepTrack} setKeepTrack={setKeepTrack} totalDistance={totalDistance} path={path} />
+            <RunningControls keepTrack={keepTrack} handleChangeKeepTrack={handleChangeKeepTrack} totalDistance={totalDistance} path={path} />
         </>)
     )
 }

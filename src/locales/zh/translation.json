@@ -25,7 +25,8 @@
         "no-record": "没有结果",
         "type": "类型",
         "status": "状态",
-        "loading": "加载中"
+        "loading": "加载中",
+        "activity": "活动"
     },
     "weather": {
         "visibility": "能见度",

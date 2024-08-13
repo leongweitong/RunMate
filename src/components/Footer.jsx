@@ -13,7 +13,7 @@ const Footer = () => {
                 <NavLink to="/analysis" className={({isActive}) => isActive ? 'text-primary' : ''}>
                   <BsBarChart className='text-3xl' />
                 </NavLink>
-                <NavLink to="/goal" className={({isActive}) => isActive ? 'text-primary' : ''}>
+                <NavLink to="/goal" end className={({isActive}) => isActive ? 'text-primary' : ''}>
                   <BsFlag className='text-3xl' />
                 </NavLink>
                 <NavLink to="/menu" className={({isActive}) => isActive ? 'text-primary' : ''}>

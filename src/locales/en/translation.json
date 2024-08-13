@@ -25,7 +25,8 @@
         "no-record": "No Records",
         "type": "Type",
         "status": "Status",
-        "loading": "Loading"
+        "loading": "Loading",
+        "activity": "Activity"
     },
     "weather": {
         "visibility": "Visibility",

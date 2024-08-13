@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import { useTranslation } from "react-i18next";
-import { BsTranslate } from 'react-icons/bs';
+import { BsTranslate, BsActivity, BsChevronRight } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 const MenuPage = () => {
   const { t, i18n } = useTranslation();
@@ -17,7 +18,7 @@ const MenuPage = () => {
           <div className='text-primary text-xl font-semibold'>{t("menu")}</div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 flex flex-col gap-4">
         <div className='flex items-center justify-between pb-4 border-b'>
           <div className="flex items-center gap-4">
             <BsTranslate className='text-2xl' />
@@ -28,6 +29,16 @@ const MenuPage = () => {
             <option value="en">English</option>
           </select>
         </div>
+
+        <Link to='/activity'>
+          <div className='flex items-center justify-between pb-4 border-b'>
+            <div className="flex items-center gap-4">
+              <BsActivity className='text-2xl' />
+              <div>{t("general.activity")}</div>
+            </div>
+            <BsChevronRight className='text-xl' />
+          </div>
+        </Link>
       </div>
     </div>
   )
