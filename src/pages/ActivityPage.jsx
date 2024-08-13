@@ -10,13 +10,20 @@ const ActivityPage = () => {
     const { getAll } = useIndexedDB("activity");
     const navigate = useNavigate()
     const { t } = useTranslation();
-    const [activities, setActivities] = useState([])
+    const [activities, setActivities] = useState(null)
 
     useEffect(() => {
         getAll().then((activities) => {
+            console.log(activities)
             setActivities(activities);
+        }).catch((error) => {
+            console.error('Error fetching activities:', error);
         });
     }, []);
+
+    if(!activities) {
+        <div className='text-center'>{t("general.loading")}</div>;
+    }
 
     return (
         <div className='flex flex-col gap-4'>
@@ -31,12 +38,12 @@ const ActivityPage = () => {
             </div>
 
             <div className='px-4'>
-                {activities.length > 0 ? (
+                {activities && activities.length > 0 ? (
                     activities.map((activity) => (
                         <div key={activity.id} className='border-b border-secondary py-2 mb-4'>
                             <div className='flex items-center justify-between'>
                                 <div>
-                                    <div className='text-lg font-semibold'>{activity.type}</div>
+                                    <div className='text-lg font-semibold capitalize'>{activity.type}</div>
                                     <div className='text-sm text-gray-500'>{`Distance: ${activity.totalDistance} meters`}</div>
                                 </div>
                                 <Link to={`/activity/${activity.id}`} className='text-primary text-xl'>
@@ -46,7 +53,7 @@ const ActivityPage = () => {
                         </div>
                     ))
                 ) : (
-                    <div className='text-gray-500'>{t("general.no-record")}</div>
+                    <div className='text-center text-gray-500'>{t("general.no-record")}</div>
                 )}
             </div>
         </div>
