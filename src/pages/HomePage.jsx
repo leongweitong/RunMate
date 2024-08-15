@@ -5,10 +5,13 @@ import { BsPlayFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import { getGoalsByStatus } from '../indexedDBUtils';
+import { useIndexedDB } from "react-indexed-db-hook";
 
 const HomePage = () => {
     const { t } = useTranslation();
     const [goals, setGoals] = useState(null)
+    const [activities, setActivities] = useState(null)
+    const { getAll } = useIndexedDB("activity");
 
     const fetchGoals = async () => {
         try {
@@ -19,8 +22,15 @@ const HomePage = () => {
         }
     };
 
+    const fetchActivities = async () => {
+        getAll().then((activities) => {
+            setActivities(activities.slice(-3).reverse());
+        });
+    };    
+
     useEffect(() => {
         fetchGoals()
+        fetchActivities()
     }, []);
 
     return (
@@ -66,22 +76,27 @@ const HomePage = () => {
                         <div className='underline underline-offset-2 text-primary'>{t("general.see-all")}</div>
                     </Link>
                 </div>
-                <div className='bg-white p-4 rounded-lg shadow flex items-center gap-2 mb-2'>
-                    <img src="/runmateIcon.png" alt="runmate-image" className='h-16 w-16 rounded-xl' />
-                    <div>
-                        <p className='font-bold opacity-80'>Running - 02-08-2024</p>
-                        <p className='font-bold text-xl'>5.35 Km</p>
-                        <p>00-25-20</p>
+                {activities && activities.length > 0 ? (
+                    activities.map((activity) => (
+                    <Link to={`activity/${activity.id}`}>
+                    <div key={activity.id} className='bg-white p-4 rounded-lg shadow flex items-center gap-2 mb-2'>
+                        {
+                           activity.type === 'running' ? 
+                           (<img src="/runmateIcon.png" alt="runmate-image" className='h-16 w-16 rounded-xl' />) :
+                           (<img src="/runmateIcon.png" alt="runmate-image" className='h-16 w-16 rounded-xl' />)
+                        } 
+                        
+                        <div>
+                        <p className='font-bold opacity-80'>{activity.type} - {new Date().toLocaleDateString()}</p>
+                        <p className='font-bold text-xl'>{(activity.totalDistance / 1000).toFixed(2)} Km</p>
+                        <p>{activity.time}</p>
+                        </div>
                     </div>
-                </div>
-                <div className='bg-white p-4 rounded-lg shadow flex items-center gap-2'>
-                    <img src="/runmateIcon.png" alt="runmate-image" className='h-16 w-16 rounded-xl' />
-                    <div>
-                        <p className='font-bold opacity-80'>Running - 02-08-2024</p>
-                        <p className='font-bold text-xl'>5.35 Km</p>
-                        <p>00-25-20</p>
-                    </div>
-                </div>
+                    </Link>
+                    ))
+                ) : (
+                    <div className='text-center'>{t("general.no-record")}</div>
+                )}
             </div>
         </div>
     )
