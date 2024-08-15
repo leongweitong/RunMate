@@ -3,9 +3,11 @@ import { BsPauseFill, BsStopFill, BsCaretRightFill } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import { useIndexedDB } from "react-indexed-db-hook";
+import { getGoalsByStatus } from '../indexedDBUtils';
 
 const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}) => {
     const { add } = useIndexedDB("activity");
+    const { update } = useIndexedDB("goal");
     const { t } = useTranslation();
     const navigate = useNavigate()
     const [elapsedTime, setElapsedTime] = useState(0);
@@ -22,6 +24,35 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
 
         return () => clearInterval(timerRef.current);
     }, [keepTrack]);
+
+    const handleOnGoingGoals = async (totalDistance) => {
+        try {
+            // Fetch ongoing goals (status = '0')
+            const ongoingGoals = await getGoalsByStatus('0');
+            
+            // Filter goals by type 'running'
+            const runningGoals = ongoingGoals.filter(goal => goal.type === 'running');
+    
+            // Update goals with new distance
+            runningGoals.forEach(goal => {
+                // Add the distance from the activity
+                goal.currentDistance += totalDistance;
+    
+                // Check if the goal is complete
+                if (goal.currentDistance >= goal.totalDistance) {
+                    // If the goal is complete, update the status to '1' (completed)
+                    goal.status = '1';
+                }
+
+                update({ id: goal.id, status: goal.status, currentDistance: goal.currentDistance }).then((event) => {
+                    console.log("Edited!");
+                  });
+            });
+    
+        } catch (error) {
+            console.error('Error updating ongoing goals:', error);
+        }
+    };    
 
     const togglePlayPause = () => {
         handleChangeKeepTrack(!keepTrack);
@@ -50,6 +81,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
                     console.error("Error adding activity: ", error);
                 }
             );
+            handleOnGoingGoals()
         }
 
         clearInterval(timerRef.current);
