@@ -78,8 +78,8 @@ const HomePage = () => {
                 </div>
                 {activities && activities.length > 0 ? (
                     activities.map((activity) => (
-                    <Link to={`activity/${activity.id}`}>
-                    <div key={activity.id} className='bg-white p-4 rounded-lg shadow flex items-center gap-2 mb-2'>
+                    <Link to={`activity/${activity.id}`} key={activity.id}>
+                    <div className='bg-white p-4 rounded-lg shadow flex items-center gap-2 mb-2'>
                         {
                            activity.type === 'running' ? 
                            (<img src="/runmateIcon.png" alt="runmate-image" className='h-16 w-16 rounded-xl' />) :
