@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import { useIndexedDB } from "react-indexed-db-hook";
 import { getGoalsByStatus } from '../indexedDBUtils';
+import {formatTime} from '../utils/formatTime'
 
 const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}) => {
     const { add } = useIndexedDB("activity");
@@ -87,14 +88,6 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
         clearInterval(timerRef.current);
         navigate('/');
     }
-
-    const formatTime = (time) => {
-        const seconds = Math.floor((time / 1000) % 60);
-        const minutes = Math.floor((time / (1000 * 60)) % 60);
-        const hours = Math.floor((time / (1000 * 60 * 60)) % 24);
-
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    };
 
     return (
         <div className="fixed bottom-10 left-0 w-full p-4 text-white z-10">

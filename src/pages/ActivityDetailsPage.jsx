@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { BsArrowLeftShort, BsAlarm, BsSpeedometer, BsGeoAlt } from 'react-icons/bs';
 import { FaShoePrints } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import {formatTime} from '../utils/formatTime'
 
 const ActivityDetailsPage = () => {
   const { t } = useTranslation();
@@ -20,15 +21,6 @@ const ActivityDetailsPage = () => {
       setActivity(activity);
     });
   }, []);
-
-  const formatTime = (time) => {
-    const seconds = Math.floor((time / 1000) % 60);
-    const minutes = Math.floor((time / (1000 * 60)) % 60);
-    const hours = Math.floor((time / (1000 * 60 * 60)) % 24);
-
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  };
-
 
   if (!activity) return <div>Loading...</div>;
 
