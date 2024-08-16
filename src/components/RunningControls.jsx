@@ -13,6 +13,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
     const navigate = useNavigate()
     const [elapsedTime, setElapsedTime] = useState(0);
     const timerRef = useRef(null);
+    const distance = Number((totalDistance / 1000).toFixed(2))
 
     useEffect(() => {
         if (keepTrack) {
@@ -28,30 +29,29 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
 
     const handleOnGoingGoals = async (totalDistance) => {
         try {
-            // Fetch ongoing goals (status = '0')
+            window.alert(totalDistance.toFixed(2))
             const ongoingGoals = await getGoalsByStatus('0');
             
-            // Filter goals by type 'running'
             const runningGoals = ongoingGoals.filter(goal => goal.type === 'running');
     
             // Update goals with new distance
             for (const goal of runningGoals) {
-                // Add the distance from the activity
-                goal.currentDistance += totalDistance;
+                const currentDistance = Number(goal.currentDistance) || 0;
+                const newDistance = currentDistance + distance;
     
-                // Check if the goal is complete
-                if (goal.currentDistance >= goal.totalDistance) {
-                    // If the goal is complete, update the status to '1' (completed)
-                    goal.status = '1';
-                }
+                if (newDistance >= goal.totalDistance) goal.status = '1';
+
+                window.alert(`${newDistance}`);
     
                 // Update the goal in IndexedDB
                 await update({
                     id: goal.id,
                     status: goal.status,
-                    currentDistance: goal.currentDistance,
-                    totalDistance: goal.totalDistance,
-                    name: goal.name
+                    currentDistance: newDistance,
+                    totalDistance: Number(goal.totalDistance),
+                    name: goal.name,
+                    endTime: goal.endTime,
+                    type: goal.type
                 });
     
                 console.log(`Goal ${goal.name} updated!`);
@@ -88,15 +88,15 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
 
         const userConfirmed = window.confirm('Are you sure you want to store this activity?');
         if (userConfirmed && keepTrack) {
-            add({type: 'running', time: elapsedTime, totalDistance, path}).then(
+            add({type: 'running', time: elapsedTime, totalDistance: distance, path}).then(
                 (event) => {
                     console.log("Activity ID Generated: ", event);
+                    handleOnGoingGoals()
                 },
                 (error) => {
                     console.error("Error adding activity: ", error);
                 }
             );
-            handleOnGoingGoals()
         }
 
         clearInterval(timerRef.current);

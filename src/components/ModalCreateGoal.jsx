@@ -9,7 +9,7 @@ const ModalCreateGoal = ({setShowModal, refreshGoals}) => {
 
     const { add } = useIndexedDB("goal");
     const [name, setName] = useState('')
-    const [totalDistance, setTotalDistance] = useState(0)
+    const [totalDistance, setTotalDistance] = useState('')
     const [endTime, setEndTime] = useState('')
     const [type, setType] = useState('running')
     const [status, setStatus] = useState('0')
@@ -71,7 +71,7 @@ const ModalCreateGoal = ({setShowModal, refreshGoals}) => {
                     </div>
                     <div className='flex flex-col mb-2'>
                         <label htmlFor="totalDistance">{t("general.totalDistance")}</label>
-                        <input id='totalDistance' type="number" value={totalDistance} onChange={(e) => setTotalDistance(e.target.value)} 
+                        <input id='totalDistance' type="number" value={totalDistance} onChange={(e) => setTotalDistance(Number(e.target.value))} 
                             className='w-full border border-primary rounded outline-none px-2 py-1' 
                             placeholder='10' required 
                         />

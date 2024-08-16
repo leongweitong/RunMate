@@ -57,7 +57,11 @@ const GoalDetailsPage = () => {
                             </div>
                             <div className="w-full bg-gray-200 h-3 rounded mb-2">
                                 <div className="bg-primary h-3 rounded"
-                                    style={{ width: `${(goal.currentDistance / goal.totalDistance) * 100 || 0}%` }}
+                                    style={{
+                                        width: `${goal.totalDistance > 0 ? 
+                                          Number(((Number(goal.currentDistance) / Number(goal.totalDistance)) * 100).toFixed(0)) || 0 
+                                          : 0}%`
+                                    }}
                                 ></div>
                             </div>
                             <div className='flex justify-between'>

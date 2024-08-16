@@ -89,7 +89,7 @@ const HomePage = () => {
                         
                         <div>
                         <p className='font-bold opacity-80'>{t(`general.${activity.type}`)} - {new Date().toLocaleDateString()}</p>
-                        <p className='font-bold text-xl'>{(activity.totalDistance / 1000).toFixed(2)} km</p>
+                        <p className='font-bold text-xl'>{activity.totalDistance} km</p>
                         <p>{formatTime(activity.time)}</p>
                         </div>
                     </div>

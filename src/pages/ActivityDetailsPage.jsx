@@ -26,9 +26,8 @@ const ActivityDetailsPage = () => {
 
   const totalMinutes = (activity.time / 1000) / 60;
   const totalHours = ((activity.time / 1000) / 60) / 60;
-  const distanceKm = activity.totalDistance / 1000;
-  const pace = totalMinutes / distanceKm;
-  const speed = distanceKm / totalHours;
+  const pace = totalMinutes / activity.totalDistance;
+  const speed = activity.totalDistance / totalHours;
   
   return (
     <>
@@ -64,7 +63,7 @@ const ActivityDetailsPage = () => {
                   </div>
                   <div className='flex flex-col items-center justify-center gap-2'>
                     <BsGeoAlt />
-                    <div>{(activity.totalDistance / 1000).toFixed(2)} km</div>
+                    <div>{activity.totalDistance} km</div>
                     <div>{t("general.kilometers")}</div>
                   </div>
                   <div className='flex flex-col items-center justify-center gap-2'>

@@ -16,7 +16,7 @@ const ActivityPage = () => {
     useEffect(() => {
         getAll().then((activities) => {
             console.log(activities)
-            setActivities(activities);
+            setActivities(activities.reverse());
         }).catch((error) => {
             console.error('Error fetching activities:', error);
         });
@@ -45,7 +45,7 @@ const ActivityPage = () => {
                             <div className='flex items-center justify-between'>
                                 <div>
                                     <div className='text-lg font-semibold capitalize'>{activity.type} - {formatTime(activity.time)}</div>
-                                    <div className='text-sm text-gray-500'>{`Distance: ${(activity.totalDistance / 1000).toFixed(2)} km`}</div>
+                                    <div className='text-sm text-gray-500'>{`Distance: ${activity.totalDistance} km`}</div>
                                 </div>
                                 <Link to={`/activity/${activity.id}`} className='text-primary text-xl'>
                                     <BsChevronRight />

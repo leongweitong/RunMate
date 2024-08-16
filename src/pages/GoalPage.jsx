@@ -16,7 +16,7 @@ const GoalPage = () => {
   const fetchGoals = async () => {
     try {
       const results = await getGoalsByStatus(tab);
-      setGoals(results);
+      setGoals(results.reverse());
     } catch (error) {
       console.error('Error fetching goals:', error);
     }
@@ -56,11 +56,14 @@ const GoalPage = () => {
                     <BsChevronRight className="text-lg" />
                   </div>
                   <div className="w-full bg-gray-200 h-3 rounded mb-2">
-                    {/* Calculate progress width dynamically */}
-                    <div
-                      className="bg-primary h-3 rounded"
-                      style={{ width: `${goal.currentDistance || 0}%` }}
+                    <div className="bg-primary h-3 rounded"
+                      style={{
+                        width: `${goal.totalDistance > 0 ? 
+                          Number(((Number(goal.currentDistance) / Number(goal.totalDistance)) * 100).toFixed(0)) || 0 
+                          : 0}%`
+                      }}
                     ></div>
+                    {goal.currentDistance}
                   </div>
                 </div>
               </Link>
