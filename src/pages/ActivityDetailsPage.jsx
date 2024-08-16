@@ -8,6 +8,7 @@ import { BsArrowLeftShort, BsAlarm, BsSpeedometer, BsGeoAltFill } from 'react-ic
 import { FaShoePrints } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import {formatTime} from '../utils/formatTime'
+import * as turf from "@turf/turf";
 
 const ActivityDetailsPage = () => {
   const { t } = useTranslation();
@@ -15,10 +16,13 @@ const ActivityDetailsPage = () => {
   const { getByID } = useIndexedDB("activity");
   const [activity, setActivity] = useState(null)
   const navigate = useNavigate()
+  const [centerPosition, setCenterPosition] = useState(null)
 
   useEffect(() => {
     getByID(Number(id)).then((activity) => {
       setActivity(activity);
+      const res = turf.center(turf.points(activity.path))
+      setCenterPosition(res.geometry.coordinates)
     });
   }, []);
 
@@ -32,7 +36,7 @@ const ActivityDetailsPage = () => {
   return (
     <>
       <MapContainer 
-        center={activity.path[0]} 
+        center={centerPosition} 
         zoom={17} 
         zoomControl={false} 
         scrollWheelZoom={false} 
