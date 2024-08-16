@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import { SyncLoader } from 'react-spinners'
 import 'leaflet-rotatedmarker';
 import RunningControls from '../components/RunningControls'
+import * as turf from "@turf/turf";
 
 const RunningPage = () => {
     const myIcon = new L.Icon({
@@ -47,8 +48,15 @@ const RunningPage = () => {
                         const prevLatLng = L.latLng(prevPosition[0], prevPosition[1]);
                         const currentLatLng = L.latLng(latitude, longitude);
                         const distance = prevLatLng.distanceTo(currentLatLng); // Distance in meters
+
+                        const from = turf.point([prevPosition[0], prevPosition[1]]);
+                        const to = turf.point([latitude, longitude]);
+
+                        const distance2 = turf.distance(from, to) * 1000; // Distance in km
+
+                        const newDistance = distance > distance2 ? distance2 : distance
     
-                        setTotalDistance((prevDistance) => prevDistance + distance);
+                        setTotalDistance((prevDistance) => prevDistance + newDistance);
                         console.log('keep track user data')
                     }
                 }
