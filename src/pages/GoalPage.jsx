@@ -63,7 +63,6 @@ const GoalPage = () => {
                           : 0}%`
                       }}
                     ></div>
-                    {goal.currentDistance}
                   </div>
                 </div>
               </Link>

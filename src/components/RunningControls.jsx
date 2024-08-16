@@ -27,9 +27,8 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
         return () => clearInterval(timerRef.current);
     }, [keepTrack]);
 
-    const handleOnGoingGoals = async (totalDistance) => {
+    const handleOnGoingGoals = async () => {
         try {
-            window.alert(totalDistance.toFixed(2))
             const ongoingGoals = await getGoalsByStatus('0');
             
             const runningGoals = ongoingGoals.filter(goal => goal.type === 'running');
@@ -40,8 +39,6 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
                 const newDistance = currentDistance + distance;
     
                 if (newDistance >= goal.totalDistance) goal.status = '1';
-
-                window.alert(`${newDistance}`);
     
                 // Update the goal in IndexedDB
                 await update({
@@ -59,8 +56,9 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
     
         } catch (error) {
             console.error('Error updating ongoing goals:', error);
+            window.alert('Error! Cannot Update Goals.')
         }
-    };    
+    };  
 
     const togglePlayPause = () => {
         handleChangeKeepTrack(!keepTrack);
@@ -110,7 +108,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
                     <div>
                     {t("general.duration")}: <span className='font-bold'>{formatTime(elapsedTime)}</span>
                     </div>
-                    <div>{t("general.kilometers")}: <span className='font-bold'>{totalDistance.toFixed(0)} M</span></div>
+                    <div>{t("general.kilometers")}: <span className='font-bold'>{distance.toFixed(2)} km</span></div>
                 </div>
                 <div className="flex gap-6">
                     <div className='rounded-full bg-white p-2' onClick={togglePlayPause}>
