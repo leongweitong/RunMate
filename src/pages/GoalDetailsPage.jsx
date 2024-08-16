@@ -48,30 +48,26 @@ const GoalDetailsPage = () => {
             </div>
             <div className="px-4">
                 {goal ? (
-                    <div className="bg-white rounded-lg shadow p-4">
-                        <h1 className="text-2xl font-semibold mb-4">{goal.name}</h1>
-                        <div className="flex items-center mb-4">
-                            <BsCalendar className="mr-2" />
-                            <span>{t("end-time")}: {goal.endTime}</span>
+                    <div className="bg-white rounded-lg shadow mb-4">
+                        <div className="px-4 py-2">
+                            <div className="flex items-center gap-4 mb-2">
+                            <p className="font-semibold capitalize">{t(`general.${goal.type}`)}</p>
+                            <p>-</p>
+                            <p className="font-semibold">{goal.name}</p>
+                            </div>
+                            <div className="w-full bg-gray-200 h-3 rounded mb-2">
+                                <div className="bg-primary h-3 rounded"
+                                    style={{ width: `${(goal.currentDistance / goal.totalDistance) * 100 || 0}%` }}
+                                ></div>
+                            </div>
+                            <div className='flex justify-between'>
+                                <div>0</div>
+                                <div>{goal.totalDistance}</div>
+                            </div>
                         </div>
-                        <div className="flex items-center mb-4">
-                            <BsFlag className="mr-2" />
-                            <span>{t("general.type")}: {goal.type}</span>
-                        </div>
-                        <div className="flex items-center mb-4">
-                            <BsFlag className="mr-2" />
-                            <span>{t("general.status")}: {goal.status === "0" ? t("on-going") : goal.status === "1" ? t("completed") : t("failed")}</span>
-                        </div>
-                        <div className="flex items-center mb-4">
-                            <BsFlag className="mr-2" />
-                            <span>{t("general.totalDistance")}: {goal.totalDistance}</span>
-                        </div>
-                        <div className="w-full bg-gray-200 h-3 rounded">
-                            {/* Calculate progress width dynamically */}
-                            <div
-                                className="bg-primary h-3 rounded"
-                                style={{ width: `${(goal.currentDistance / goal.totalDistance) * 100 || 0}%` }}
-                            ></div>
+                        <div className="px-4 py-2 border-t flex items-center gap-2">
+                            <BsCalendar className="opacity-70" />
+                            <span>{t("end-time")} - {goal.endTime}</span>
                         </div>
                     </div>
                 ) : (
