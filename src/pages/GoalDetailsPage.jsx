@@ -4,6 +4,7 @@ import { useIndexedDB } from "react-indexed-db-hook";
 import { BsCalendar, BsFlag, BsArrowLeftShort, BsTrash } from 'react-icons/bs';
 import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom';
+import { calcGoalProgress } from '../utils/calcGoalProgress';
 
 const GoalDetailsPage = () => {
     const navigate = useNavigate()
@@ -57,11 +58,7 @@ const GoalDetailsPage = () => {
                             </div>
                             <div className="w-full bg-gray-200 h-3 rounded mb-2">
                                 <div className="bg-primary h-3 rounded"
-                                    style={{
-                                        width: `${goal.totalDistance > 0 ? 
-                                          Number(((Number(goal.currentDistance) / Number(goal.totalDistance)) * 100).toFixed(0)) || 0 
-                                          : 0}%`
-                                    }}
+                                    style={{width: `${calcGoalProgress(goal.currentDistance, goal.totalDistance)}%`}}
                                 ></div>
                             </div>
                             <div className='flex justify-between'>

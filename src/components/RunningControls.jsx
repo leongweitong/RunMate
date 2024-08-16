@@ -98,7 +98,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
         }
 
         clearInterval(timerRef.current);
-        navigate('/');
+        navigate('/', { replace: true });
     }
 
     return (

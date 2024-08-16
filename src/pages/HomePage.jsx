@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { getGoalsByStatus } from '../indexedDBUtils';
 import { useIndexedDB } from "react-indexed-db-hook";
 import {formatTime} from '../utils/formatTime'
+import { calcGoalProgress } from '../utils/calcGoalProgress'
 
 const HomePage = () => {
     const { t } = useTranslation();
@@ -54,13 +55,11 @@ const HomePage = () => {
                 </div>
                 {goals && goals.length > 0 ? (
                     goals.map(goal => {
-                        const progress = goal.currentDistance ? (goal.currentDistance / goal.totalDistance) * 100 : 0;
-                        
                         return (
                             <div key={goal.id} className='bg-white rounded-lg shadow p-4 mb-2'>
                                 <p className='mb-1 font-bold opacity-80'>{goal.name}</p>
                                 <div className='w-full bg-gray-200 h-3 rounded'>
-                                    <div className='bg-primary h-3 rounded' style={{ width: `${progress}%` }}></div>
+                                    <div className='bg-primary h-3 rounded' style={{ width: `${calcGoalProgress(goal.currentDistance, goal.totalDistance)}%` }}></div>
                                 </div>
                             </div>
                         );
@@ -89,7 +88,7 @@ const HomePage = () => {
                         
                         <div>
                         <p className='font-bold opacity-80'>{t(`general.${activity.type}`)} - {new Date().toLocaleDateString()}</p>
-                        <p className='font-bold text-xl'>{activity.totalDistance} km</p>
+                        <p className='font-bold text-xl'>{(activity.totalDistance).toFixed(2)} km</p>
                         <p>{formatTime(activity.time)}</p>
                         </div>
                     </div>

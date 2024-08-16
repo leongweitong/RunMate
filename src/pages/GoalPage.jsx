@@ -4,6 +4,7 @@ import ModalCreateGoal from '../components/ModalCreateGoal'
 import { useTranslation } from "react-i18next";
 import { getGoalsByStatus } from '../indexedDBUtils';
 import { Link } from 'react-router-dom';
+import { calcGoalProgress } from '../utils/calcGoalProgress';
 
 const GoalPage = () => {
   const { t } = useTranslation();
@@ -58,9 +59,7 @@ const GoalPage = () => {
                   <div className="w-full bg-gray-200 h-3 rounded mb-2">
                     <div className="bg-primary h-3 rounded"
                       style={{
-                        width: `${goal.totalDistance > 0 ? 
-                          Number(((Number(goal.currentDistance) / Number(goal.totalDistance)) * 100).toFixed(0)) || 0 
-                          : 0}%`
+                        width: `${calcGoalProgress(goal.currentDistance, goal.totalDistance)}%`
                       }}
                     ></div>
                   </div>
