@@ -29,7 +29,9 @@
         "activity": "Activity",
         "running": "Running",
         "daily": "Daily",
-        "totalDistance": "Total distance"
+        "totalDistance": "Total distance",
+        "pace": "Pace",
+        "speed": "Speed"
     },
     "weather": {
         "visibility": "Visibility",

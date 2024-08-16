@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import { getGoalsByStatus } from '../indexedDBUtils';
 import { useIndexedDB } from "react-indexed-db-hook";
+import {formatTime} from '../utils/formatTime'
 
 const HomePage = () => {
     const { t } = useTranslation();
@@ -87,9 +88,9 @@ const HomePage = () => {
                         } 
                         
                         <div>
-                        <p className='font-bold opacity-80'>{activity.type} - {new Date().toLocaleDateString()}</p>
-                        <p className='font-bold text-xl'>{(activity.totalDistance / 1000).toFixed(2)} Km</p>
-                        <p>{activity.time}</p>
+                        <p className='font-bold opacity-80'>{t(`general.${activity.type}`)} - {new Date().toLocaleDateString()}</p>
+                        <p className='font-bold text-xl'>{(activity.totalDistance / 1000).toFixed(2)} km</p>
+                        <p>{formatTime(activity.time)}</p>
                         </div>
                     </div>
                     </Link>

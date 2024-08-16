@@ -35,7 +35,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
             const runningGoals = ongoingGoals.filter(goal => goal.type === 'running');
     
             // Update goals with new distance
-            runningGoals.forEach(goal => {
+            for (const goal of runningGoals) {
                 // Add the distance from the activity
                 goal.currentDistance += totalDistance;
     
@@ -44,11 +44,18 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
                     // If the goal is complete, update the status to '1' (completed)
                     goal.status = '1';
                 }
-
-                update({ id: goal.id, status: goal.status, currentDistance: goal.currentDistance, totalDistance: goal.totalDistance, endTime: goal.endTime, name: goal.name }).then((event) => {
-                    console.log(`Goal ${goal.name} updated!`);
-                  });
-            });
+    
+                // Update the goal in IndexedDB
+                await update({
+                    id: goal.id,
+                    status: goal.status,
+                    currentDistance: goal.currentDistance,
+                    totalDistance: goal.totalDistance,
+                    name: goal.name
+                });
+    
+                console.log(`Goal ${goal.name} updated!`);
+            }
     
         } catch (error) {
             console.error('Error updating ongoing goals:', error);
@@ -70,6 +77,13 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
             clearInterval(timerRef.current);
             navigate('/')
             return
+        }
+
+        if (totalDistance === 0) {
+            window.alert('Cannot save activity. Total distance must be greater than 0.');
+            clearInterval(timerRef.current);
+            navigate('/');
+            return;
         }
 
         const userConfirmed = window.confirm('Are you sure you want to store this activity?');

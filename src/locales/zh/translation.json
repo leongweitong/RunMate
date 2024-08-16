@@ -29,7 +29,9 @@
         "activity": "活动",
         "running": "跑步",
         "daily": "日常",
-        "totalDistance": "总距离"
+        "totalDistance": "总距离",
+        "pace": "步伐",
+        "speed": "速度"
     },
     "weather": {
         "visibility": "能见度",

@@ -53,26 +53,24 @@ const ActivityDetailsPage = () => {
 
       <div className="fixed bottom-10 left-0 w-full p-4">
           <div className="bg-white border border-black p-4 rounded-xl">
-              <div className="flex gap-4">
-                  <div className='flex items-center gap-2'>
-                    <BsAlarm />
-                    <div>{t("general.duration")}: <span className='font-bold'>{formatTime(activity.time)}</span></div>
-                  </div>
-                  <div className='flex items-center gap-2'>
-                    <BsGeoAlt />
-                    <div>
-                    {t("general.kilometers")}: <span className='font-bold'>{(activity.totalDistance / 1000).toFixed(2)} km</span>
-                    </div>
-                  </div>
-              </div>
-              <div className="flex gap-4">
-                  <div className='flex items-center gap-2'>
+                <div className='text-center mb-4 font-semibold text-2xl'>
+                  <div>{formatTime(activity.time)}</div>
+                </div>
+              <div className="flex justify-between gap-4">
+                  <div className='flex flex-col items-center justify-center gap-2'>
                     <FaShoePrints />
-                    <div>Pace: {pace.toFixed(2)} min/km</div>
+                    <div>{pace.toFixed(2)} min/km</div>
+                    <div>{t("general.pace")}</div>
                   </div>
-                  <div className='flex items-center gap-2'>
+                  <div className='flex flex-col items-center justify-center gap-2'>
+                    <BsGeoAlt />
+                    <div>{(activity.totalDistance / 1000).toFixed(2)} km</div>
+                    <div>{t("general.kilometers")}</div>
+                  </div>
+                  <div className='flex flex-col items-center justify-center gap-2'>
                     <BsSpeedometer  />
-                    <div>Speed: {speed.toFixed(2)} km/h</div>
+                    <div>{speed.toFixed(2)} km/h</div>
+                    <div>{t("general.speed")}</div>
                   </div>
               </div>
           </div>
