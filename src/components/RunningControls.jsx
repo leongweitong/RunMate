@@ -45,8 +45,8 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
                     goal.status = '1';
                 }
 
-                update({ id: goal.id, status: goal.status, currentDistance: goal.currentDistance, totalDistance: goal.totalDistance, endTime, name: goal.name }).then((event) => {
-                    console.log("Edited!");
+                update({ id: goal.id, status: goal.status, currentDistance: goal.currentDistance, totalDistance: goal.totalDistance, endTime: goal.endTime, name: goal.name }).then((event) => {
+                    console.log(`Goal ${goal.name} updated!`);
                   });
             });
     

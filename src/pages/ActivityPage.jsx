@@ -5,6 +5,7 @@ import { FaPersonRunning } from 'react-icons/fa6'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useIndexedDB  } from "react-indexed-db-hook";
+import {formatTime} from '../utils/formatTime'
 
 const ActivityPage = () => {
     const { getAll } = useIndexedDB("activity");
@@ -43,8 +44,8 @@ const ActivityPage = () => {
                         <div key={activity.id} className='border-b border-secondary py-2 mb-4'>
                             <div className='flex items-center justify-between'>
                                 <div>
-                                    <div className='text-lg font-semibold capitalize'>{activity.type} - {activity.time}</div>
-                                    <div className='text-sm text-gray-500'>{`Distance: ${activity.totalDistance} meters`}</div>
+                                    <div className='text-lg font-semibold capitalize'>{activity.type} - {formatTime(activity.time)}</div>
+                                    <div className='text-sm text-gray-500'>{`Distance: ${(activity.totalDistance / 1000).toFixed(2)} km`}</div>
                                 </div>
                                 <Link to={`/activity/${activity.id}`} className='text-primary text-xl'>
                                     <BsChevronRight />

@@ -61,7 +61,7 @@ const ActivityDetailsPage = () => {
                   <div className='flex items-center gap-2'>
                     <BsGeoAlt />
                     <div>
-                    {t("general.kilometers")}: <span className='font-bold'>{activity.totalDistance / 1000} km</span>
+                    {t("general.kilometers")}: <span className='font-bold'>{(activity.totalDistance / 1000).toFixed(2)} km</span>
                     </div>
                   </div>
               </div>
