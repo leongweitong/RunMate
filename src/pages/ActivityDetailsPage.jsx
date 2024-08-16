@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { MapContainer, TileLayer, Polyline } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useTranslation } from "react-i18next";
-import { BsArrowLeftShort, BsAlarm, BsSpeedometer, BsGeoAlt } from 'react-icons/bs';
+import { BsArrowLeftShort, BsAlarm, BsSpeedometer, BsGeoAltFill } from 'react-icons/bs';
 import { FaShoePrints } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import {formatTime} from '../utils/formatTime'
@@ -22,7 +22,7 @@ const ActivityDetailsPage = () => {
     });
   }, []);
 
-  if (!activity) return <div>Loading...</div>;
+  if (!activity) return <div className='text-center'>Loading...</div>;
 
   const totalMinutes = (activity.time / 1000) / 60;
   const totalHours = ((activity.time / 1000) / 60) / 60;
@@ -55,18 +55,18 @@ const ActivityDetailsPage = () => {
                 <div className='text-center mb-4 font-semibold text-2xl'>
                   <div>{formatTime(activity.time)}</div>
                 </div>
-              <div className="flex justify-between gap-4">
-                  <div className='flex flex-col items-center justify-center gap-2'>
+              <div className="flex justify-between gap-2">
+                  <div className='flex flex-col items-center justify-center gap-2 text-sm'>
                     <FaShoePrints />
                     <div>{pace.toFixed(2)} min/km</div>
                     <div>{t("general.pace")}</div>
                   </div>
-                  <div className='flex flex-col items-center justify-center gap-2'>
-                    <BsGeoAlt />
+                  <div className='flex flex-col items-center justify-center gap-2 text-sm'>
+                    <BsGeoAltFill />
                     <div>{activity.totalDistance} km</div>
                     <div>{t("general.kilometers")}</div>
                   </div>
-                  <div className='flex flex-col items-center justify-center gap-2'>
+                  <div className='flex flex-col items-center justify-center gap-2 text-sm'>
                     <BsSpeedometer  />
                     <div>{speed.toFixed(2)} km/h</div>
                     <div>{t("general.speed")}</div>
