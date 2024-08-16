@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react'
 import { useTranslation } from "react-i18next";
-import { BsTranslate, BsActivity, BsChevronRight } from 'react-icons/bs';
+import { BsTranslate, BsActivity, BsChevronRight, BsTrash } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import { useIndexedDB } from "react-indexed-db-hook";
 
 const MenuPage = () => {
+  const { clear } = useIndexedDB("activity");
   const { t, i18n } = useTranslation();
 
   const changeLanguage = (event) => {
@@ -11,6 +13,16 @@ const MenuPage = () => {
     i18n.changeLanguage(newLanguage);
     localStorage.setItem('language', newLanguage);
   };
+
+  const handleClear = () => {
+    const confirm = window.confirm(t('quote.clearActivity.confirmMessage'));
+
+    if(!confirm) return 
+
+    clear().then(() => {
+      alert(t('quote.clearActivity.successMessage'));
+    });
+  }
 
   return (
     <div>
@@ -39,6 +51,14 @@ const MenuPage = () => {
             <BsChevronRight className='text-xl' />
           </div>
         </Link>
+
+        <div className='flex items-center justify-between pb-4 border-b'>
+          <div className="flex items-center gap-4">
+            <BsTrash className='text-2xl' />
+            <div>{t("general.clear")}</div>
+          </div>
+          <button onClick={handleClear} className='outline-none border border-black rounded px-4'>{t("general.clearing-activities")}</button>
+        </div>
       </div>
     </div>
   )

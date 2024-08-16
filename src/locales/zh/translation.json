@@ -31,7 +31,15 @@
         "daily": "日常",
         "totalDistance": "总距离",
         "pace": "步伐",
-        "speed": "速度"
+        "speed": "速度",
+        "clear": "清除",
+        "clearing-activities": "清除活动数据"
+    },
+    "quote": {
+        "clearActivity": {
+            "confirmMessage": "您想清除所有活动吗？",
+            "successMessage": "所有活动已被清除！"
+        }
     },
     "weather": {
         "visibility": "能见度",

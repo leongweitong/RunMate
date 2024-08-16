@@ -31,7 +31,15 @@
         "daily": "Daily",
         "totalDistance": "Total distance",
         "pace": "Pace",
-        "speed": "Speed"
+        "speed": "Speed",
+        "clear": "Clear",
+        "clearing-activities": "Clearing Activities"
+    },
+    "quote": {
+        "clearActivity": {
+            "confirmMessage": "Do you want to clear all activities?",
+            "successMessage": "All activities have been cleared!"
+        }
     },
     "weather": {
         "visibility": "Visibility",
