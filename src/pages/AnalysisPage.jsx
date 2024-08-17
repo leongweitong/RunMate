@@ -38,7 +38,7 @@ const AnalysisPage = () => {
       const totalHours = ((item.totalTime / 1000) / 60) / 60;
       return {
         date: item.date,
-        speed: totalHours > 0 ? item.totalDistance / totalHours : 0
+        speed: (item.totalDistance / totalHours).toFixed(2)
       };
     });
   };
@@ -50,17 +50,15 @@ const AnalysisPage = () => {
       </div>
 
       <div className='px-4'>
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={data} margin={{ top: 0, right: 20, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            {/* Set the dataKey directly to "date" */}
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="speed" stroke="#ffc658" name={t("Speed (km/h)")}/>
-          </LineChart>
-        </ResponsiveContainer>
+        <div className='border border-primary rounded-xl p-4'>
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <Legend />
+              <Line type="monotone" dataKey="speed" stroke="#e63825f2" name={t("Speed (km/h)")}/>
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   )
