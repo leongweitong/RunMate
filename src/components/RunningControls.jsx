@@ -53,6 +53,9 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
     
                 console.log(`Goal ${goal.name} updated!`);
             }
+            
+            clearInterval(timerRef.current);
+            navigate('/');
     
         } catch (error) {
             console.error('Error updating ongoing goals:', error);
@@ -84,22 +87,19 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
             return;
         }
 
-        const userConfirmed = window.confirm('Are you sure you want to store this activity?');
+        const userConfirmed = window.confirm('Are you sure you want to end this activity?');
         if (userConfirmed && keepTrack) {
             const createTime = new Date().toISOString();
             add({type: 'running', time: elapsedTime, totalDistance: distance, path, createTime}).then(
                 (event) => {
                     console.log("Activity ID Generated: ", event);
-                    handleOnGoingGoals()
                 },
                 (error) => {
                     console.error("Error adding activity: ", error);
                 }
             );
+            handleOnGoingGoals()
         }
-
-        clearInterval(timerRef.current);
-        navigate('/', { replace: true });
     }
 
     return (
