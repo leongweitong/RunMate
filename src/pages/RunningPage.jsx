@@ -45,18 +45,19 @@ const RunningPage = () => {
                     setHeading(userDirection)
 
                     if(keepTrackRef.current) {
-                        const prevLatLng = L.latLng(prevPosition[0], prevPosition[1]);
-                        const currentLatLng = L.latLng(latitude, longitude);
-                        const distance = prevLatLng.distanceTo(currentLatLng); // Distance in meters
+                        // all unit have change to meters
+
+                        // const prevLatLng = L.latLng(prevPosition[0], prevPosition[1]);
+                        // const currentLatLng = L.latLng(latitude, longitude);
+                        // const distance = prevLatLng.distanceTo(currentLatLng);
 
                         const from = turf.point([prevPosition[0], prevPosition[1]]);
                         const to = turf.point([latitude, longitude]);
+                        const distance2 = turf.distance(from, to) * 1000;
 
-                        const distance2 = turf.distance(from, to) * 1000; // Distance in km
-
-                        const newDistance = distance > distance2 ? distance2 : distance
+                        // const newDistance = distance > distance2 ? distance2 : distance
     
-                        setTotalDistance((prevDistance) => prevDistance + newDistance);
+                        setTotalDistance((prevDistance) => prevDistance + distance2);
                         console.log('keep track user data')
                     }
                 }
@@ -141,7 +142,7 @@ const MapUpdater = ({ position }) => {
 
     useEffect(() => {
         if (position) {
-            map.flyTo(position, map.getZoom())
+            map.panTo(position, map.getZoom())
         }
     }, [position, map])
 
