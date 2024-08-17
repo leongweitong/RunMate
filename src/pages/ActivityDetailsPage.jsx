@@ -9,6 +9,7 @@ import { FaShoePrints } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import {formatTime} from '../utils/formatTime'
 import * as turf from "@turf/turf";
+import smooth from 'to-smooth';
 
 const ActivityDetailsPage = () => {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ const ActivityDetailsPage = () => {
   const totalHours = ((activity.time / 1000) / 60) / 60;
   const pace = totalMinutes / activity.totalDistance;
   const speed = activity.totalDistance / totalHours;
+  const smoothedPath = smooth(activity.path);
   
   return (
     <>
@@ -45,7 +47,7 @@ const ActivityDetailsPage = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
-        <Polyline pathOptions={{ color: 'red' }} positions={activity.path} />
+        <Polyline pathOptions={{ color: 'red' }} positions={smoothedPath} />
       </MapContainer>
 
       <div className='fixed top-0 left-0 p-4'>
