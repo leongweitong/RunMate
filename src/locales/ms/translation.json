@@ -1,0 +1,66 @@
+{
+    "analysis": "Analisis",
+    
+    "goal": "Matlamat",
+    "goal-details": "Butiran Matlamat",
+    "current-goals": "Matlamat Semasa",
+    "recent-activity": "Aktiviti Terkini",
+    "create-goal": "Cipta Matlamat",
+    "goal-name": "Nama Matlamat",
+    "on-going": "Sedang Berlangsung",
+    "completed": "Selesai",
+    "failed": "Gagal",
+    "end-time": "Masa Tamat",
+    
+    "menu": "Menu",
+    "languages": "Bahasa",
+    
+    "general": {
+        "create": "Cipta",
+        "start": "Mula",
+        "see-all": "Lihat Semua",
+        "today": "Hari Ini",
+        "duration": "Durasi",
+        "kilometers": "Kilometer",
+        "no-record": "Tiada Rekod",
+        "type": "Jenis",
+        "status": "Status",
+        "loading": "Memuatkan",
+        "activity": "Aktiviti",
+        "running": "Berlari",
+        "daily": "Harian",
+        "totalDistance": "Jumlah Jarak",
+        "pace": "Kadar",
+        "speed": "Kelajuan",
+        "clear": "Jelas",
+        "clearing-activities": "Mengosongkan Aktiviti"
+    },
+    
+    "quote": {
+        "clearActivity": {
+            "confirmMessage": "Adakah anda mahu mengosongkan semua aktiviti?",
+            "successMessage": "Semua aktiviti telah dikosongkan!"
+        }
+    },
+    
+    "weather": {
+        "visibility": "Penglihatan",
+        "wind": "Angin",
+        "humidity": "Kelembapan",
+        "clouds": "Awan",
+        "clear": "Cerah",
+        "mist": "Kabut",
+        "smoke": "Asap",
+        "haze": "Jerebu",
+        "dust": "Debu",
+        "fog": "Kabut Tebal",
+        "sand": "Pasir",
+        "ash": "Abu",
+        "squall": "Ribut",
+        "tornado": "Puting Beliung",
+        "snow": "Salji",
+        "rain": "Hujan",
+        "drizzle": "Renyai",
+        "thunderstorm": "Ribut Petir"
+    }
+}
