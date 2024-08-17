@@ -20,7 +20,8 @@
     "react-icons": "^5.2.1",
     "react-indexed-db-hook": "^1.0.14",
     "react-leaflet": "^4.2.1",
-    "react-spinners": "^0.14.1"
+    "react-spinners": "^0.14.1",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
