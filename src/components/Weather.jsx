@@ -119,7 +119,6 @@ const Weather = () => {
 
     return (
         <div className="bg-primary p-4 rounded-b-3xl h-60 mb-24">
-            test
             {loading && <div className='bg-white p-4 rounded-3xl shadow relative'>
                 <div className='absolute inset-0 flex items-center justify-center bg-opacity-75'>
                     <SyncLoader color={color} loading={loading} size={8} aria-label="Loading Spinner"/>
