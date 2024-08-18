@@ -19,29 +19,47 @@ const AnalysisPage = () => {
   }, []);
 
   const processActivities = (activities) => {
+    // Ensure we received valid activity data
+    if (!activities || activities.length === 0) {
+      console.warn("No activities found!");
+      return [];
+    }
+  
     const groupedData = activities.reduce((acc, activity) => {
-      const date = new Date(activity.create_time).toLocaleDateString();
-
+      const date = new Date(activity.createTime).toLocaleDateString();
+  
+      // Validate that totalDistance and time are numbers
+      const totalDistance = parseFloat(activity.totalDistance) || 0;
+      const time = parseFloat(activity.time) || 0;
+  
       if (!acc[date]) {
         acc[date] = { date, totalDistance: 0, totalTime: 0 };
       }
-
+  
       // Accumulate total distance and time for each date
-      acc[date].totalDistance += activity.totalDistance;
-      acc[date].totalTime += activity.time;
-
+      acc[date].totalDistance += totalDistance;
+      acc[date].totalTime += time;
+  
       return acc;
     }, {});
-
+  
     // Convert accumulated data to average speed
-    return Object.values(groupedData).map((item) => {
-      const totalHours = ((item.totalTime / 1000) / 60) / 60;
+    const result = Object.values(groupedData).map((item) => {
+      const totalHours = ((item.totalTime / 1000) / 60) / 60; // Convert milliseconds to hours
+  
+      // Avoid division by zero for speed calculation
+      const speed = totalHours > 0 ? (item.totalDistance / totalHours).toFixed(2) : 0;
+  
       return {
         date: item.date,
-        speed: (item.totalDistance / totalHours).toFixed(2)
+        speed: parseFloat(speed), // Convert to a float for chart display
       };
     });
-  };
+  
+    console.log("Processed Activity Data:", result);
+  
+    return result;
+  };  
 
   return (
     <div className='flex flex-col gap-4'>
