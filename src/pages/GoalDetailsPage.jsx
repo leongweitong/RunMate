@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useIndexedDB } from "react-indexed-db-hook";
-import { BsCalendar, BsFlag, BsArrowLeftShort, BsTrash } from 'react-icons/bs';
+import { BsCalendar, BsFlag, BsArrowLeftShort, BsTrash, BsCheck2 } from 'react-icons/bs';
 import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom';
 import { calcGoalProgress } from '../utils/calcGoalProgress';
-
 const GoalDetailsPage = () => {
     const navigate = useNavigate()
     const { id } = useParams();
-    const { getByID, deleteRecord } = useIndexedDB("goal");
+    const { getByID, deleteRecord, update } = useIndexedDB("goal");
     const [goal, setGoal] = useState(null);
     const { t } = useTranslation();
 
@@ -29,6 +28,27 @@ const GoalDetailsPage = () => {
 
     const handleGoBack = () => {
         navigate(-1);
+    }
+
+    const handleDailyTask = () => {
+        if(!goal || goal.type !== 'daily') return;
+
+        const newDistance = goal.currentDistance + 1;
+
+        const newStatus = newDistance >= goal.totalDistance ? '1' : '0';
+
+        const updatedGoal = {
+            ...goal,
+            currentDistance: newDistance,
+            status: newStatus,
+        };
+
+        update(updatedGoal).then(() => {
+            setGoal(updatedGoal);
+        }).catch((error) => {
+            console.error("Error updating goal:", error);
+            alert("Failed to update the goal. Please try again.");
+        });
     }
 
     useEffect(() => {
@@ -75,6 +95,21 @@ const GoalDetailsPage = () => {
                     <p className='text-center'>{t("general.loading")} ...</p>
                 )}
             </div>
+
+            {goal?.type === 'daily' && (<div className="px-4">
+                <div className='grid grid-cols-7 gap-4 rounded-lg shadow p-4'>
+                    {Array.from({ length: goal.totalDistance }).map((_, index) => (
+                        <div key={index} className={`w-6 h-6 mx-auto rounded flex items-center justify-center 
+                            ${index < goal.currentDistance ? 'bg-secondary' : 'bg-gray-200'}`}
+                        >
+                        {index < goal.currentDistance && <BsCheck2 className="text-primary text-xl" />}
+                        </div>
+                    ))}
+                </div>
+                {goal.currentDistance < goal.totalDistance &&(<div className='mt-8'>
+                    <button onClick={handleDailyTask} className='w-full bg-primary rounded text-white py-2'>Check In</button>
+                </div>)}
+            </div>)}
         </div>
     )
 }
