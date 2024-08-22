@@ -71,8 +71,46 @@ const RunningPage = () => {
         const onMapError = (error) => {
           console.error(error)
         }
-    
-        getMapLocation()
+
+        const startBackgroundTracking = () => {
+            if (window.cordova) {
+                BackgroundGeolocation.configure({
+                    locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+                    desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Ensures the highest accuracy
+                    stationaryRadius: 25, // Lower stationary radius for more frequent updates
+                    distanceFilter: 25, // Shorter distance filter for more location updates
+                    notificationTitle: 'Location tracking',
+                    notificationText: 'Enabled',
+                    debug: false, // Disables sound and visual notifications
+                    interval: 5000, // More frequent updates (every 5 seconds)
+                    fastestInterval: 3000, // Minimum interval between updates
+                    activitiesInterval: 5000, // More frequent activity updates
+                    stopOnTerminate: false, // Continue tracking after app termination
+                    startOnBoot: true, // Start tracking after device reboot
+                });                
+
+                BackgroundGeolocation.start();
+
+                BackgroundGeolocation.on('location', (location) => {
+                    onMapSuccess({ coords: location });
+                });
+            }
+            else getMapLocation()
+        };
+
+        const stopBackgroundTracking = () => {
+            if (window.cordova) {
+                BackgroundGeolocation.stop();
+            }
+        };
+
+        // Start background tracking
+        startBackgroundTracking();
+
+        // Clean up: stop tracking when the component is unmounted
+        return () => {
+            stopBackgroundTracking();
+        };
     }, [])
 
     useEffect(() => {
