@@ -6,11 +6,13 @@ import { useIndexedDB } from "react-indexed-db-hook";
 const ModalCreateGoal = ({setShowModal, refreshGoals}) => {
     const { t } = useTranslation();
     const [minDate, setMinDate] = useState("");
-
     const { add } = useIndexedDB("goal");
+
     const [name, setName] = useState('')
     const [totalDistance, setTotalDistance] = useState('')
+    const [totalDay, setTotalDay] = useState('');
     const [endTime, setEndTime] = useState('')
+    const [checkinTime, setCheckinTime] = useState('');
     const [type, setType] = useState('running')
     const [status, setStatus] = useState('0')
 
@@ -34,17 +36,33 @@ const ModalCreateGoal = ({setShowModal, refreshGoals}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        add({name, endTime, type, status, totalDistance, currentDistance: 0}).then(
+        const goalData = {
+            name,
+            type,
+            status
+        };
+
+        if (type === 'running') {
+            goalData.currentDistance = 0;
+            goalData.totalDistance = totalDistance;
+            goalData.endTime = endTime;
+        } else if (type === 'daily') {
+            goalData.currentDay = 0;
+            goalData.totalDay = totalDay;
+            goalData.checkinTime = checkinTime;
+        }
+
+        add(goalData).then(
             (event) => {
                 console.log("Goal ID Generated: ", event);
                 setShowModal(false);
-                refreshGoals()
+                refreshGoals();
             },
             (error) => {
                 console.error("Error adding goal: ", error);
             }
         );
-    }
+    };
 
     return (
         <div onClick={handleOverlayClick} className="Overlay">
@@ -69,19 +87,39 @@ const ModalCreateGoal = ({setShowModal, refreshGoals}) => {
                             placeholder='Running 10 km' required 
                         />
                     </div>
-                    <div className='flex flex-col mb-2'>
-                        <label htmlFor="totalDistance">{t("general.totalDistance")}</label>
-                        <input id='totalDistance' type="number" value={totalDistance} onChange={(e) => setTotalDistance(Number(e.target.value))} 
-                            className='w-full border border-primary rounded outline-none px-2 py-1' 
-                            placeholder='10' required 
-                        />
-                    </div>
-                    <div className='flex flex-col mb-2'>
-                        <label htmlFor="endTime">{t("end-time")}</label>
-                        <input id='endTime' type="date" value={endTime} onChange={(e) => setEndTime(e.target.value)} min={minDate} 
-                            className='w-full border border-primary rounded outline-none px-2 py-1' required 
-                        />
-                    </div>
+                    {type === 'running' ? (
+                            <>
+                                <div className='flex flex-col mb-2'>
+                                    <label htmlFor="totalDistance">{t("general.totalDistance")}</label>
+                                    <input id='totalDistance' type="number" value={totalDistance} onChange={(e) => setTotalDistance(Number(e.target.value))} 
+                                        className='w-full border border-primary rounded outline-none px-2 py-1' 
+                                        placeholder='10' required 
+                                    />
+                                </div>
+                                <div className='flex flex-col mb-2'>
+                                    <label htmlFor="endTime">{t("end-time")}</label>
+                                    <input id='endTime' type="date" value={endTime} onChange={(e) => setEndTime(e.target.value)} min={minDate} 
+                                        className='w-full border border-primary rounded outline-none px-2 py-1' required 
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className='flex flex-col mb-2'>
+                                    <label htmlFor="totalDay">{t("general.total-day")}</label>
+                                    <input id='totalDay' type="number" value={totalDay} onChange={(e) => setTotalDay(Number(e.target.value))} 
+                                        className='w-full border border-primary rounded outline-none px-2 py-1' 
+                                        placeholder='7' required 
+                                    />
+                                </div>
+                                <div className='flex flex-col mb-2'>
+                                    <label htmlFor="checkinTime">{t("general.checkin-time")}</label>
+                                    <input id='checkinTime' type="time" value={checkinTime} onChange={(e) => setCheckinTime(e.target.value)} 
+                                        className='w-full border border-primary rounded outline-none px-2 py-1' required 
+                                    />
+                                </div>
+                            </>
+                        )}
                     <div className='flex flex-col mt-6 mb-4'>
                         <button className='w-full bg-primary text-white py-1 rounded'>{t("general.create")}</button>
                     </div>
