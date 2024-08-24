@@ -33,7 +33,9 @@
         "pace": "Kadar",
         "speed": "Kelajuan",
         "clear": "Jelas",
-        "clearing-activities": "Mengosongkan Aktiviti"
+        "clearing-activities": "Mengosongkan Aktiviti",
+        "total-day": "Jumlah bilangan hari",
+        "checkin-time": "Masa pendaftaran"
     },
     
     "quote": {

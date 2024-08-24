@@ -33,7 +33,9 @@
         "pace": "Pace",
         "speed": "Speed",
         "clear": "Clear",
-        "clearing-activities": "Clearing Activities"
+        "clearing-activities": "Clearing Activities",
+        "total-day": "Total days",
+        "checkin-time": "Checkin time"
     },
     "quote": {
         "clearActivity": {

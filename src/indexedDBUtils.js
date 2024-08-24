@@ -1,6 +1,6 @@
 export const getGoalsByStatus = (status) => {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open('MyDB', 3); // Replace 'MyDB' with your database name and version
+      const request = indexedDB.open('MyDB', 4); // Replace 'MyDB' with your database name and version
       request.onsuccess = (event) => {
         const db = event.target.result;
         const transaction = db.transaction('goal', 'readonly');
