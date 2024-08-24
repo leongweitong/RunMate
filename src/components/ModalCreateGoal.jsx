@@ -50,6 +50,7 @@ const ModalCreateGoal = ({setShowModal, refreshGoals}) => {
             goalData.currentDay = 0;
             goalData.totalDay = totalDay;
             goalData.checkinTime = checkinTime;
+            goalData.lastCheckinDate = new Date().toISOString()
         }
 
         add(goalData).then(

@@ -7,10 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import { calcGoalProgress } from '../utils/calcGoalProgress';
 const GoalDetailsPage = () => {
     const navigate = useNavigate()
+    const { t } = useTranslation();
     const { id } = useParams();
     const { getByID, deleteRecord, update } = useIndexedDB("goal");
     const [goal, setGoal] = useState(null);
-    const { t } = useTranslation();
+    const [canCheckin, setCanCheckin] = useState(true);
 
     const handleDelete = () => {
         const userConfirmed = window.confirm("Are you sure you want to delete this goal?");
@@ -33,14 +34,15 @@ const GoalDetailsPage = () => {
     const handleDailyTask = () => {
         if(!goal || goal.type !== 'daily') return;
 
-        const newDistance = goal.currentDistance + 1;
+        const newDay = goal.currentDay + 1;
 
-        const newStatus = newDistance >= goal.totalDistance ? '1' : '0';
+        const newStatus = newDay >= goal.totalDay ? '1' : '0';
 
         const updatedGoal = {
             ...goal,
-            currentDistance: newDistance,
+            currentDay: newDay,
             status: newStatus,
+            lastCheckinDate: new Date().toISOString()
         };
 
         update(updatedGoal).then(() => {
@@ -54,6 +56,23 @@ const GoalDetailsPage = () => {
     useEffect(() => {
         getByID(Number(id)).then((goal) => {
             console.log(goal)
+            const progress = goal.type === 'running' 
+            ? calcGoalProgress(goal.currentDistance, goal.totalDistance)
+            : calcGoalProgress(goal.currentDay, goal.totalDay);
+            goal.progress = progress;
+
+            if (goal && goal.type === 'daily') {
+                const lastCheckinDate = new Date(goal.lastCheckinDate);
+                const today = new Date();
+                
+                today.setHours(0, 0, 0, 0); // Set time to 00:00:00 for comparison
+          
+                if (lastCheckinDate >= today) {
+                  setCanCheckin(false); // Checked in today
+                } else {
+                  setCanCheckin(true); // Checked in yesterday or earlier
+                }
+            }
             setGoal(goal);
         });
     }, []);
@@ -78,7 +97,7 @@ const GoalDetailsPage = () => {
                             </div>
                             <div className="w-full bg-gray-200 h-3 rounded mb-2">
                                 <div className="bg-primary h-3 rounded"
-                                    style={{width: `${calcGoalProgress(goal.currentDistance, goal.totalDistance)}%`}}
+                                    style={{width: `${goal.progress}%`}}
                                 ></div>
                             </div>
                             <div className='flex justify-between'>
@@ -86,10 +105,15 @@ const GoalDetailsPage = () => {
                                 <div>{goal.totalDistance}</div>
                             </div>
                         </div>
-                        <div className="px-4 py-2 border-t flex items-center gap-2">
+                        {goal.type === 'running' ? 
+                        (<div className="px-4 py-2 border-t flex items-center gap-2">
                             <BsCalendar className="opacity-70" />
                             <span>{t("end-time")} - {goal.endTime}</span>
-                        </div>
+                        </div>) : 
+                        (<div className="px-4 py-2 border-t flex items-center gap-2">
+                            <BsCalendar className="opacity-70" />
+                            <span>{t("general.checkin-time")} - {goal.checkinTime}</span>
+                        </div>)}
                     </div>
                 ) : (
                     <p className='text-center'>{t("general.loading")} ...</p>
@@ -98,15 +122,15 @@ const GoalDetailsPage = () => {
 
             {goal?.type === 'daily' && (<div className="px-4">
                 <div className='grid grid-cols-7 gap-4 rounded-lg shadow p-4'>
-                    {Array.from({ length: goal.totalDistance }).map((_, index) => (
+                    {Array.from({ length: goal.totalDay }).map((_, index) => (
                         <div key={index} className={`w-6 h-6 mx-auto rounded flex items-center justify-center 
-                            ${index < goal.currentDistance ? 'bg-secondary' : 'bg-gray-200'}`}
+                            ${index < goal.currentDay ? 'bg-secondary' : 'bg-gray-200'}`}
                         >
-                        {index < goal.currentDistance && <BsCheck2 className="text-primary text-xl" />}
+                        {index < goal.currentDay && <BsCheck2 className="text-primary text-xl" />}
                         </div>
                     ))}
                 </div>
-                {goal.currentDistance < goal.totalDistance &&(<div className='mt-8'>
+                {canCheckin && goal.currentDay < goal.totalDay &&(<div className='mt-8'>
                     <button onClick={handleDailyTask} className='w-full bg-primary rounded text-white py-2'>Check In</button>
                 </div>)}
             </div>)}

@@ -48,8 +48,12 @@ const GoalPage = () => {
 
       <div className="px-4">
         {goals && goals.length > 0 ? (
-          goals.map((goal) => (
-            <div key={goal.id} className="bg-white rounded-lg shadow mb-4">
+          goals.map((goal) => {
+            const progress = goal.type === 'running' 
+            ? calcGoalProgress(goal.currentDistance, goal.totalDistance)
+            : calcGoalProgress(goal.currentDay, goal.totalDay);
+
+            return (<div key={goal.id} className="bg-white rounded-lg shadow mb-4">
               <Link to={`${goal.id}`}>
                 <div className="px-4 py-2">
                   <div className="flex items-center justify-between mb-2">
@@ -59,18 +63,23 @@ const GoalPage = () => {
                   <div className="w-full bg-gray-200 h-3 rounded mb-2">
                     <div className="bg-primary h-3 rounded"
                       style={{
-                        width: `${calcGoalProgress(goal.currentDistance, goal.totalDistance)}%`
+                        width: `${progress}%`
                       }}
                     ></div>
                   </div>
                 </div>
               </Link>
-              <div className="px-4 py-2 border-t flex items-center gap-2">
+              {goal.type === 'running' ? 
+              (<div className="px-4 py-2 border-t flex items-center gap-2">
                 <BsCalendar className="opacity-70" />
                 <span>{t("end-time")} - {goal.endTime}</span>
-              </div>
-            </div>
-          ))
+              </div>) : 
+              (<div className="px-4 py-2 border-t flex items-center gap-2">
+                <BsCalendar className="opacity-70" />
+                <span>{t("general.checkin-time")} - {goal.checkinTime}</span>
+              </div>)}
+            </div>)
+          })
         ) : (
           <p className='text-center'>{t("general.no-record")}</p> // Display message if no goals
         )}
