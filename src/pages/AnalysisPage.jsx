@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { AreaChart, LineChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useIndexedDB } from "react-indexed-db-hook";
 
 const AnalysisPage = () => {
@@ -70,12 +70,18 @@ const AnalysisPage = () => {
       <div className='px-4'>
         <div className='border border-primary rounded-xl p-4'>
           <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <Legend />
-              <Line type="monotone" dataKey="speed" stroke="#e63825f2" name={t("Speed (km/h)")}/>
-            </LineChart>
-          </ResponsiveContainer>
+              <AreaChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorSpeed" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#e63825f2" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#e63825f2" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip />
+                <Area type="monotone" dataKey="speed" stroke="#e63825f2" fillOpacity={1} fill="url(#colorSpeed)" />
+              </AreaChart>
+            </ResponsiveContainer>
         </div>
       </div>
     </div>
