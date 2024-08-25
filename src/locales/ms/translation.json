@@ -14,6 +14,12 @@
     
     "menu": "Menu",
     "languages": "Bahasa",
+
+    "time-spent-running": "Masa Berlari",
+    "time-spent-running-hour": "Masa berlari (jam)",
+    "speed-analysis": "Analisis Kelajuan",
+    "speed-analysis-hour": "Kelajuan (km/j)",
+
     
     "general": {
         "create": "Cipta",

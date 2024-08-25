@@ -15,6 +15,11 @@
     "menu": "Menu",
     "languages": "Languages",
 
+    "time-spent-running": "Time Spent Running",
+    "time-spent-running-hour": "Time spent running (hours)",
+    "speed-analysis": "Speed Analysis",
+    "speed-analysis-hour": "Speed (km/h)",
+
     "general": {
         "create": "Create",
         "start": "Start",

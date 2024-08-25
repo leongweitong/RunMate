@@ -15,6 +15,12 @@
     "menu": "菜单",
     "languages": "语言",
 
+    "time-spent-running": "跑步时长",
+    "time-spent-running-hour": "跑步时长（小时）",
+    "speed-analysis": "速度分析",
+    "speed-analysis-hour": "速度（公里/小时）",
+
+
     "general": {
         "create": "创建",
         "start": "开始",
