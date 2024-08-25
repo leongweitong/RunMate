@@ -34,6 +34,8 @@ const GoalDetailsPage = () => {
     const handleDailyTask = () => {
         if(!goal || goal.type !== 'daily') return;
 
+        setCanCheckin(false)
+
         const newDay = goal.currentDay + 1;
 
         const newStatus = newDay >= goal.totalDay ? '1' : '0';
@@ -62,17 +64,34 @@ const GoalDetailsPage = () => {
             goal.progress = progress;
 
             if (goal && goal.type === 'daily') {
-                const lastCheckinDate = new Date(goal.lastCheckinDate);
+                const lastCheckinDate = new Date(goal.lastCheckinDate); // This is in ISO format
                 const today = new Date();
                 
                 today.setHours(0, 0, 0, 0); // Set time to 00:00:00 for comparison
-          
-                if (lastCheckinDate >= today) {
-                  setCanCheckin(false); // Checked in today
-                } else {
-                  setCanCheckin(true); // Checked in yesterday or earlier
+                
+                // Parse goal's checkin time and set the check-in period
+                const [checkinHour, checkinMinute] = goal.checkinTime.split(':').map(Number);
+                const checkinStartTime = new Date(today);
+                checkinStartTime.setHours(checkinHour, checkinMinute, 0, 0);
+                
+                const checkinEndTime = new Date(checkinStartTime);
+                checkinEndTime.setMinutes(checkinEndTime.getMinutes() + 10); // 10-minute window
+                
+                const currentTime = new Date(); // Current time for comparison
+            
+                // Convert lastCheckinDate to local time by comparing the day, not just the date
+                const lastCheckinLocal = new Date(lastCheckinDate.setHours(0, 0, 0, 0));
+            
+                if (lastCheckinLocal.getTime() === today.getTime()) {
+                    setCanCheckin(false); // Already checked in today
+                } 
+                if(currentTime.getTime() >= checkinStartTime.getTime() && currentTime.getTime() <= checkinEndTime.getTime()) {
+                    setCanCheckin(true);
                 }
-            }
+                else {
+                    setCanCheckin(false);
+                }
+            }            
             setGoal(goal);
         });
     }, []);
