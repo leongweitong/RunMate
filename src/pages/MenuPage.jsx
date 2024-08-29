@@ -36,7 +36,7 @@ const MenuPage = () => {
             <BsTranslate className='text-2xl' />
             <div>{t("languages")}</div>
           </div>
-          <select onChange={changeLanguage} value={i18n.language} name="language" id="language" className='outline-none border border-black rounded px-4'>
+          <select onChange={changeLanguage} value={i18n.language} name="language" id="language" className='outline-none border border-black bg-white rounded px-4'>
             <option value="zh">中文</option>
             <option value="en">English</option>
             <option value="ms">Melayu</option>

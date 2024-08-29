@@ -42,15 +42,15 @@ const ActivityPage = () => {
                 {activities && activities.length > 0 ? (
                     activities.map((activity) => (
                         <div key={activity.id} className='border-b border-secondary py-2 mb-4'>
-                            <div className='flex items-center justify-between'>
-                                <div>
-                                    <div className='text-lg font-semibold capitalize'>{activity.type} - {formatTime(activity.time)}</div>
-                                    <div className='text-sm text-gray-500'>{`Distance: ${activity.totalDistance} km`}</div>
+                            <Link to={`/activity/${activity.id}`}>
+                                <div className='flex items-center justify-between'>
+                                    <div>
+                                        <div className='text-lg font-semibold capitalize'>{activity.type} - {formatTime(activity.time)}</div>
+                                        <div className='text-sm text-gray-500'>{`Distance: ${activity.totalDistance} km`}</div>
+                                    </div>
+                                    <BsChevronRight className='text-primary text-xl' />
                                 </div>
-                                <Link to={`/activity/${activity.id}`} className='text-primary text-xl'>
-                                    <BsChevronRight />
-                                </Link>
-                            </div>
+                            </Link>
                         </div>
                     ))
                 ) : (
