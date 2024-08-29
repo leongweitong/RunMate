@@ -9,11 +9,20 @@ import { useIndexedDB } from "react-indexed-db-hook";
 import {formatTime} from '../utils/formatTime'
 import { calcGoalProgress } from '../utils/calcGoalProgress'
 
+const getOnLineStatus = () =>
+    typeof navigator !== 'undefined' && typeof navigator.onLine === 'boolean'
+        ? navigator.onLine
+        : true;
+
 const HomePage = () => {
     const { t } = useTranslation();
     const [goals, setGoals] = useState(null)
     const [activities, setActivities] = useState(null)
     const { getAll } = useIndexedDB("activity");
+    const [status, setStatus] = useState(getOnLineStatus());
+
+    const setOnline = () => setStatus(true);
+    const setOffline = () => setStatus(false);
 
     const fetchGoals = async () => {
         try {
@@ -33,13 +42,25 @@ const HomePage = () => {
     useEffect(() => {
         fetchGoals()
         fetchActivities()
+
+        window.addEventListener('online', setOnline);
+        window.addEventListener('offline', setOffline);
+
+        return () => {
+            window.removeEventListener('online', setOnline);
+            window.removeEventListener('offline', setOffline);
+        };
     }, []);
 
     return (
         <div>
-            <Weather />
-            <MotivationQuote />
-
+            {
+                status && (<>
+                    <Weather /> 
+                    <MotivationQuote />
+                </>)
+            }
+            
             <div className='mt-6 px-4'>
                 <Link to="/running" className='w-full bg-primary text-white py-3 rounded-lg flex items-center justify-center text-lg'>
                     <BsPlayFill className='text-2xl mr-2' /> {t("general.start")}
