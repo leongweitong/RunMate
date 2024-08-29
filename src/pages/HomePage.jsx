@@ -58,7 +58,12 @@ const HomePage = () => {
                         <div key={goal.id} className='bg-white rounded-lg shadow p-4 mb-2'>
                             <p className='mb-1 font-bold opacity-80'>{goal.name}</p>
                             <div className='w-full bg-gray-200 h-3 rounded'>
-                                <div className='bg-primary h-3 rounded' style={{ width: `${calcGoalProgress(goal.currentDistance, goal.totalDistance)}%` }}></div>
+                                {
+                                    goal.type === 'running' ?
+                                    <div className='bg-primary h-3 rounded' style={{ width: `${calcGoalProgress(goal.currentDistance, goal.totalDistance)}%` }}></div>
+                                    :
+                                    <div className='bg-primary h-3 rounded' style={{ width: `${calcGoalProgress(goal.currentDay, goal.totalDay)}%` }}></div>
+                                }
                             </div>
                         </div>
                         )

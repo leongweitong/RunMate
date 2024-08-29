@@ -85,7 +85,7 @@ const GoalDetailsPage = () => {
                 if (lastCheckinLocal.getTime() === today.getTime()) {
                     setCanCheckin(false); // Already checked in today
                 } 
-                if(currentTime.getTime() >= checkinStartTime.getTime() && currentTime.getTime() <= checkinEndTime.getTime()) {
+                else if(currentTime.getTime() >= checkinStartTime.getTime() && currentTime.getTime() <= checkinEndTime.getTime()) {
                     setCanCheckin(true);
                 }
                 else {
