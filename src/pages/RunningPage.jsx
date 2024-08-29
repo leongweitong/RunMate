@@ -7,7 +7,7 @@ import 'leaflet-rotatedmarker';
 import RunningControls from '../components/RunningControls'
 import * as turf from "@turf/turf";
 
-const RunningPage = () => {
+const RunningPage = (color='rgba(230, 56, 37, 0.95)') => {
     const myIcon = new L.Icon({
         iconSize: [20,20],
         iconUrl: 'arrow-marker.png',
@@ -18,7 +18,6 @@ const RunningPage = () => {
     })
 
     const [loading, setLoading] = useState(true)
-    const [color, setColor] = useState('rgba(230, 56, 37, 0.95)')
     const [position, setPosition] = useState(null)
     const [heading, setHeading] = useState(0)
     const [prevPosition, setPrevPosition] = useState(null)
@@ -36,37 +35,39 @@ const RunningPage = () => {
         }
     
         const onMapSuccess = (pos) => {
-            const { latitude, longitude } = pos.coords
-            const newPosition = [latitude, longitude]
+            const { latitude, longitude, speed } = pos.coords;
+            const newPosition = [latitude, longitude];
         
             setPrevPosition((prevPosition) => {
                 if (prevPosition) {
-                    const userDirection = getCurrentDirection(prevPosition[0], prevPosition[1], latitude, longitude)
-                    setHeading(userDirection)
-
-                    if(keepTrackRef.current) {
-                        // all unit have change to meters
-
-                        // const prevLatLng = L.latLng(prevPosition[0], prevPosition[1]);
-                        // const currentLatLng = L.latLng(latitude, longitude);
-                        // const distance = prevLatLng.distanceTo(currentLatLng);
-
-                        const from = turf.point([prevPosition[0], prevPosition[1]]);
-                        const to = turf.point([latitude, longitude]);
-                        const distance2 = turf.distance(from, to) * 1000;
-
-                        // const newDistance = distance > distance2 ? distance2 : distance
-    
+                    const userDirection = getCurrentDirection(prevPosition[0], prevPosition[1], latitude, longitude);
+                    setHeading(userDirection);
+        
+                    const from = turf.point([prevPosition[0], prevPosition[1]]);
+                    const to = turf.point([latitude, longitude]);
+                    const distance2 = turf.distance(from, to) * 1000; // Distance in meters
+        
+                    const calculatedSpeed = distance2 / ((pos.timestamp - prevPosition.timestamp) / 1000); // m/s
+                    const realisticSpeedThreshold = 10; // Example threshold, 10 m/s (36 km/h)
+        
+                    // Ignore location updates with unrealistic distance jumps or speed
+                    if (distance2 > 50 && calculatedSpeed > realisticSpeedThreshold) { 
+                        console.warn("Ignoring inaccurate location update");
+                        return prevPosition;
+                    }
+        
+                    if (keepTrackRef.current) {
                         setTotalDistance((prevDistance) => prevDistance + distance2);
-                        console.log('keep track user data')
+                        console.log('keep track user data');
                     }
                 }
-                return newPosition
-            })
-            setPosition(newPosition)
+                return { ...newPosition, timestamp: pos.timestamp }; // Keep track of timestamp
+            });
+        
+            setPosition(newPosition);
             keepTrackRef.current && setPath((prevPath) => [...prevPath, newPosition]);
-            setLoading(false)
-        }
+            setLoading(false);
+        };
     
         const onMapError = (error) => {
           console.error(error)
@@ -79,7 +80,7 @@ const RunningPage = () => {
                     desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Ensures the highest accuracy
                     stationaryRadius: 25, // Lower stationary radius for more frequent updates
                     distanceFilter: 25, // Shorter distance filter for more location updates
-                    notificationTitle: 'Location tracking',
+                    notificationTitle: 'Location Tracking',
                     notificationText: 'Enabled',
                     debug: false, // Disables sound and visual notifications
                     interval: 5000, // More frequent updates (every 5 seconds)
