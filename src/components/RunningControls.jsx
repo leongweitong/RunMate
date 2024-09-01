@@ -16,6 +16,32 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
     const distance = Number((totalDistance / 1000).toFixed(2))
 
     useEffect(() => {
+        if (window.cordova) {
+            cordova.plugins.backgroundMode.enable();
+            cordova.plugins.backgroundMode.setDefaults({ silent: true });
+    
+            cordova.plugins.backgroundMode.on('activate', () => {
+                cordova.plugins.backgroundMode.disableWebViewOptimizations();
+                // cordova.plugins.backgroundMode.setDefaults({
+                //     title: "RunMate",
+                //     text: "Tracking your run in the background",
+                //     icon: 'icon',
+                // });
+            });
+    
+            cordova.plugins.backgroundMode.on('failure', () => {
+                window.alert('Please avoid locking the screen as this might cause issues with tracking.');
+            });
+        }
+    
+        return () => {
+            if (window.cordova) {
+                cordova.plugins.backgroundMode.disable();
+            }
+        };
+    }, []);
+
+    useEffect(() => {
         if (keepTrack) {
             timerRef.current = setInterval(() => {
                 setElapsedTime((prevTime) => prevTime + 1000);
