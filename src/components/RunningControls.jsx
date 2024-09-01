@@ -18,14 +18,15 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path}
     useEffect(() => {
         if (window.cordova) {
             cordova.plugins.backgroundMode.enable();
+            cordova.plugins.backgroundMode.setDefaults({ silent: true });
     
             cordova.plugins.backgroundMode.on('activate', () => {
                 cordova.plugins.backgroundMode.disableWebViewOptimizations();
-                cordova.plugins.backgroundMode.setDefaults({
-                    title: "RunMate",
-                    text: "Tracking your run in the background",
-                    icon: 'icon',
-                });
+                // cordova.plugins.backgroundMode.setDefaults({
+                //     title: "RunMate",
+                //     text: "Tracking your run in the background",
+                //     icon: 'icon',
+                // });
             });
     
             cordova.plugins.backgroundMode.on('failure', () => {

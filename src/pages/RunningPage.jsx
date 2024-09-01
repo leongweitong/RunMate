@@ -7,7 +7,7 @@ import 'leaflet-rotatedmarker';
 import RunningControls from '../components/RunningControls'
 import * as turf from "@turf/turf";
 
-const RunningPage = (color='rgba(230, 56, 37, 0.95)') => {
+const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
     const myIcon = new L.Icon({
         iconSize: [20,20],
         iconUrl: 'arrow-marker.png',
@@ -78,16 +78,20 @@ const RunningPage = (color='rgba(230, 56, 37, 0.95)') => {
                 BackgroundGeolocation.configure({
                     locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
                     desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Ensures the highest accuracy
-                    stationaryRadius: 25, // Lower stationary radius for more frequent updates
-                    distanceFilter: 25, // Shorter distance filter for more location updates
-                    notificationTitle: 'Location Tracking',
-                    notificationText: 'Enabled',
+                    stationaryRadius: 10, // Lower stationary radius for more frequent updates
+                    distanceFilter: 10, // Shorter distance filter for more location updates
+                    notificationTitle: 'Location tracking',
+                    notificationText: 'Track your runs in the background',
                     debug: false, // Disables sound and visual notifications
-                    interval: 5000, // More frequent updates (every 5 seconds)
-                    fastestInterval: 3000, // Minimum interval between updates
-                    activitiesInterval: 5000, // More frequent activity updates
+                    interval: 1000, // More frequent updates (every 5 seconds)
+                    fastestInterval: 500, // Minimum interval between updates
+                    activitiesInterval: 1000, // More frequent activity updates
                     stopOnTerminate: false, // Continue tracking after app termination
                     startOnBoot: true, // Start tracking after device reboot
+
+                    // ios
+                    activityType: BackgroundGeolocation.ACTIVITY_TYPE_FITNESS,
+                    saveBatteryOnBackground: false,
                 });                
 
                 BackgroundGeolocation.start();

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useIndexedDB  } from "react-indexed-db-hook";
 import { useParams } from 'react-router-dom';
-import { MapContainer, TileLayer, Polyline } from 'react-leaflet'
+import { MapContainer, TileLayer, Polyline, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useTranslation } from "react-i18next";
 import { BsArrowLeftShort, BsAlarm, BsSpeedometer, BsGeoAltFill } from 'react-icons/bs';
@@ -17,13 +17,10 @@ const ActivityDetailsPage = () => {
   const { getByID } = useIndexedDB("activity");
   const [activity, setActivity] = useState(null)
   const navigate = useNavigate()
-  const [centerPosition, setCenterPosition] = useState(null)
 
   useEffect(() => {
     getByID(Number(id)).then((activity) => {
       setActivity(activity);
-      const res = turf.center(turf.points(activity.path))
-      setCenterPosition(res.geometry.coordinates)
     });
   }, []);
 
@@ -37,17 +34,13 @@ const ActivityDetailsPage = () => {
   
   return (
     <>
-      <MapContainer 
-        center={centerPosition} 
-        zoom={17} 
-        zoomControl={false} 
-        scrollWheelZoom={false} 
-      >
+      <MapContainer zoomControl={false} scrollWheelZoom={false} >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
         <Polyline pathOptions={{ color: 'red' }} positions={smoothedPath} />
+        <FitBounds path={activity.path} />
       </MapContainer>
 
       <div className='fixed top-0 left-0 p-4'>
@@ -82,6 +75,23 @@ const ActivityDetailsPage = () => {
       </div>
     </>
   );
+}
+
+const FitBounds = ({ path }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (path && path.length > 0) {
+      const boundingBox = turf.bbox(turf.lineString(path));
+      console.log(boundingBox)
+      map.fitBounds([
+        [boundingBox[0], boundingBox[1]],
+        [boundingBox[2], boundingBox[3]]
+      ]);
+    }
+  }, [map, path]);
+
+  return null;
 }
 
 export default ActivityDetailsPage
