@@ -24,6 +24,7 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
     const [path, setPath] = useState([]);
     const [totalDistance, setTotalDistance] = useState(0);
     const [keepTrack, setKeepTrack] = useState(false);
+    const [coords, setCoords] = useState([]);
     const keepTrackRef = useRef(keepTrack);
 
     useEffect(() => {
@@ -66,6 +67,17 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
         
             setPosition(newPosition);
             keepTrackRef.current && setPath((prevPath) => [...prevPath, newPosition]);
+            const newCoords = {
+                accuracy: pos.coords.accuracy,
+                altitude: pos.coords.altitude,
+                altitudeAccuracy: pos.coords.altitudeAccuracy,
+                heading: pos.coords.heading,
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude,
+                speed: pos.coords.speed,
+                timestamp: pos.timestamp
+            }
+            keepTrackRef.current && setCoords((coords) => [...coords, newCoords]);
             setLoading(false);
         };
     
@@ -159,7 +171,7 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
                 <MapUpdater position={position} />
             </MapContainer>
 
-            <RunningControls keepTrack={keepTrack} handleChangeKeepTrack={handleChangeKeepTrack} totalDistance={totalDistance} path={path} />
+            <RunningControls keepTrack={keepTrack} handleChangeKeepTrack={handleChangeKeepTrack} totalDistance={totalDistance} path={path} coords={coords} />
         </>)
     )
 }

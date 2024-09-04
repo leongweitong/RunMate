@@ -26,6 +26,17 @@ const ActivityPage = () => {
         <div className='text-center'>{t("general.loading")}</div>;
     }
 
+    const formatDate = (time) => {
+        const date = new Date(time);
+
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const hours = String(date.getUTCHours()).padStart(2, '0');
+        const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+        return `${month}/${day} ${hours}:${minutes}`;
+    }
+
     return (
         <div className='flex flex-col gap-4'>
             <div className="border-b border-secondary px-4 py-3">
@@ -40,13 +51,14 @@ const ActivityPage = () => {
 
             <div className='px-4'>
                 {activities && activities.length > 0 ? (
-                    activities.map((activity) => (
-                        <div key={activity.id} className='border-b border-secondary py-2 mb-4'>
-                            <Link to={`/activity/${activity.id}`}>
-                                <div className='flex items-center justify-between'>
+                    activities.map((activity, index) => (
+                        <div key={activity.id} className='border border-secondary rounded-md p-2 mb-4'>
+                            <Link to={`/activity/${activity.id}`} className='flex items-center gap-2'>
+                                <div className="flex items-center justify-center">{index+1}.</div>
+                                <div className='flex flex-1 items-center justify-between'>
                                     <div>
                                         <div className='text-lg font-semibold capitalize'>{activity.type} - {formatTime(activity.time)}</div>
-                                        <div className='text-sm text-gray-500'>{`Distance: ${activity.totalDistance} km`}</div>
+                                        <div className='text-sm text-gray-500'>{`Distance: ${activity.totalDistance} km`} {formatDate(activity.createTime)}</div>
                                     </div>
                                     <BsChevronRight className='text-primary text-xl' />
                                 </div>

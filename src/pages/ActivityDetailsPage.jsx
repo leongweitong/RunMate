@@ -9,7 +9,6 @@ import { FaShoePrints } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import {formatTime} from '../utils/formatTime'
 import * as turf from "@turf/turf";
-import smooth from 'to-smooth';
 
 const ActivityDetailsPage = () => {
   const { t } = useTranslation();
@@ -30,7 +29,27 @@ const ActivityDetailsPage = () => {
   const totalHours = ((activity.time / 1000) / 60) / 60;
   const pace = totalMinutes / activity.totalDistance;
   const speed = activity.totalDistance / totalHours;
-  const smoothedPath = smooth(activity.path);
+
+  const KalmanFilter = window.kalmanFilter.KalmanFilter;
+
+  const kFilter = new KalmanFilter({
+    observation: {
+      sensorDimension: 2,
+      sensorCovariance: 1000000, // Lowered for more reliance on GPS data, but adjust as needed
+      name: 'sensor'
+    },
+    dynamic: {
+      init: {
+        mean: activity.path[0].concat([0, 0]).map(a => [a]),
+        covariance: [[10, 0, 0, 0], [0, 10, 0, 0], [0, 0, 10, 0], [0, 0, 0, 10]], // Adjusted for more initial uncertainty
+      },
+      name: 'constant-speed',
+      covariance: [0.1, 0.1, 0.1, 0.1] // Adjusted for smoother tracking
+    }
+  });
+
+  const filteredResults = kFilter.filterAll(activity.path);
+  const latLngArray = filteredResults.map(result => [result[0], result[1]]);
   
   return (
     <>
@@ -39,7 +58,7 @@ const ActivityDetailsPage = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
-        <Polyline pathOptions={{ color: 'red' }} positions={smoothedPath} />
+        <Polyline pathOptions={{ color: 'red' }} positions={latLngArray} />
         <FitBounds path={activity.path} />
       </MapContainer>
 
@@ -83,7 +102,6 @@ const FitBounds = ({ path }) => {
   useEffect(() => {
     if (path && path.length > 0) {
       const boundingBox = turf.bbox(turf.lineString(path));
-      console.log(boundingBox)
       map.fitBounds([
         [boundingBox[0], boundingBox[1]],
         [boundingBox[2], boundingBox[3]]
