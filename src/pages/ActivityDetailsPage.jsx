@@ -32,23 +32,32 @@ const ActivityDetailsPage = () => {
 
   const KalmanFilter = window.kalmanFilter.KalmanFilter;
 
+  const data = activity.path.map((res, i) => [...res, activity.coords[i].accuracy])
+
   const kFilter = new KalmanFilter({
     observation: {
-      sensorDimension: 2,
-      sensorCovariance: 1000000, // Lowered for more reliance on GPS data, but adjust as needed
+      sensorDimension: 3,
+      sensorCovariance: 250000,
       name: 'sensor'
     },
     dynamic: {
       init: {
-        mean: activity.path[0].concat([0, 0]).map(a => [a]),
-        covariance: [[10, 0, 0, 0], [0, 10, 0, 0], [0, 0, 10, 0], [0, 0, 0, 10]], // Adjusted for more initial uncertainty
+        mean: data[0].concat([0, 0, 0]).map(a => [a]),
+        covariance: [
+          [1, 0, 0, 0, 0, 0], 
+          [0, 1, 0, 0, 0, 0], 
+          [0, 0, 1, 0, 0, 0], 
+          [0, 0, 0, 1, 0, 0],
+          [0, 0, 0, 0, 1, 0],
+          [0, 0, 0, 0, 0, 1],
+        ],
       },
       name: 'constant-speed',
-      covariance: [0.1, 0.1, 0.1, 0.1] // Adjusted for smoother tracking
+      covariance: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
     }
   });
 
-  const filteredResults = kFilter.filterAll(activity.path);
+  const filteredResults = kFilter.filterAll(data);
   const latLngArray = filteredResults.map(result => [result[0], result[1]]);
   
   return (
@@ -58,7 +67,7 @@ const ActivityDetailsPage = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
-        <Polyline pathOptions={{ color: 'red' }} positions={latLngArray} />
+        <Polyline pathOptions={{ color: 'red', weight: 5 }} positions={latLngArray} />
         <FitBounds path={activity.path} />
       </MapContainer>
 
