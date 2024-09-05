@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import { useTranslation } from "react-i18next";
-import { BsTranslate, BsActivity, BsChevronRight, BsTrash } from 'react-icons/bs';
+import { BsTranslate, BsActivity, BsChevronRight, BsTrash, BsShieldCheck } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { useIndexedDB } from "react-indexed-db-hook";
 
@@ -23,6 +23,14 @@ const MenuPage = () => {
       alert(t('quote.clearActivity.successMessage'));
     });
   }
+
+  const openPrivacyPolicy = () => {
+    if (window.cordova) {
+      cordova.InAppBrowser.open('https://leongweitong.com/runmate-privacy', '_blank', 'location=yes');
+    } else {
+      window.open('https://leongweitong.com/runmate-privacy', '_blank');
+    }
+  };
 
   return (
     <div>
@@ -59,6 +67,14 @@ const MenuPage = () => {
             <div>{t("general.clear")}</div>
           </div>
           <button onClick={handleClear} className='outline-none border border-black rounded px-4'>{t("general.clearing-activities")}</button>
+        </div>
+
+        <div onClick={openPrivacyPolicy} className='flex items-center justify-between pb-4 border-b'>
+          <div className="flex items-center gap-4">
+            <BsShieldCheck className='text-2xl' />
+            <div>{t("general.privacy-policy")}</div>
+          </div>
+          <BsChevronRight className='text-xl' />
         </div>
       </div>
     </div>
