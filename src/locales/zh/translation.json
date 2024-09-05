@@ -41,7 +41,8 @@
         "clear": "清除",
         "clearing-activities": "清除活动数据",
         "total-day": "总天数",
-        "checkin-time": "报到时间"
+        "checkin-time": "报到时间",
+        "privacy-policy": "隐私政策"
     },
     "quote": {
         "clearActivity": {

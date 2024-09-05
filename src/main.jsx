@@ -14,6 +14,7 @@ const renderReactDom = () => {
 if (window.cordova) {
   document.addEventListener('deviceready', () => {
     renderReactDom()
+    StatusBar.styleDefault();
   }, false)
 } else {
   renderReactDom()

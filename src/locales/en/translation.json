@@ -40,7 +40,8 @@
         "clear": "Clear",
         "clearing-activities": "Clearing Activities",
         "total-day": "Total days",
-        "checkin-time": "Checkin time"
+        "checkin-time": "Checkin time",
+        "privacy-policy": "Privacy Policy"
     },
     "quote": {
         "clearActivity": {
