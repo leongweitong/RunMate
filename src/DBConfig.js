@@ -1,6 +1,6 @@
 export const DBConfig = {
     name: "MyDB",
-    version: 4,
+    version: 5,
     objectStoresMeta: [
       {
         store: "goal",
@@ -26,6 +26,7 @@ export const DBConfig = {
             { name: "time", keypath: "time", options: { unique: false } },
             { name: "totalDistance", keypath: "totalDistance", options: { unique: false } },
             { name: "path", keypath: "path", options: { unique: false } },
+            { name: "coords", keypath: "coords", options: { unique: false } },
             { name: "createTime", keypath: "createTime", options: { unique: false } },
         ],
       },
