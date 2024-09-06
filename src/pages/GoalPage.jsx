@@ -5,19 +5,40 @@ import { useTranslation } from "react-i18next";
 import { getGoalsByStatus } from '../indexedDBUtils';
 import { Link } from 'react-router-dom';
 import { calcGoalProgress } from '../utils/calcGoalProgress';
+import { useIndexedDB } from "react-indexed-db-hook";
 
 const GoalPage = () => {
   const { t } = useTranslation();
   const [tab, setTab] = useState('0')
   const [showModal, setShowModal] = useState(false)
   const [goals, setGoals] = useState(null)
+  const { update } = useIndexedDB("goal");
 
   const activeTab = (index) => index === tab ? 'bg-primary text-white rounded' : ''
+
+  const isPastEndTime = (endTime) => {
+    const currentTime = new Date();
+    const goalEndTime = new Date(endTime);
+    return currentTime > goalEndTime;
+  };
+
 
   const fetchGoals = async () => {
     try {
       const results = await getGoalsByStatus(tab);
-      setGoals(results.reverse());
+      const updatedResults = [];
+      for (const goal of results.reverse()) {
+        if (goal.type === 'running' && tab === '0' && isPastEndTime(goal.endTime)) {
+          // If running goal is past endTime and still ongoing, update to "failed"
+          await update({
+            ...goal,
+            status: '2'
+          });
+        } else {
+          updatedResults.push(goal);
+        }
+      }
+      setGoals(updatedResults);
     } catch (error) {
       console.error('Error fetching goals:', error);
     }
