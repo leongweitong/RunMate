@@ -43,6 +43,10 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
                 if (prevPosition) {
                     const userDirection = getCurrentDirection(prevPosition[0], prevPosition[1], latitude, longitude);
                     setHeading(userDirection);
+                    
+                    let coordA = L.latLng(prevPosition[0], prevPosition[1]);
+                    let coordB = L.latLng(latitude, longitude);
+                    let distance1 = coordA.distanceTo(coordB);
         
                     const from = turf.point([prevPosition[0], prevPosition[1]]);
                     const to = turf.point([latitude, longitude]);
@@ -58,7 +62,7 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
                     }
         
                     if (keepTrackRef.current) {
-                        setTotalDistance((prevDistance) => prevDistance + distance2);
+                        setTotalDistance((prevDistance) => prevDistance + ((distance1 + distance2)/2));
                         console.log('keep track user data');
                     }
                 }
