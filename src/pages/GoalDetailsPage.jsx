@@ -12,6 +12,7 @@ const GoalDetailsPage = () => {
     const { getByID, deleteRecord, update } = useIndexedDB("goal");
     const [goal, setGoal] = useState(null);
     const [canCheckin, setCanCheckin] = useState(true);
+    const [progress, setProgress] = useState(0);
 
     const handleDelete = () => {
         const userConfirmed = window.confirm("Are you sure you want to delete this goal?");
@@ -48,7 +49,12 @@ const GoalDetailsPage = () => {
         };
 
         update(updatedGoal).then(() => {
-            setGoal(updatedGoal);
+            setGoal(updatedGoal => {
+                return {
+                    ...updatedGoal,
+                    progress: calcGoalProgress(updatedGoal.currentDay, updatedGoal.totalDay)
+                }
+            });
         }).catch((error) => {
             console.error("Error updating goal:", error);
             alert("Failed to update the goal. Please try again.");
