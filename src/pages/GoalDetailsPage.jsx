@@ -12,6 +12,7 @@ const GoalDetailsPage = () => {
     const { getByID, deleteRecord, update } = useIndexedDB("goal");
     const [goal, setGoal] = useState(null);
     const [canCheckin, setCanCheckin] = useState(true);
+    const [progress, setProgress] = useState(0);
 
     const handleDelete = () => {
         const userConfirmed = window.confirm("Are you sure you want to delete this goal?");
@@ -61,7 +62,7 @@ const GoalDetailsPage = () => {
             const progress = goal.type === 'running' 
             ? calcGoalProgress(goal.currentDistance, goal.totalDistance)
             : calcGoalProgress(goal.currentDay, goal.totalDay);
-            goal.progress = progress;
+            setProgress(progress);
 
             if (goal && goal.type === 'daily') {
                 const lastCheckinDate = new Date(goal.lastCheckinDate); // This is in ISO format
@@ -116,7 +117,7 @@ const GoalDetailsPage = () => {
                             </div>
                             <div className="w-full bg-gray-200 h-3 rounded mb-2">
                                 <div className="bg-primary h-3 rounded"
-                                    style={{width: `${goal.progress}%`}}
+                                    style={{width: `${progress}%`}}
                                 ></div>
                             </div>
                             <div className='flex justify-between'>
