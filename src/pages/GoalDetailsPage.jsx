@@ -49,7 +49,12 @@ const GoalDetailsPage = () => {
         };
 
         update(updatedGoal).then(() => {
-            setGoal(updatedGoal);
+            setGoal(updatedGoal => {
+                return {
+                    ...updatedGoal,
+                    progress: calcGoalProgress(updatedGoal.currentDay, updatedGoal.totalDay)
+                }
+            });
         }).catch((error) => {
             console.error("Error updating goal:", error);
             alert("Failed to update the goal. Please try again.");
@@ -62,7 +67,7 @@ const GoalDetailsPage = () => {
             const progress = goal.type === 'running' 
             ? calcGoalProgress(goal.currentDistance, goal.totalDistance)
             : calcGoalProgress(goal.currentDay, goal.totalDay);
-            setProgress(progress);
+            goal.progress = progress;
 
             if (goal && goal.type === 'daily') {
                 const lastCheckinDate = new Date(goal.lastCheckinDate); // This is in ISO format
@@ -117,7 +122,7 @@ const GoalDetailsPage = () => {
                             </div>
                             <div className="w-full bg-gray-200 h-3 rounded mb-2">
                                 <div className="bg-primary h-3 rounded"
-                                    style={{width: `${progress}%`}}
+                                    style={{width: `${goal.progress}%`}}
                                 ></div>
                             </div>
                             <div className='flex justify-between'>
