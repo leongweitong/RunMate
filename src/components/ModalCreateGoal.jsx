@@ -94,7 +94,7 @@ const ModalCreateGoal = ({setShowModal, refreshGoals}) => {
                                     <label htmlFor="totalDistance">{t("general.totalDistance")}</label>
                                     <input id='totalDistance' type="number" value={totalDistance} onChange={(e) => setTotalDistance(Number(e.target.value))} 
                                         className='w-full border border-primary rounded outline-none px-2 py-1' 
-                                        placeholder='10' required 
+                                        placeholder='10' min={1} required 
                                     />
                                 </div>
                                 <div className='flex flex-col mb-2'>
@@ -110,7 +110,7 @@ const ModalCreateGoal = ({setShowModal, refreshGoals}) => {
                                     <label htmlFor="totalDay">{t("general.total-day")}</label>
                                     <input id='totalDay' type="number" value={totalDay} onChange={(e) => setTotalDay(Number(e.target.value))} 
                                         className='w-full border border-primary rounded outline-none px-2 py-1' 
-                                        placeholder='7' required 
+                                        placeholder='7' min={1} required 
                                     />
                                 </div>
                                 <div className='flex flex-col mb-2'>
