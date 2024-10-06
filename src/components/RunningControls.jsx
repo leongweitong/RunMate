@@ -114,7 +114,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
         }
 
         const userConfirmed = window.confirm('Are you sure you want to end this activity?');
-        if (userConfirmed && keepTrack) {
+        if (userConfirmed && totalDistance > 0) {
             const createTime = new Date().toISOString();
             add({type: 'running', time: elapsedTime, totalDistance: distance, path, coords, createTime}).then(
                 (event) => {
