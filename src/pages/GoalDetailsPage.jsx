@@ -127,7 +127,7 @@ const GoalDetailsPage = () => {
                             </div>
                             <div className='flex justify-between'>
                                 <div>0</div>
-                                <div>{goal.totalDistance}</div>
+                                <div>{goal.type === 'running' ? goal.totalDistance : goal.totalDay}</div>
                             </div>
                         </div>
                         {goal.type === 'running' ? 
