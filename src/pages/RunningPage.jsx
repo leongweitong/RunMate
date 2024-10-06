@@ -26,6 +26,7 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
     const [keepTrack, setKeepTrack] = useState(false);
     const [coords, setCoords] = useState([]);
     const keepTrackRef = useRef(keepTrack);
+    const [multiPath, setMultiPath] = useState([]);
 
     useEffect(() => {
         const getMapLocation = () => {
@@ -140,6 +141,13 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
 
     const handleChangeKeepTrack = (data) => {
         console.log("Before update - keepTrack:", keepTrack);
+
+        if (!data && path.length > 0) {
+            // Stop tracking: store the current path segment in multiPath
+            setMultiPath(prevMultiPath => [...prevMultiPath, path]);
+            setPath([]);  // Reset the current path to start a new segment
+        }
+
         setKeepTrack(data);
         console.log("After update - keepTrack:", data);
     };
@@ -170,12 +178,20 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 />
-                <PolylineUpdater pathOptions={{color: 'red'}} positions={path}/>
+                {/* Render all polylines in multiPath */}
+                {multiPath.map((segment, index) => (
+                    <Polyline key={index} pathOptions={{ color: 'red' }} positions={segment} />
+                ))}
+                
+                {/* Render the current path (in progress) */}
+                {path.length > 0 && (
+                    <Polyline pathOptions={{ color: 'blue' }} positions={path} />
+                )}
                 <RotatingMarker position={position} icon={myIcon} rotationAngle={heading} />
                 <MapUpdater position={position} />
             </MapContainer>
 
-            <RunningControls keepTrack={keepTrack} handleChangeKeepTrack={handleChangeKeepTrack} totalDistance={totalDistance} path={path} coords={coords} />
+            <RunningControls keepTrack={keepTrack} handleChangeKeepTrack={handleChangeKeepTrack} totalDistance={totalDistance} path={multiPath} coords={coords} />
         </>)
     )
 }

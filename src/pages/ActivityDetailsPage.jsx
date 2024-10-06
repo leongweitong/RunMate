@@ -41,7 +41,7 @@ const ActivityDetailsPage = () => {
   const kFilter = new KalmanFilter({
     observation: {
       sensorDimension: 3,
-      sensorCovariance: 250000,
+      sensorCovariance: 10000,
       name: 'sensor'
     },
     dynamic: {
