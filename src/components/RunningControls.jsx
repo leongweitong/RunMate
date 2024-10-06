@@ -6,7 +6,7 @@ import { useIndexedDB } from "react-indexed-db-hook";
 import { getGoalsByStatus } from '../indexedDBUtils';
 import {formatTime} from '../utils/formatTime'
 
-const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path, coords}) => {
+const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path, multiPath, coords}) => {
     const { add } = useIndexedDB("activity");
     const { update } = useIndexedDB("goal");
     const { t } = useTranslation();
@@ -116,7 +116,8 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
         const userConfirmed = window.confirm('Are you sure you want to end this activity?');
         if (userConfirmed && totalDistance > 0) {
             const createTime = new Date().toISOString();
-            add({type: 'running', time: elapsedTime, totalDistance: distance, path, coords, createTime}).then(
+            const finalPath = multiPath.length === 0 ? [path] : multiPath;
+            add({type: 'running', time: elapsedTime, totalDistance: distance, path: finalPath, coords, createTime}).then(
                 (event) => {
                     console.log("Activity ID Generated: ", event);
                 },

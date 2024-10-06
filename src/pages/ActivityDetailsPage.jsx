@@ -36,33 +36,80 @@ const ActivityDetailsPage = () => {
 
   const KalmanFilter = window.kalmanFilter.KalmanFilter;
 
-  const data = activity.path.map((res, i) => [...res, activity.coords[i].accuracy])
+  // Check if activity.path is multi-segment or a single segment
+  const isMultiSegment = Array.isArray(activity.path[0][0]);
 
-  const kFilter = new KalmanFilter({
-    observation: {
-      sensorDimension: 3,
-      sensorCovariance: 10000,
-      name: 'sensor'
-    },
-    dynamic: {
-      init: {
-        mean: data[0].concat([0, 0, 0]).map(a => [a]),
-        covariance: [
-          [1, 0, 0, 0, 0, 0], 
-          [0, 1, 0, 0, 0, 0], 
-          [0, 0, 1, 0, 0, 0], 
-          [0, 0, 0, 1, 0, 0],
-          [0, 0, 0, 0, 1, 0],
-          [0, 0, 0, 0, 0, 1],
-        ],
+  // Initialize empty array to store filtered results
+  let latLngArray = [];
+
+  // If it's a multi-segment path
+  if (isMultiSegment) {
+    activity.path.forEach((segment, segmentIndex) => {
+      const data = segment.map((res, i) => [...res, activity.coords[segmentIndex][i].accuracy]);
+
+      const kFilter = new KalmanFilter({
+        observation: {
+          sensorDimension: 3,
+          sensorCovariance: 10000,
+          name: 'sensor'
+        },
+        dynamic: {
+          init: {
+            mean: data[0].concat([0, 0, 0]).map(a => [a]),
+            covariance: [
+              [1, 0, 0, 0, 0, 0], 
+              [0, 1, 0, 0, 0, 0], 
+              [0, 0, 1, 0, 0, 0], 
+              [0, 0, 0, 1, 0, 0],
+              [0, 0, 0, 0, 1, 0],
+              [0, 0, 0, 0, 0, 1],
+            ],
+          },
+          name: 'constant-speed',
+          covariance: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+        }
+      });
+
+      // Apply Kalman filter to this segment
+      const filteredResults = kFilter.filterAll(data);
+      
+      // Push filtered results of this segment to latLngArray
+      latLngArray.push(filteredResults.map(result => [result[0], result[1]]));
+    });
+    
+  } else {
+    // If it's a single-segment path
+    const data = activity.path.map((res, i) => [...res, activity.coords[i].accuracy]);
+
+    const kFilter = new KalmanFilter({
+      observation: {
+        sensorDimension: 3,
+        sensorCovariance: 10000,
+        name: 'sensor'
       },
-      name: 'constant-speed',
-      covariance: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
-    }
-  });
+      dynamic: {
+        init: {
+          mean: data[0].concat([0, 0, 0]).map(a => [a]),
+          covariance: [
+            [1, 0, 0, 0, 0, 0], 
+            [0, 1, 0, 0, 0, 0], 
+            [0, 0, 1, 0, 0, 0], 
+            [0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 1, 0],
+            [0, 0, 0, 0, 0, 1],
+          ],
+        },
+        name: 'constant-speed',
+        covariance: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+      }
+    });
 
-  const filteredResults = kFilter.filterAll(data);
-  const latLngArray = filteredResults.map(result => [result[0], result[1]]);
+    // Apply Kalman filter to the single segment
+    const filteredResults = kFilter.filterAll(data);
+    
+    // Push filtered results to latLngArray
+    latLngArray = filteredResults.map(result => [result[0], result[1]]);
+  }
 
   const deleteActivity = () => {
     const userConfirmed = window.confirm("Are you sure you want to delete this activity?");

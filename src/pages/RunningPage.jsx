@@ -191,7 +191,7 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
                 <MapUpdater position={position} />
             </MapContainer>
 
-            <RunningControls keepTrack={keepTrack} handleChangeKeepTrack={handleChangeKeepTrack} totalDistance={totalDistance} path={multiPath} coords={coords} />
+            <RunningControls keepTrack={keepTrack} handleChangeKeepTrack={handleChangeKeepTrack} totalDistance={totalDistance} path={path} coords={coords} multiPath={multiPath} />
         </>)
     )
 }
