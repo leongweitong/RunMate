@@ -116,7 +116,8 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
         const userConfirmed = window.confirm('Are you sure you want to end this activity?');
         if (userConfirmed && totalDistance > 0) {
             const createTime = new Date().toISOString();
-            const finalPath = multiPath.length === 0 ? [path] : multiPath;
+            const finalPath = JSON.parse(JSON.stringify(multiPath));
+            path.length > 0 && finalPath.push(path);
             add({type: 'running', time: elapsedTime, totalDistance: distance, path: finalPath, coords, createTime}).then(
                 (event) => {
                     console.log("Activity ID Generated: ", event);

@@ -38,78 +38,51 @@ const ActivityDetailsPage = () => {
 
   // Check if activity.path is multi-segment or a single segment
   const isMultiSegment = Array.isArray(activity.path[0][0]);
+  const data = isMultiSegment ? activity.path : [activity.path];  // Wrap single segment in an array
 
   // Initialize empty array to store filtered results
   let latLngArray = [];
 
-  // If it's a multi-segment path
-  if (isMultiSegment) {
-    activity.path.forEach((segment, segmentIndex) => {
-      const data = segment.map((res, i) => [...res, activity.coords[segmentIndex][i].accuracy]);
-
-      const kFilter = new KalmanFilter({
-        observation: {
-          sensorDimension: 3,
-          sensorCovariance: 10000,
-          name: 'sensor'
-        },
-        dynamic: {
-          init: {
-            mean: data[0].concat([0, 0, 0]).map(a => [a]),
-            covariance: [
-              [1, 0, 0, 0, 0, 0], 
-              [0, 1, 0, 0, 0, 0], 
-              [0, 0, 1, 0, 0, 0], 
-              [0, 0, 0, 1, 0, 0],
-              [0, 0, 0, 0, 1, 0],
-              [0, 0, 0, 0, 0, 1],
-            ],
-          },
-          name: 'constant-speed',
-          covariance: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
-        }
-      });
-
-      // Apply Kalman filter to this segment
-      const filteredResults = kFilter.filterAll(data);
-      
-      // Push filtered results of this segment to latLngArray
-      latLngArray.push(filteredResults.map(result => [result[0], result[1]]));
-    });
-    
-  } else {
-    // If it's a single-segment path
-    const data = activity.path.map((res, i) => [...res, activity.coords[i].accuracy]);
-
+  // Function to filter a segment using Kalman Filter
+  const applyKalmanFilter = (segmentData) => {
     const kFilter = new KalmanFilter({
       observation: {
-        sensorDimension: 3,
-        sensorCovariance: 10000,
+        sensorDimension: 2,  // Only 2 dimensions: latitude and longitude
+        sensorCovariance: 15000,  // Covariance of the sensor (adjustable)
         name: 'sensor'
       },
       dynamic: {
         init: {
-          mean: data[0].concat([0, 0, 0]).map(a => [a]),
+          // Initial state mean for latitude and longitude, no additional dimensions
+          mean: segmentData[0].concat([0, 0]).map(a => [a]), // Initial guess of position
           covariance: [
-            [1, 0, 0, 0, 0, 0], 
-            [0, 1, 0, 0, 0, 0], 
-            [0, 0, 1, 0, 0, 0], 
-            [0, 0, 0, 1, 0, 0],
-            [0, 0, 0, 0, 1, 0],
-            [0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0],  // Covariance for latitude
+            [0, 1, 0, 0],  // Covariance for longitude
+            [0, 0, 1, 0],  // Covariance for velocity (optional)
+            [0, 0, 0, 1]   // Covariance for direction (optional)
           ],
         },
         name: 'constant-speed',
-        covariance: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+        covariance: [0.1, 0.1, 0.1, 0.1] // Process noise covariance for the dynamic model
       }
     });
 
-    // Apply Kalman filter to the single segment
-    const filteredResults = kFilter.filterAll(data);
-    
-    // Push filtered results to latLngArray
-    latLngArray = filteredResults.map(result => [result[0], result[1]]);
-  }
+    // Apply Kalman filter to this segment
+    const filteredResults = kFilter.filterAll(segmentData);
+
+    // Return filtered results in [lat, lng] format
+    return filteredResults.map(result => [result[0], result[1]]);
+  };
+
+  // Iterate through each segment (multi-segment or single wrapped in array)
+  data.forEach(segment => {
+      if(segment.length < 2) return;
+      const filteredSegment = applyKalmanFilter(segment);
+      latLngArray.push(filteredSegment)
+  });
+
+  // At this point, latLngArray contains all the filtered coordinates
+  console.log(latLngArray);
 
   const deleteActivity = () => {
     const userConfirmed = window.confirm("Are you sure you want to delete this activity?");
@@ -210,7 +183,7 @@ const ActivityDetailsPage = () => {
             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           />
           <Polyline pathOptions={{ color: 'red', weight: 5 }} positions={latLngArray} />
-          <FitBounds path={activity.path} />
+          <FitBounds path={isMultiSegment ? activity.path.flat() : activity.path} />
         </MapContainer>
 
         <div ref={captureRef} className="fixed bottom-10 left-0 w-full p-4">
