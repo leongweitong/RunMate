@@ -10,6 +10,7 @@ import RunningPage from './pages/RunningPage';
 import GoalDetailsPage from './pages/GoalDetailsPage';
 import ActivityPage from './pages/ActivityPage';
 import ActivityDetailsPage from './pages/ActivityDetailsPage';
+import ImportExportDataPage from './pages/ImportExportDataPage';
 import "./i18n";
 import { useTranslation } from "react-i18next";
 import { DBConfig } from "./DBConfig";
@@ -36,6 +37,7 @@ function App() {
           <Route path="goal/:id" element={<GoalDetailsPage />} />
           <Route path="menu" element={<MenuPage />} />
           <Route path="activity" element={<ActivityPage />} />
+          <Route path="importexportdata" element={<ImportExportDataPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
         <Route path="/running" element={<RunningPage />} />

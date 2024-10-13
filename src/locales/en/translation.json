@@ -20,6 +20,10 @@
     "speed-analysis": "Speed Analysis",
     "speed-analysis-hour": "Speed (km/h)",
 
+    "import-export-data": "Import / Export Data",
+    "import-data": "Import Data",
+    "export-data": "Export Data",
+
     "general": {
         "create": "Create",
         "start": "Start",
@@ -41,7 +45,8 @@
         "clearing-activities": "Clearing Activities",
         "total-day": "Total days",
         "checkin-time": "Checkin time",
-        "privacy-policy": "Privacy Policy"
+        "privacy-policy": "Privacy Policy",
+        "or": "Or"
     },
     "quote": {
         "clearActivity": {

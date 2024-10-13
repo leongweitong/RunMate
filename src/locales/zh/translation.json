@@ -20,6 +20,9 @@
     "speed-analysis": "速度分析",
     "speed-analysis-hour": "速度（公里/小时）",
 
+    "import-export-data": "导入/导出数据",
+    "import-data": "导入数据",
+    "export-data": "导出数据",
 
     "general": {
         "create": "创建",
@@ -42,7 +45,8 @@
         "clearing-activities": "清除活动数据",
         "total-day": "总天数",
         "checkin-time": "报到时间",
-        "privacy-policy": "隐私政策"
+        "privacy-policy": "隐私政策",
+        "or": "或者"
     },
     "quote": {
         "clearActivity": {
