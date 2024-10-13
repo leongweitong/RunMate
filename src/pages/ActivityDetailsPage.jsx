@@ -11,6 +11,7 @@ import {formatTime} from '../utils/formatTime'
 import * as turf from "@turf/turf";
 import html2canvas from 'html2canvas';
 import leafletImage from 'leaflet-image';
+import { saveToFileCordova } from '../fileSaver';
 
 const ActivityDetailsPage = () => {
   const { t } = useTranslation();
@@ -141,12 +142,26 @@ const ActivityDetailsPage = () => {
                   0, mapHeight - pageHeight, pageWidth, pageHeight
               );
 
-              // Create a download link for the combined screenshot
-              const dataUrl = finalCanvas.toDataURL('image/png');
-              const link = document.createElement('a');
-              link.href = dataUrl;
-              link.download = 'activity-screenshot.png';
-              link.click();
+              // Convert the final canvas to a PNG Blob
+              finalCanvas.toBlob((blob) => {
+                if (window.cordova) {
+                    // Cordova: Save the image to the Downloads folder
+                    saveToFileCordova(blob, 'activity-screenshot.png')
+                        .then((message) => {
+                            alert(`Screenshot Success`);
+                        })
+                        .catch((error) => {
+                            console.error("Error saving screenshot in Cordova:", error);
+                        });
+                } else {
+                    // Browser: Trigger download using an anchor element
+                    const dataUrl = finalCanvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.href = dataUrl;
+                    link.download = 'activity-screenshot.png';
+                    link.click();
+                }
+              }, 'image/png');
           });
       });
     }
