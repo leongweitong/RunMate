@@ -20,6 +20,9 @@
     "speed-analysis": "Analisis Kelajuan",
     "speed-analysis-hour": "Kelajuan (km/j)",
 
+    "import-export-data": "Data Import / Eksport",
+    "import-data": "Import Data",
+    "export-data": "Eksport Data",
     
     "general": {
         "create": "Cipta",
@@ -42,7 +45,8 @@
         "clearing-activities": "Mengosongkan Aktiviti",
         "total-day": "Jumlah bilangan hari",
         "checkin-time": "Masa pendaftaran",
-        "privacy-policy": "Dasar Privasi"
+        "privacy-policy": "Dasar Privasi",
+        "or": "Atau"
     },
     
     "quote": {
