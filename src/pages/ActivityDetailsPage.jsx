@@ -146,12 +146,12 @@ const ActivityDetailsPage = () => {
               finalCanvas.toBlob((blob) => {
                 if (window.cordova) {
                     // Cordova: Save the image to the Downloads folder
-                    saveToFileCordova(blob, 'activity-screenshot.png')
+                    saveToFileCordova(blob, `activity-screenshot-${Date.now()}.png`)
                         .then((message) => {
-                            alert(`Screenshot Success`);
+                          alert(`Screenshot Success`);
                         })
                         .catch((error) => {
-                            console.error("Error saving screenshot in Cordova:", error);
+                          alert("Error saving screenshot in Cordova:", error);
                         });
                 } else {
                     // Browser: Trigger download using an anchor element
