@@ -49,12 +49,10 @@ const GoalDetailsPage = () => {
         };
 
         update(updatedGoal).then(() => {
-            setGoal(updatedGoal => {
-                return {
-                    ...updatedGoal,
-                    progress: calcGoalProgress(updatedGoal.currentDay, updatedGoal.totalDay)
-                }
-            });
+            setGoal((prevGoal) => ({
+                ...updatedGoal,
+                progress: calcGoalProgress(newDay, goal.totalDay),
+            }));
         }).catch((error) => {
             console.error("Error updating goal:", error);
             alert("Failed to update the goal. Please try again.");
