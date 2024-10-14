@@ -25,7 +25,7 @@ export function exportData(dbName, storeName) {
                     // Save the file depending on the environment (Cordova or Browser)
                     if (window.cordova) {
                         // Cordova/Android environment
-                        saveToFileCordova(blob, `${storeName}.json`)
+                        saveToFileCordova(blob, `${storeName}-${Date.now()}.json`)
                             .then(() => {
                                 resolve("Data exported successfully!");
                             })
