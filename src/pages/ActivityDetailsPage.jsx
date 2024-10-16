@@ -49,7 +49,7 @@ const ActivityDetailsPage = () => {
     const kFilter = new KalmanFilter({
       observation: {
         sensorDimension: 2,  // Only 2 dimensions: latitude and longitude
-        sensorCovariance: 15000,  // Covariance of the sensor (adjustable)
+        sensorCovariance: 500,  // Covariance of the sensor (adjustable)
         name: 'sensor'
       },
       dynamic: {

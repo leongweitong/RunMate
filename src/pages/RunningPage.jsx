@@ -7,7 +7,7 @@ import 'leaflet-rotatedmarker';
 import RunningControls from '../components/RunningControls'
 import * as turf from "@turf/turf";
 
-const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
+const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, positionBufferSize = 3}) => {
     const myIcon = new L.Icon({
         iconSize: [20,20],
         iconUrl: 'arrow-marker.png',
@@ -27,6 +27,7 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
     const [coords, setCoords] = useState([]);
     const keepTrackRef = useRef(keepTrack);
     const [multiPath, setMultiPath] = useState([]);
+    let positionBuffer = [];
 
     useEffect(() => {
         const getMapLocation = () => {
@@ -37,20 +38,34 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
         }
     
         const onMapSuccess = (pos) => {
-            const { latitude, longitude, speed } = pos.coords;
+            const { latitude, longitude, speed, accuracy } = pos.coords;
             const newPosition = [latitude, longitude];
+
+            if (accuracy > accuracyThreshold) return;
+
+            positionBuffer.push(newPosition);
+
+            if (positionBuffer.length > positionBufferSize) positionBuffer.shift();
+
+            // 2. Average Multiple Points
+            let avgPosition = newPosition;
+            if (positionBuffer.length === positionBufferSize) {
+                const avgLat = positionBuffer.reduce((sum, pos) => sum + pos[0], 0) / positionBuffer.length;
+                const avgLon = positionBuffer.reduce((sum, pos) => sum + pos[1], 0) / positionBuffer.length;
+                avgPosition = [avgLat, avgLon];
+            }
         
             setPrevPosition((prevPosition) => {
                 if (prevPosition) {
-                    const userDirection = getCurrentDirection(prevPosition[0], prevPosition[1], latitude, longitude);
+                    const userDirection = getCurrentDirection(prevPosition[0], prevPosition[1], avgPosition[0], avgPosition[1]);
                     setHeading(userDirection);
                     
                     let coordA = L.latLng(prevPosition[0], prevPosition[1]);
-                    let coordB = L.latLng(latitude, longitude);
+                    let coordB = L.latLng(avgPosition[0], avgPosition[1]);
                     let distance1 = coordA.distanceTo(coordB);
         
                     const from = turf.point([prevPosition[0], prevPosition[1]]);
-                    const to = turf.point([latitude, longitude]);
+                    const to = turf.point([avgPosition[0], avgPosition[1]]);
                     const distance2 = turf.distance(from, to) * 1000; // Distance in meters
         
                     const calculatedSpeed = distance2 / ((pos.timestamp - prevPosition.timestamp) / 1000); // m/s
@@ -67,22 +82,26 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)'}) => {
                         console.log('keep track user data');
                     }
                 }
-                return { ...newPosition, timestamp: pos.timestamp }; // Keep track of timestamp
+                return { ...avgPosition, timestamp: pos.timestamp }; // Keep track of timestamp
             });
         
-            setPosition(newPosition);
-            keepTrackRef.current && setPath((prevPath) => [...prevPath, newPosition]);
-            const newCoords = {
-                accuracy: pos.coords.accuracy,
-                altitude: pos.coords.altitude,
-                altitudeAccuracy: pos.coords.altitudeAccuracy,
-                heading: pos.coords.heading,
-                latitude: pos.coords.latitude,
-                longitude: pos.coords.longitude,
-                speed: pos.coords.speed,
-                timestamp: pos.timestamp
+            setPosition(avgPosition);
+            if (keepTrackRef.current) {
+                setPath((prevPath) => [...prevPath, avgPosition]);
+        
+                const newCoords = {
+                    accuracy: pos.coords.accuracy,
+                    altitude: pos.coords.altitude,
+                    altitudeAccuracy: pos.coords.altitudeAccuracy,
+                    heading: pos.coords.heading,
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude,
+                    speed: pos.coords.speed,
+                    timestamp: pos.timestamp
+                };
+        
+                setCoords((coords) => [...coords, newCoords]);
             }
-            keepTrackRef.current && setCoords((coords) => [...coords, newCoords]);
             setLoading(false);
         };
     
