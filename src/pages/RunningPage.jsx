@@ -27,6 +27,7 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
     const [coords, setCoords] = useState([]);
     const keepTrackRef = useRef(keepTrack);
     const [multiPath, setMultiPath] = useState([]);
+    const [gpsCounter, setGpsCounter] = useState(0);
     let positionBuffer = [];
 
     useEffect(() => {
@@ -41,8 +42,12 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
             const { latitude, longitude, speed, accuracy } = pos.coords;
             const newPosition = [latitude, longitude];
 
-            if (accuracy > accuracyThreshold) return;
+            if (accuracy > accuracyThreshold && gpsCounter < 5) {
+                setGpsCounter(prevCount => prevCount + 1);
+                return;
+            }
 
+            setGpsCounter(0)
             positionBuffer.push(newPosition);
 
             if (positionBuffer.length > positionBufferSize) positionBuffer.shift();
