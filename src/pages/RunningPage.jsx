@@ -6,6 +6,7 @@ import { SyncLoader } from 'react-spinners'
 import 'leaflet-rotatedmarker';
 import RunningControls from '../components/RunningControls'
 import * as turf from "@turf/turf";
+import { useNavigate } from 'react-router-dom';
 
 const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, positionBufferSize = 3}) => {
     const myIcon = new L.Icon({
@@ -29,12 +30,15 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
     const [multiPath, setMultiPath] = useState([]);
     const [gpsCounter, setGpsCounter] = useState(0);
     let positionBuffer = [];
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getMapLocation = () => {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(onMapSuccess, onMapError, { enableHighAccuracy: true })
-                navigator.geolocation.watchPosition(onMapSuccess, onMapError, { enableHighAccuracy: true })
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    onMapSuccess(pos);
+                    navigator.geolocation.watchPosition(onMapSuccess, onMapError, { enableHighAccuracy: true });
+                }, onMapError, { enableHighAccuracy: true })
             }
         }
     
@@ -150,10 +154,34 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
             }
         };
 
-        // Start background tracking
-        startBackgroundTracking();
+        const checkNotificationPermissionAndStartTracking = () => {
+            if (window.cordova) {
+                alert(parseInt(device.version))
+                const permissions = cordova.plugins.permissions;
+        
+                const error = () => {
+                    alert('Notification permission denied. Please turn it on in your settings.');
+                    navigate(-1);
+                };
 
-        // Clean up: stop tracking when the component is unmounted
+                permissions.checkPermission(permissions.POST_NOTIFICATIONS, (status) => {
+                    if (status.hasPermission) {
+                        startBackgroundTracking();
+                    } else {
+                        permissions.requestPermission(permissions.POST_NOTIFICATIONS, (statusAfterRequest) => {
+                            if (statusAfterRequest.hasPermission) {
+                                startBackgroundTracking();
+                            } else {
+                                error();
+                            }
+                        }, error);
+                    }
+                });
+            }
+        };
+
+        checkNotificationPermissionAndStartTracking();
+
         return () => {
             stopBackgroundTracking();
         };
