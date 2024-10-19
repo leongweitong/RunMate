@@ -46,10 +46,31 @@
         "total-day": "Jumlah bilangan hari",
         "checkin-time": "Masa pendaftaran",
         "privacy-policy": "Dasar Privasi",
-        "or": "Atau"
+        "or": "Atau",
+        "ok": "Okay"
     },
     
     "quote": {
+        "alert": {
+            "cannot-update-goals": "Tidak Dapat Kemas Kini Matlamat.",
+            "cannot-save-activity": "Tidak dapat menyimpan aktiviti. Jumlah jarak mestilah lebih daripada 0.",
+            "avoid-lock-screen": "Sila elakkan mengunci skrin kerana ini mungkin menyebabkan masalah dengan penjejakan.",
+            "activity-delete": "Aktiviti Dipadamkan!",
+            "activity-delete-error": "Terdapat ralat semasa memadamkan aktiviti.",
+            "screenshot-success": "Kejayaan tangkapan skrin.",
+            "screenshot-error": "Tangkapan skrin gagal, sila cuba sebentar lagi.",
+            "goal-delete-success": "Matlamat berjaya dipadamkan!",
+            "goal-delete-error": "Gagal memadamkan matlamat. Sila cuba lagi.",
+            "select-import-file": "Sila pilih fail untuk diimport.",
+            "notification-denied": "Kebenaran pemberitahuan ditolak. Sila hidupkan dalam tetapan anda.",
+            "export": {
+                "success": "Data berjaya dieksport!",
+                "browser-success": "Data berjaya dieksport dalam penyemak imbas.",
+                "indexeddb-error": "Ralat membuka IndexedDB.",
+                "fetch-error": "Ralat mendapatkan data daripada IndexedDB.",
+                "file-error": "Ralat menyimpan fail"
+            }
+        },
         "clearActivity": {
             "confirmMessage": "Adakah anda mahu mengosongkan semua aktiviti?",
             "successMessage": "Semua aktiviti telah dikosongkan!"

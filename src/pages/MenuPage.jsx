@@ -1,12 +1,20 @@
-import React, {useEffect} from 'react'
+import React, {useState} from 'react'
 import { useTranslation } from "react-i18next";
 import { BsTranslate, BsActivity, BsChevronRight, BsTrash, BsShieldCheck, BsCloudArrowDown } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { useIndexedDB } from "react-indexed-db-hook";
+import AlertBox from '../components/AlertBox';
 
 const MenuPage = () => {
   const { clear } = useIndexedDB("activity");
   const { t, i18n } = useTranslation();
+  const [showAlertBox, setShowAlertBox] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const handleAlertBox = (text) => {
+      setAlertMessage(text);
+      setShowAlertBox(true);
+  };
 
   const changeLanguage = (event) => {
     const newLanguage = event.target.value;
@@ -20,7 +28,7 @@ const MenuPage = () => {
     if(!confirm) return 
 
     clear().then(() => {
-      alert(t('quote.clearActivity.successMessage'));
+      handleAlertBox(t('quote.clearActivity.successMessage'));
     });
   }
 
@@ -86,6 +94,10 @@ const MenuPage = () => {
             <BsChevronRight className='text-xl' />
           </div>
         </Link>
+
+        {showAlertBox && (
+            <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} />
+        )}
       </div>
     </div>
   )

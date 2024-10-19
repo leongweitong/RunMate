@@ -30,8 +30,7 @@ export function exportData(dbName, storeName) {
                                 resolve("Data exported successfully!");
                             })
                             .catch(error => {
-                                alert(`Error saving file: ${error}`);
-                                reject(error);
+                                reject("Error saving file");
                             });
                     } else {
                         // Browser environment

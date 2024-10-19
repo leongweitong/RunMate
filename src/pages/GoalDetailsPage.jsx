@@ -5,6 +5,8 @@ import { BsCalendar, BsFlag, BsArrowLeftShort, BsTrash, BsCheck2 } from 'react-i
 import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom';
 import { calcGoalProgress } from '../utils/calcGoalProgress';
+import AlertBox from '../components/AlertBox';
+
 const GoalDetailsPage = () => {
     const navigate = useNavigate()
     const { t } = useTranslation();
@@ -13,6 +15,13 @@ const GoalDetailsPage = () => {
     const [goal, setGoal] = useState(null);
     const [canCheckin, setCanCheckin] = useState(true);
     const [progress, setProgress] = useState(0);
+    const [showAlertBox, setShowAlertBox] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
+    const handleAlertBox = (text) => {
+        setAlertMessage(text);
+        setShowAlertBox(true);
+    };
 
     const handleDelete = () => {
         const userConfirmed = window.confirm("Are you sure you want to delete this goal?");
@@ -20,11 +29,10 @@ const GoalDetailsPage = () => {
         if(!userConfirmed) return 
         
         deleteRecord(Number(id)).then((event) => {
-            alert(`Goal deleted successfully!`);
-            navigate('/goal');
+            handleAlertBox(t("quote.alert.goal-delete-success"));
         }).catch((error) => {
             console.error("Error deleting goal:", error);
-            alert("Failed to delete the goal. Please try again.");
+            handleAlertBox(t("quote.alert.goal-delete-error"));
         });
     }
 
@@ -55,7 +63,7 @@ const GoalDetailsPage = () => {
             }));
         }).catch((error) => {
             console.error("Error updating goal:", error);
-            alert("Failed to update the goal. Please try again.");
+            handleAlertBox(t("quote.alert.goal-update-error"));
         });
     }
 
@@ -157,6 +165,10 @@ const GoalDetailsPage = () => {
                     <button onClick={handleDailyTask} className='w-full bg-primary rounded text-white py-2'>Check In</button>
                 </div>)}
             </div>)}
+
+            {showAlertBox && (
+                <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} haveNavigate={true} navigatePage={'/goal'} />
+            )}
         </div>
     )
 }

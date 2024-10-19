@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import { useIndexedDB } from "react-indexed-db-hook";
 import { getGoalsByStatus } from '../indexedDBUtils';
-import {formatTime} from '../utils/formatTime'
+import {formatTime} from '../utils/formatTime';
+import AlertBox from '../components/AlertBox';
 
 const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path, multiPath, coords}) => {
     const { add } = useIndexedDB("activity");
@@ -14,6 +15,13 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
     const [elapsedTime, setElapsedTime] = useState(0);
     const timerRef = useRef(null);
     const distance = Number((totalDistance / 1000).toFixed(2))
+    const [showAlertBox, setShowAlertBox] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
+    const handleAlertBox = (text) => {
+        setAlertMessage(text);
+        setShowAlertBox(true);
+    };
 
     useEffect(() => {
         if (window.cordova) {
@@ -30,7 +38,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
             });
     
             cordova.plugins.backgroundMode.on('failure', () => {
-                window.alert('Please avoid locking the screen as this might cause issues with tracking.');
+                handleAlertBox(t("quote.alert.avoid-lock-screen"));
             });
         }
     
@@ -85,7 +93,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
     
         } catch (error) {
             console.error('Error updating ongoing goals:', error);
-            window.alert('Error! Cannot Update Goals.')
+            handleAlertBox(t("quote.alert.cannot-update-goals"));
         }
     };  
 
@@ -107,7 +115,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
         }
 
         if (totalDistance === 0) {
-            window.alert('Cannot save activity. Total distance must be greater than 0.');
+            handleAlertBox(t("quote.alert.cannot-save-activity"));
             clearInterval(timerRef.current);
             navigate('/');
             return;
@@ -152,6 +160,9 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
                     </div>
                 </div>
             </div>
+            {showAlertBox && (
+                <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} />
+            )}
         </div>
     )
 }
