@@ -12,6 +12,7 @@ import * as turf from "@turf/turf";
 import html2canvas from 'html2canvas';
 import leafletImage from 'leaflet-image';
 import { saveToFileCordova } from '../fileSaver';
+import AlertBox from '../components/AlertBox';
 
 const ActivityDetailsPage = () => {
   const { t } = useTranslation();
@@ -21,6 +22,13 @@ const ActivityDetailsPage = () => {
   const navigate = useNavigate()
   const captureRef = useRef(null);
   const mapRef = useRef(null);
+  const [showAlertBox, setShowAlertBox] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const handleAlertBox = (text) => {
+      setAlertMessage(text);
+      setShowAlertBox(true);
+  };
 
   useEffect(() => {
     getByID(Number(id)).then((activity) => {
@@ -90,11 +98,10 @@ const ActivityDetailsPage = () => {
   
     if (userConfirmed) {
       deleteRecord(activity.id).then((event) => {
-        alert("Activity Deleted!");
-        navigate(-1);
+        handleAlertBox(t("quote.alert.activity-delete"));
       }).catch((error) => {
         console.error("Error deleting activity:", error);
-        alert("There was an error deleting the activity.");
+        handleAlertBox(t("quote.alert.activity-delete-error"));
       });
     }
   };
@@ -148,10 +155,10 @@ const ActivityDetailsPage = () => {
                     // Cordova: Save the image to the Downloads folder
                     saveToFileCordova(blob, `activity-screenshot-${Date.now()}.png`)
                         .then((message) => {
-                          alert(`Screenshot Success`);
+                          handleAlertBox(t("quote.alert.screenshot-success"));
                         })
                         .catch((error) => {
-                          alert("Error saving screenshot in Cordova:", error);
+                          handleAlertBox(t("quote.alert.screenshot-error"));
                         });
                 } else {
                     // Browser: Trigger download using an anchor element
@@ -160,6 +167,7 @@ const ActivityDetailsPage = () => {
                     link.href = dataUrl;
                     link.download = 'activity-screenshot.png';
                     link.click();
+                    handleAlertBox(t("quote.alert.screenshot-success"));
                 }
               }, 'image/png');
           });
@@ -190,6 +198,10 @@ const ActivityDetailsPage = () => {
           <BsTrash className='text-2xl' />
         </div>
       </div>
+
+      {showAlertBox && (
+          <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} haveNavigate={true} navigatePage={-1} />
+      )}
 
       <div>
         <MapContainer zoomControl={false} scrollWheelZoom={false} preferCanvas={true} ref={mapRef} >

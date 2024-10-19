@@ -46,9 +46,30 @@
         "total-day": "总天数",
         "checkin-time": "报到时间",
         "privacy-policy": "隐私政策",
-        "or": "或者"
+        "or": "或者",
+        "ok": "好的"
     },
     "quote": {
+        "alert": {
+            "cannot-update-goals": "无法更新目标。",
+            "cannot-save-activity": "无法保存活动。总距离必须大于 0。",
+            "avoid-lock-screen": "请避免锁定屏幕，因为这可能会导致跟踪问题。",
+            "activity-delete": "活动已删除！",
+            "activity-delete-error": "删除活动时出错。",
+            "screenshot-success": "截屏成功。",
+            "screenshot-error": "截屏失败，请稍后重试。",
+            "goal-delete-success": "目标删除成功！",
+            "goal-delete-error": "删除目标失败。请重试。",
+            "select-import-file": "请选择要导入的文件。",
+            "notification-denied": "通知权限被拒绝。请在设置中将其开启。",
+            "export": {
+                "success": "数据导出成功！",
+                "browser-success": "数据已成功导出到浏览器。",
+                "indexeddb-error": "打开IndexedDB时出错。",
+                "fetch-error": "从IndexedDB获取数据时出错。",
+                "file-error": "保存文件时出错"
+            }
+        },
         "clearActivity": {
             "confirmMessage": "您想清除所有活动吗？",
             "successMessage": "所有活动已被清除！"

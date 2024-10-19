@@ -46,9 +46,31 @@
         "total-day": "Total days",
         "checkin-time": "Checkin time",
         "privacy-policy": "Privacy Policy",
-        "or": "Or"
+        "or": "Or",
+        "ok": "Okay"
     },
     "quote": {
+        "alert": {
+            "cannot-update-goals": "Cannot Update Goals.",
+            "cannot-save-activity": "Cannot save activity. Total distance must be greater than 0.",
+            "avoid-lock-screen": "Please avoid locking the screen as this might cause issues with tracking.",
+            "activity-delete": "Activity Deleted!",
+            "activity-delete-error": "There was an error deleting the activity.",
+            "screenshot-success": "Screenshot success.",
+            "screenshot-error": "Screenshot failed, please try again later.",
+            "goal-delete-success": "Goal deleted successfully!",
+            "goal-delete-error": "Failed to delete the goal. Please try again.",
+            "goal-update-error": "Failed to update the goal. Please try again.",
+            "select-import-file": "Please select a file to import.",
+            "notification-denied": "Notification permission denied. Please turn it on in your settings.",
+            "export": {
+                "success": "Data exported successfully!",
+                "browser-success": "Data exported successfully in browser.",
+                "indexeddb-error": "Error opening IndexedDB.",
+                "fetch-error": "Error fetching data from IndexedDB.",
+                "file-error": "Error saving file"
+            }
+        },
         "clearActivity": {
             "confirmMessage": "Do you want to clear all activities?",
             "successMessage": "All activities have been cleared!"

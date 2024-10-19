@@ -7,6 +7,7 @@ import 'leaflet-rotatedmarker';
 import RunningControls from '../components/RunningControls'
 import * as turf from "@turf/turf";
 import { useNavigate } from 'react-router-dom';
+import AlertBox from '../components/AlertBox';
 
 const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, positionBufferSize = 3}) => {
     const myIcon = new L.Icon({
@@ -31,6 +32,13 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
     const [gpsCounter, setGpsCounter] = useState(0);
     let positionBuffer = [];
     const navigate = useNavigate();
+    const [showAlertBox, setShowAlertBox] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
+    const handleAlertBox = (text) => {
+        setAlertMessage(text);
+        setShowAlertBox(true);
+    };
 
     useEffect(() => {
         const getMapLocation = () => {
@@ -156,11 +164,10 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
 
         const checkNotificationPermissionAndStartTracking = () => {
             if (window.cordova) {
-                alert(parseInt(device.version))
                 const permissions = cordova.plugins.permissions;
         
                 const error = () => {
-                    alert('Notification permission denied. Please turn it on in your settings.');
+                    handleAlertBox(t('quote.alert.notification-denied'));
                     navigate(-1);
                 };
 
@@ -244,6 +251,10 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
             </MapContainer>
 
             <RunningControls keepTrack={keepTrack} handleChangeKeepTrack={handleChangeKeepTrack} totalDistance={totalDistance} path={path} coords={coords} multiPath={multiPath} />
+
+            {showAlertBox && (
+                <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} />
+            )}
         </>)
     )
 }

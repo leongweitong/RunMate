@@ -4,16 +4,24 @@ import { importData } from '../importData';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+import AlertBox from '../components/AlertBox';
 
 const ImportExportDataPage = () => {
     const [importedFile, setImportedFile] = useState(null);
     const navigate = useNavigate()
     const { t } = useTranslation();
+    const [showAlertBox, setShowAlertBox] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
+    const handleAlertBox = (text) => {
+        setAlertMessage(text);
+        setShowAlertBox(true);
+    };
 
     const handleExportData = () => {
         exportData('MyDB', 'activity')
-          .then(message => window.alert(message))
-          .catch(error => window.alert(error));
+          .then(message => handleAlertBox(message))
+          .catch(error => handleAlertBox(error));
     }
 
     const handleFileChange = (event) => {
@@ -23,9 +31,9 @@ const ImportExportDataPage = () => {
 
     const handleImportData = () => {
         if (importedFile) {
-            importData('MyDB', 'activity', importedFile).then(message => window.alert(message)).catch(error => window.alert(error));
+            importData('MyDB', 'activity', importedFile).then(message => handleAlertBox(message)).catch(error => handleAlertBox(error));
         } else {
-            alert('Please select a file to import.');
+            handleAlertBox(t('quote.alert.select-import-file'));
         }
     }
 
@@ -52,6 +60,10 @@ const ImportExportDataPage = () => {
 
             <input className='block w-full border rounded' type="file" accept=".json" onChange={handleFileChange} />
             <button className='block w-full border rounded py-2' onClick={handleImportData}>{t("import-data")}</button>
+
+            {showAlertBox && (
+                <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} />
+            )}
         </div>
         </>
     )
