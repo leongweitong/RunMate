@@ -24,10 +24,12 @@ const ActivityDetailsPage = () => {
   const mapRef = useRef(null);
   const [showAlertBox, setShowAlertBox] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [haveNavigate, setHaveNavigate] = useState(false);
 
-  const handleAlertBox = (text) => {
+  const handleAlertBox = (text, navigate=false) => {
       setAlertMessage(text);
       setShowAlertBox(true);
+      setHaveNavigate(navigate)
   };
 
   useEffect(() => {
@@ -98,10 +100,10 @@ const ActivityDetailsPage = () => {
   
     if (userConfirmed) {
       deleteRecord(activity.id).then((event) => {
-        handleAlertBox(t("quote.alert.activity-delete"));
+        handleAlertBox(t("quote.alert.activity-delete"),true);
       }).catch((error) => {
         console.error("Error deleting activity:", error);
-        handleAlertBox(t("quote.alert.activity-delete-error"));
+        handleAlertBox(t("quote.alert.activity-delete-error"),true);
       });
     }
   };
@@ -155,10 +157,10 @@ const ActivityDetailsPage = () => {
                     // Cordova: Save the image to the Downloads folder
                     saveToFileCordova(blob, `activity-screenshot-${Date.now()}.png`)
                         .then((message) => {
-                          handleAlertBox(t("quote.alert.screenshot-success"));
+                          handleAlertBox(t("quote.alert.screenshot-success"),false);
                         })
                         .catch((error) => {
-                          handleAlertBox(t("quote.alert.screenshot-error"));
+                          handleAlertBox(t("quote.alert.screenshot-error"),false);
                         });
                 } else {
                     // Browser: Trigger download using an anchor element
@@ -167,7 +169,7 @@ const ActivityDetailsPage = () => {
                     link.href = dataUrl;
                     link.download = 'activity-screenshot.png';
                     link.click();
-                    handleAlertBox(t("quote.alert.screenshot-success"));
+                    handleAlertBox(t("quote.alert.screenshot-success"),false);
                 }
               }, 'image/png');
           });
@@ -200,7 +202,7 @@ const ActivityDetailsPage = () => {
       </div>
 
       {showAlertBox && (
-          <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} haveNavigate={true} navigatePage={-1} />
+          <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} haveNavigate={haveNavigate} navigatePage={-1} />
       )}
 
       <div>
@@ -244,14 +246,16 @@ const ActivityDetailsPage = () => {
 
 const FitBounds = ({ path }) => {
   const map = useMap();
+  const [boundsFitOnce, setBoundsFitOnce] = useState(false);
 
   useEffect(() => {
-    if (path && path.length > 0) {
+    if (path && path.length > 0 && !boundsFitOnce) {
       const boundingBox = turf.bbox(turf.lineString(path));
       map.fitBounds([
         [boundingBox[0], boundingBox[1]],
         [boundingBox[2], boundingBox[3]]
       ]);
+      setBoundsFitOnce(true);
     }
   }, [map, path]);
 
