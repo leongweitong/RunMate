@@ -1,7 +1,8 @@
 import React from 'react';
-import { BsGeoAltFill, BsPersonCircle, BsActivity, BsCardChecklist } from 'react-icons/bs';
+import { BsGeoAltFill, BsPersonCircle, BsActivity, BsCardChecklist, BsPencilSquare } from 'react-icons/bs';
 import { FaTasks, FaRunning, FaClock } from 'react-icons/fa';
 import { useTranslation } from "react-i18next";
+import { Link } from 'react-router-dom';
 
 const UserInfo = ({ user }) => {
     const { t } = useTranslation();
@@ -21,12 +22,17 @@ const UserInfo = ({ user }) => {
     return (
         <div className="bg-primary p-4 rounded-b-3xl h-40 mb-16">
             <div className='bg-white rounded-xl shadow p-4 border border-2 border-b-primary'>
-                <div className='flex items-center gap-4'>
-                    <BsPersonCircle className='text-5xl opacity-70' />
-                    <div className=''>
-                        <div className='font-semibold text-lg'>{name}</div>
-                        <div>{t(gender)} - {height}cm / {weight}kg</div>
+                <div className='flex items-center justify-between gap-4'>
+                    <div className='flex items-center gap-4'>
+                        <BsPersonCircle className='text-5xl opacity-70' />
+                        <div className=''>
+                            <div className='font-semibold'>{name}</div>
+                            <div>{t(gender)} - {height}cm / {weight}kg</div>
+                        </div>
                     </div>
+                    <Link to="/initialuser">
+                        <BsPencilSquare className='text-xl' />
+                    </Link>
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2">
                     <ul className="text-gray-600">

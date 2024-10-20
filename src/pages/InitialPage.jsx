@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsGenderMale, BsGenderFemale } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
@@ -13,6 +13,14 @@ const InitialPage = () => {
   });
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    const storedUserInfo = localStorage.getItem('userInfo');
+
+    if (storedUserInfo) {
+      setUserInfo(JSON.parse(storedUserInfo));
+    }
+  }, []);
 
   // Handle next step navigation
   const handleNextStep = () => {
@@ -36,16 +44,16 @@ const InitialPage = () => {
   const renderGenderStep = () => (
     <div className="flex flex-col items-center h-full justify-center">
       <h2 className="text-xl font-semibold mb-4">{t('select-gender')}</h2>
-      <div className="flex gap-8 mb-6">
+      <div className="w-full flex gap-8 mb-6">
         <button
-          className={`flex flex-col items-center p-6 border-2 rounded-xl ${userInfo.gender === 'male' ? 'border-blue-500' : 'border-gray-300'}`}
+          className={`flex w-1/2 flex-col items-center p-6 border-2 rounded-xl ${userInfo.gender === 'male' ? 'border-blue-500' : 'border-gray-300'}`}
           onClick={() => handleInputChange('gender', 'male')}
         >
           <BsGenderMale className="text-5xl text-blue-500" />
           <span className="mt-2">{t('male')}</span>
         </button>
         <button
-          className={`flex flex-col items-center p-6 border-2 rounded-xl ${userInfo.gender === 'female' ? 'border-pink-500' : 'border-gray-300'}`}
+          className={`flex w-1/2 flex-col items-center p-6 border-2 rounded-xl ${userInfo.gender === 'female' ? 'border-pink-500' : 'border-gray-300'}`}
           onClick={() => handleInputChange('gender', 'female')}
         >
           <BsGenderFemale className="text-5xl text-pink-500" />
@@ -55,7 +63,7 @@ const InitialPage = () => {
       <div className="absolute bottom-4 right-4">
         <button
           onClick={handleNextStep}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-primary text-white px-4 py-2 rounded"
           disabled={!userInfo.gender}
         >
           {t('general.next')}
@@ -72,7 +80,7 @@ const InitialPage = () => {
         type="text"
         value={userInfo.name}
         onChange={(e) => handleInputChange('name', e.target.value)}
-        className="border p-2 rounded mb-6 w-64"
+        className="border border-primary outline-none p-2 rounded mb-6 w-64"
         placeholder={t('enter-name')}
       />
       <div className="absolute bottom-4 right-4 flex gap-4">
@@ -81,7 +89,7 @@ const InitialPage = () => {
         </button>
         <button
           onClick={handleNextStep}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-primary text-white px-4 py-2 rounded"
           disabled={!userInfo.name}
         >
           {t('general.next')}
@@ -98,7 +106,7 @@ const InitialPage = () => {
         type="number"
         value={userInfo.height}
         onChange={(e) => handleInputChange('height', e.target.value)}
-        className="border p-2 rounded mb-6 w-64"
+        className="border border-primary outline-none p-2 rounded mb-6 w-64"
         placeholder={`${t('enter-height')} (cm)`}
       />
       <div className="absolute bottom-4 right-4 flex gap-4">
@@ -107,7 +115,7 @@ const InitialPage = () => {
         </button>
         <button
           onClick={handleNextStep}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-primary text-white px-4 py-2 rounded"
           disabled={!userInfo.height}
         >
           {t('general.next')}
@@ -124,7 +132,7 @@ const InitialPage = () => {
         type="number"
         value={userInfo.weight}
         onChange={(e) => handleInputChange('weight', e.target.value)}
-        className="border p-2 rounded mb-6 w-64"
+        className="border border-primary outline-none p-2 rounded mb-6 w-64"
         placeholder={`${t('enter-weight')} (kg)`}
       />
       <div className="absolute bottom-4 right-4 flex gap-4">
@@ -137,7 +145,7 @@ const InitialPage = () => {
             localStorage.setItem('userInfo', JSON.stringify(userInfo));
             navigate('/');
           }}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-primary text-white px-4 py-2 rounded"
           disabled={!userInfo.weight}
         >
           {t('general.finish')}

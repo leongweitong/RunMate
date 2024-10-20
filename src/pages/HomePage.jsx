@@ -44,9 +44,9 @@ const HomePage = () => {
 
     const fetchActivities = async () => {
         getAll().then((activities) => {
-            const sortedActivities = activities.sort((a, b) => new Date(a.createTime) - new Date(b.createTime));
-            
-            setActivities(sortedActivities.slice(-3).reverse());
+            const sortedActivities = activities.sort((a, b) => new Date(b.createTime) - new Date(a.createTime));
+        
+            setActivities(sortedActivities.slice(0, 3));
 
             const totalActivities = sortedActivities.length;
             let totalDistance = 0;
@@ -67,23 +67,35 @@ const HomePage = () => {
 
             for (let i = 0; i < sortedActivities.length; i++) {
                 const activityDate = new Date(sortedActivities[i].createTime);
-                activityDate.setHours(0, 0, 0, 0);
-
+                activityDate.setHours(0, 0, 0, 0); // Set activityDate to midnight
+                
                 // Calculate the difference between currentDate and activityDate in days
                 const diffInDays = Math.floor((currentDate - activityDate) / (1000 * 60 * 60 * 24));
-
-                // If the activity happened yesterday (diffInDays === 1), increase the streak
-                if (diffInDays === 1) {
+            
+                // If the activity happened today or yesterday
+                if (diffInDays === 0) {
+                    // If the activity is from today, do nothing (no streak increase)
+                    continue; 
+                } else if (diffInDays === 1) {
+                    // If the activity happened yesterday, increment the streak
                     streak++;
-                    currentDate = activityDate; // Update currentDate to activityDate for the next comparison
-                } 
-                // If activity is on the same day, just continue the streak but don't update the date
-                else if (diffInDays === 0) {
-                    continue;
-                } 
-                // If the gap is more than 1 day, streak is broken
-                else {
+                    currentDate = activityDate; // Update currentDate to the activityDate for the next comparison
+                } else {
+                    // If the activity was more than 1 day ago, break the streak loop
                     break;
+                }
+            }
+            
+            // If no activity happened yesterday, streak should remain 0
+            if (streak === 0 && sortedActivities.length > 0) {
+                const mostRecentActivityDate = new Date(sortedActivities[0].createTime);
+                mostRecentActivityDate.setHours(0, 0, 0, 0);
+            
+                const diffInDaysFromToday = Math.floor((new Date() - mostRecentActivityDate) / (1000 * 60 * 60 * 24));
+                
+                // If the most recent activity wasn't yesterday, reset the streak to 0
+                if (diffInDaysFromToday > 1) {
+                    streak = 0;
                 }
             }
 
