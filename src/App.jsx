@@ -11,10 +11,12 @@ import GoalDetailsPage from './pages/GoalDetailsPage';
 import ActivityPage from './pages/ActivityPage';
 import ActivityDetailsPage from './pages/ActivityDetailsPage';
 import ImportExportDataPage from './pages/ImportExportDataPage';
+import InitialPage from './pages/InitialPage';
 import "./i18n";
 import { useTranslation } from "react-i18next";
 import { DBConfig } from "./DBConfig";
 import { initDB } from "react-indexed-db-hook";
+import ProtectedRoutes from './utils/ProtectedRoutes';
 
 initDB(DBConfig);
 
@@ -30,18 +32,21 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="analysis" element={<AnalysisPage />} />
-          <Route path="goal" element={<GoalPage />} />
-          <Route path="goal/:id" element={<GoalDetailsPage />} />
-          <Route path="menu" element={<MenuPage />} />
-          <Route path="activity" element={<ActivityPage />} />
-          <Route path="importexportdata" element={<ImportExportDataPage />} />
-          <Route path="*" element={<ErrorPage />} />
+        <Route path="/initialuser" element={<InitialPage />} />
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="analysis" element={<AnalysisPage />} />
+            <Route path="goal" element={<GoalPage />} />
+            <Route path="goal/:id" element={<GoalDetailsPage />} />
+            <Route path="menu" element={<MenuPage />} />
+            <Route path="activity" element={<ActivityPage />} />
+            <Route path="importexportdata" element={<ImportExportDataPage />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Route>
+          <Route path="/running" element={<RunningPage />} />
+          <Route path="activity/:id" element={<ActivityDetailsPage />} />
         </Route>
-        <Route path="/running" element={<RunningPage />} />
-        <Route path="activity/:id" element={<ActivityDetailsPage />} />
       </Routes>
     </HashRouter>
   )

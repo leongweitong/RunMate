@@ -118,7 +118,7 @@ const Weather = () => {
     if(!showWeather) return 
 
     return (
-        <div className="bg-primary p-4 rounded-b-3xl h-60 mb-24">
+        <div className="px-4">
             {loading && <div className='bg-white p-4 rounded-3xl shadow relative'>
                 <div className='absolute inset-0 flex items-center justify-center bg-opacity-75'>
                     <SyncLoader color={color} loading={loading} size={8} aria-label="Loading Spinner"/>
@@ -126,23 +126,19 @@ const Weather = () => {
             </div>}
             {!loading && weatherData && (
                 <>
-                <div className="flex gap-2 items-center justify-center mb-4">
-                    <BsGeoAltFill className='text-white text-xl' />
-                    <div className='text-white text-xl'>{weatherData.name}</div>
-                </div>
                 <div className='bg-white p-4 rounded-3xl shadow'>
                     <div className="flex items-center justify-center">
-                        <img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt='' className="flex-1 h-32" />
+                        <img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt='' className="flex-1 h-28" />
                         <div className="flex-1 text-md">
-                            <div className='font-bold opacity-50'>{t("general.today")}</div>
+                            <div className='font-bold opacity-50 text-sm'>{weatherData.name}</div>
                             <div className='flex text-primary font-bold'>
-                                <div className='text-4xl'>{(weatherData.main.temp - 273.15).toFixed(0)}°</div>
+                                <div className='text-3xl'>{(weatherData.main.temp - 273.15).toFixed(0)}°</div>
                                 <div className='text-xl leading-none self-end'>/{(weatherData.main.feels_like - 273.55).toFixed(0)}°</div>
                             </div>
-                            <div className='font-bold opacity-50 capitalize'>{t(`weather.${(weatherData.weather[0].main).toLowerCase()}`)}</div>
+                            <div className='font-bold opacity-50 capitalize text-sm'>{t(`weather.${(weatherData.weather[0].main).toLowerCase()}`)}</div>
                         </div>
                     </div>
-                    <div className="flex gap-2 justify-content mt-2">
+                    <div className="flex gap-2 justify-content text-sm">
                         <div className='flex flex-1 flex-col items-center'>
                             <BsDropletFill className="text-primary mb-1" />
                             <div className='font-bold opacity-80'>{weatherData.main.humidity}%</div>

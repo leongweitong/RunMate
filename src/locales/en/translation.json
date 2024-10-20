@@ -24,6 +24,13 @@
     "import-data": "Import Data",
     "export-data": "Export Data",
 
+    "enter-weight": "Enter Your Weight",
+    "enter-height": "Enter Your Height",
+    "enter-name": "Enter Your Name",
+    "select-gender": "Select Gender",
+    "male": "Male",
+    "female": "Female",
+
     "general": {
         "create": "Create",
         "start": "Start",
@@ -39,6 +46,12 @@
         "running": "Running",
         "daily": "Daily",
         "totalDistance": "Total distance",
+        "total-distance": "Total Distance",
+        "total-activities": "Total Activities",
+        "total-time": "Total Time",
+        "streak": "Streak",
+        "longest-run": "Longest Run",
+        "goals-completed": "Goals Completed",
         "pace": "Pace",
         "speed": "Speed",
         "clear": "Clear",
@@ -47,7 +60,10 @@
         "checkin-time": "Checkin time",
         "privacy-policy": "Privacy Policy",
         "or": "Or",
-        "ok": "Okay"
+        "ok": "Okay",
+        "next": "Next",
+        "back": "Back",
+        "finish": "Finish"
     },
     "quote": {
         "alert": {

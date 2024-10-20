@@ -68,11 +68,11 @@ const MotivationQuote = () => {
                 {!loading && motivationQuote && (
                 <>
                     <h2 className='text-2xl font-bold'>"</h2>
-                    <p className='text-lg italic font-bold'>
+                    <p className='text-md italic font-bold'>
                         {isExpanded ? motivationQuote.quote : `${motivationQuote.quote.substring(0, 100)} ${motivationQuote.quote.length > 100 ? '...' : ''}`} "
                     </p>
                     <div className="mt-2 flex items-center justify-between gap-2">
-                        <p className='font-bold opacity-70 italic'>- {motivationQuote.author}</p>
+                        <p className='font-bold opacity-70 text-sm italic'>- {motivationQuote.author}</p>
                         {motivationQuote.quote.length > 100 && (
                             <p>
                                 {isExpanded ? (
