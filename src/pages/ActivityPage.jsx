@@ -16,7 +16,8 @@ const ActivityPage = () => {
     useEffect(() => {
         getAll().then((activities) => {
             console.log(activities)
-            setActivities(activities.reverse());
+            const sortedActivities = activities.sort((a, b) => new Date(b.createTime) - new Date(a.createTime));
+            setActivities(sortedActivities);
         }).catch((error) => {
             console.error('Error fetching activities:', error);
         });
