@@ -24,6 +24,13 @@
     "import-data": "导入数据",
     "export-data": "导出数据",
 
+    "enter-weight": "输入您的体重",
+    "enter-height": "输入您的身高",
+    "enter-name": "输入您的姓名",
+    "select-gender": "选择性别",
+    "male": "男",
+    "female": "女",
+
     "general": {
         "create": "创建",
         "start": "开始",
@@ -39,6 +46,12 @@
         "running": "跑步",
         "daily": "日常",
         "totalDistance": "总距离",
+        "total-distance": "总距离",
+        "total-activities": "总活动",
+        "total-time": "总时间",
+        "streak": "连续记录",
+        "longest-run": "最长跑步记录",
+        "goals-completed": "已完成目标",
         "pace": "步伐",
         "speed": "速度",
         "clear": "清除",
@@ -47,7 +60,10 @@
         "checkin-time": "报到时间",
         "privacy-policy": "隐私政策",
         "or": "或者",
-        "ok": "好的"
+        "ok": "好的",
+        "next": "下一步",
+        "back": "返回",
+        "finish": "完成"
     },
     "quote": {
         "alert": {

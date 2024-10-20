@@ -23,6 +23,13 @@
     "import-export-data": "Data Import / Eksport",
     "import-data": "Import Data",
     "export-data": "Eksport Data",
+
+    "enter-weight": "Masukkan Berat Anda",
+    "enter-height": "Masukkan Ketinggian Anda",
+    "enter-name": "Masukkan Nama Anda",
+    "select-gender": "Pilih Jantina",
+    "male": "Lelaki",
+    "female": "Perempuan",
     
     "general": {
         "create": "Cipta",
@@ -39,6 +46,12 @@
         "running": "Berlari",
         "daily": "Harian",
         "totalDistance": "Jumlah Jarak",
+        "total-distance": "Jumlah Jarak",
+        "total-activities": "Jumlah Aktiviti",
+        "total-time": "Jumlah Masa",
+        "streak": "Streak",
+        "longest-run": "Jarak Terpanjang",
+        "goals-completed": "Matlamat Selesai",
         "pace": "Kadar",
         "speed": "Kelajuan",
         "clear": "Jelas",
@@ -47,7 +60,10 @@
         "checkin-time": "Masa pendaftaran",
         "privacy-policy": "Dasar Privasi",
         "or": "Atau",
-        "ok": "Okay"
+        "ok": "Okay",
+        "next": "Seterusnya",
+        "back": "Kembali",
+        "finish": "Selesai"
     },
     
     "quote": {

@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import { getGoalsByStatus } from '../indexedDBUtils';
 import { useIndexedDB } from "react-indexed-db-hook";
-import {formatTime} from '../utils/formatTime'
-import { calcGoalProgress } from '../utils/calcGoalProgress'
+import {formatTime} from '../utils/formatTime';
+import { calcGoalProgress } from '../utils/calcGoalProgress';
+import UserInfo from '../components/UserInfo';
 
 const getOnLineStatus = () =>
     typeof navigator !== 'undefined' && typeof navigator.onLine === 'boolean'
@@ -20,6 +21,14 @@ const HomePage = () => {
     const [activities, setActivities] = useState(null)
     const { getAll } = useIndexedDB("activity");
     const [status, setStatus] = useState(getOnLineStatus());
+    const [userInfo, setUserInfo] = useState({
+        totalTimeRunning: 0,
+        totalActivities: 0,
+        totalDistance: 0,
+        longestRun: 0,
+        streak: 0,
+        goalsCompleted: 0
+    });
 
     const setOnline = () => setStatus(true);
     const setOffline = () => setStatus(false);
@@ -35,13 +44,78 @@ const HomePage = () => {
 
     const fetchActivities = async () => {
         getAll().then((activities) => {
-            setActivities(activities.slice(-3).reverse());
+            const sortedActivities = activities.sort((a, b) => new Date(a.createTime) - new Date(b.createTime));
+            
+            setActivities(sortedActivities.slice(-3).reverse());
+
+            const totalActivities = sortedActivities.length;
+            let totalDistance = 0;
+            let longestRun = 0;
+
+            sortedActivities.forEach(activity => {
+                totalDistance += activity.totalDistance;
+                if (activity.totalDistance > longestRun) {
+                    longestRun = activity.totalDistance;
+                }
+            });
+
+            const totalTimeRunning = sortedActivities.reduce((totalTime, activity) => totalTime + activity.time, 0);
+
+            let streak = 0;
+            let currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+
+            for (let i = 0; i < sortedActivities.length; i++) {
+                const activityDate = new Date(sortedActivities[i].createTime);
+                activityDate.setHours(0, 0, 0, 0);
+
+                // Calculate the difference between currentDate and activityDate in days
+                const diffInDays = Math.floor((currentDate - activityDate) / (1000 * 60 * 60 * 24));
+
+                // If the activity happened yesterday (diffInDays === 1), increase the streak
+                if (diffInDays === 1) {
+                    streak++;
+                    currentDate = activityDate; // Update currentDate to activityDate for the next comparison
+                } 
+                // If activity is on the same day, just continue the streak but don't update the date
+                else if (diffInDays === 0) {
+                    continue;
+                } 
+                // If the gap is more than 1 day, streak is broken
+                else {
+                    break;
+                }
+            }
+
+            setUserInfo((info) => ({
+                ...info,
+                totalTimeRunning,
+                totalActivities,
+                totalDistance,
+                longestRun,
+                streak
+            }));
         });
-    };    
+    };
+    
+    const fetchUserInfo = async () => {
+        const results = await getGoalsByStatus('1');
+        const storedUserInfo = localStorage.getItem('userInfo');
+        if (storedUserInfo) {
+            const parsedUserInfo = JSON.parse(storedUserInfo);
+            setUserInfo((info) => ({
+                ...info,
+                ...parsedUserInfo,
+                goalsCompleted: results.length
+            }));
+        }
+        
+    }
 
     useEffect(() => {
         fetchGoals()
         fetchActivities()
+        fetchUserInfo()
 
         window.addEventListener('online', setOnline);
         window.addEventListener('offline', setOffline);
@@ -54,10 +128,10 @@ const HomePage = () => {
 
     return (
         <div>
+            <UserInfo user={userInfo} />
             {
                 status && (<>
                     <Weather /> 
-                    <MotivationQuote />
                 </>)
             }
             
@@ -112,7 +186,7 @@ const HomePage = () => {
                         } 
                         
                         <div>
-                        <p className='font-bold opacity-80'>{t(`general.${activity.type}`)} - {new Date().toLocaleDateString()}</p>
+                        <p className='font-bold opacity-80'>{t(`general.${activity.type}`)} - {new Date(activity.createTime).toLocaleDateString()}</p>
                         <p className='font-bold text-xl'>{(activity.totalDistance).toFixed(2)} km</p>
                         <p>{formatTime(activity.time)}</p>
                         </div>
