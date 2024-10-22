@@ -72,11 +72,7 @@ const HomePage = () => {
                 // Calculate the difference between currentDate and activityDate in days
                 const diffInDays = Math.floor((currentDate - activityDate) / (1000 * 60 * 60 * 24));
             
-                // If the activity happened today or yesterday
-                if (diffInDays === 0) {
-                    // If the activity is from today, do nothing (no streak increase)
-                    continue; 
-                } else if (diffInDays === 1) {
+                if (diffInDays === 0 || diffInDays === 1) {
                     // If the activity happened yesterday, increment the streak
                     streak++;
                     currentDate = activityDate; // Update currentDate to the activityDate for the next comparison
