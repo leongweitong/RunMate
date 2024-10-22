@@ -14,7 +14,11 @@ const renderReactDom = () => {
 if (window.cordova) {
   document.addEventListener('deviceready', () => {
     renderReactDom()
-    StatusBar.styleDefault();
+    setTimeout(() => {
+      StatusBar.overlaysWebView(false);
+      StatusBar.backgroundColorByHexString("#ffffff");
+      StatusBar.styleDefault();
+    }, 100)
   }, false)
 } else {
   renderReactDom()
