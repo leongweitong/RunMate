@@ -63,6 +63,7 @@ const HomePage = () => {
 
             let streak = 0;
             let currentDate = new Date();
+            let dateHaveCheck = false
             currentDate.setHours(0, 0, 0, 0);
 
             for (let i = 0; i < sortedActivities.length; i++) {
@@ -71,10 +72,14 @@ const HomePage = () => {
                 
                 // Calculate the difference between currentDate and activityDate in days
                 const diffInDays = Math.floor((currentDate - activityDate) / (1000 * 60 * 60 * 24));
-            
-                if (diffInDays === 0 || diffInDays === 1) {
+                console.log(currentDate.getTime(), activityDate.getTime())
+                // If the activity happened today or yesterday
+                if (dateHaveCheck && currentDate.getTime() === activityDate.getTime()) {
+                    continue; 
+                } else if (diffInDays === 0 || diffInDays === 1) {
                     // If the activity happened yesterday, increment the streak
                     streak++;
+                    dateHaveCheck = true;
                     currentDate = activityDate; // Update currentDate to the activityDate for the next comparison
                 } else {
                     // If the activity was more than 1 day ago, break the streak loop

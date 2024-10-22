@@ -20,8 +20,8 @@ const UserInfo = ({ user }) => {
     } = user;
 
     return (
-        <div className="bg-primary p-4 rounded-b-3xl h-40 mb-16">
-            <div className='bg-white rounded-xl shadow p-4 border border-2 border-b-primary'>
+        <div className="p-4">
+            <div className='bg-white rounded-lg shadow p-4 border border-2 border-y-primary'>
                 <div className='flex items-center justify-between gap-4'>
                     <div className='flex items-center gap-4'>
                         <BsPersonCircle className='text-5xl opacity-70' />
