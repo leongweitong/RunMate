@@ -119,14 +119,14 @@ const Weather = () => {
 
     return (
         <div className="px-4">
-            {loading && <div className='bg-white p-4 rounded-3xl shadow relative'>
+            {loading && <div className='bg-white p-4 rounded-lg shadow relative'>
                 <div className='absolute inset-0 flex items-center justify-center bg-opacity-75'>
                     <SyncLoader color={color} loading={loading} size={8} aria-label="Loading Spinner"/>
                 </div>
             </div>}
             {!loading && weatherData && (
                 <>
-                <div className='bg-white p-4 rounded-3xl shadow'>
+                <div className='bg-white p-4 rounded-lg shadow'>
                     <div className="flex items-center justify-center">
                         <img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt='' className="flex-1 h-28" />
                         <div className="flex-1 text-md">

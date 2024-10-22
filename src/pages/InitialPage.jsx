@@ -63,7 +63,7 @@ const InitialPage = () => {
       <div className="absolute bottom-4 right-4">
         <button
           onClick={handleNextStep}
-          className="bg-primary text-white px-4 py-2 rounded"
+          className="bg-primary text-white px-8 py-2 rounded"
           disabled={!userInfo.gender}
         >
           {t('general.next')}
@@ -84,12 +84,12 @@ const InitialPage = () => {
         placeholder={t('enter-name')}
       />
       <div className="absolute bottom-4 right-4 flex gap-4">
-        <button onClick={handlePrevStep} className="bg-gray-300 px-4 py-2 rounded">
+        <button onClick={handlePrevStep} className="bg-gray-300 px-8 py-2 rounded">
         {t('general.back')}
         </button>
         <button
           onClick={handleNextStep}
-          className="bg-primary text-white px-4 py-2 rounded"
+          className="bg-primary text-white px-8 py-2 rounded"
           disabled={!userInfo.name}
         >
           {t('general.next')}
@@ -110,12 +110,12 @@ const InitialPage = () => {
         placeholder={`${t('enter-height')} (cm)`}
       />
       <div className="absolute bottom-4 right-4 flex gap-4">
-        <button onClick={handlePrevStep} className="bg-gray-300 px-4 py-2 rounded">
+        <button onClick={handlePrevStep} className="bg-gray-300 px-8 py-2 rounded">
         {t('general.back')}
         </button>
         <button
           onClick={handleNextStep}
-          className="bg-primary text-white px-4 py-2 rounded"
+          className="bg-primary text-white px-8 py-2 rounded"
           disabled={!userInfo.height}
         >
           {t('general.next')}
@@ -136,7 +136,7 @@ const InitialPage = () => {
         placeholder={`${t('enter-weight')} (kg)`}
       />
       <div className="absolute bottom-4 right-4 flex gap-4">
-        <button onClick={handlePrevStep} className="bg-gray-300 px-4 py-2 rounded">
+        <button onClick={handlePrevStep} className="bg-gray-300 px-8 py-2 rounded">
         {t('general.back')}
         </button>
         <button
@@ -145,7 +145,7 @@ const InitialPage = () => {
             localStorage.setItem('userInfo', JSON.stringify(userInfo));
             navigate('/');
           }}
-          className="bg-primary text-white px-4 py-2 rounded"
+          className="bg-primary text-white px-8 py-2 rounded"
           disabled={!userInfo.weight}
         >
           {t('general.finish')}
