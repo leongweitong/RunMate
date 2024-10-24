@@ -85,7 +85,8 @@
                 "indexeddb-error": "Error opening IndexedDB.",
                 "fetch-error": "Error fetching data from IndexedDB.",
                 "file-error": "Error saving file"
-            }
+            },
+            "no-wifi": "No internet connection. Please check your Wi-Fi or data connection."
         },
         "clearActivity": {
             "confirmMessage": "Do you want to clear all activities?",

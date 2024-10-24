@@ -109,6 +109,11 @@ const ActivityDetailsPage = () => {
   };
 
   const captureScreenshot = () => {
+    if(!navigator.onLine) {
+      handleAlertBox(t("quote.alert.no-wifi"));
+      return;
+    }
+
     if (mapRef.current && captureRef.current) {
 
       // Capture the map using leafletImage

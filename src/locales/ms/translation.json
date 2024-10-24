@@ -85,7 +85,8 @@
                 "indexeddb-error": "Ralat membuka IndexedDB.",
                 "fetch-error": "Ralat mendapatkan data daripada IndexedDB.",
                 "file-error": "Ralat menyimpan fail"
-            }
+            },
+            "no-wifi": "Tiada sambungan internet. Sila periksa sambungan Wi-Fi atau data anda."
         },
         "clearActivity": {
             "confirmMessage": "Adakah anda mahu mengosongkan semua aktiviti?",
