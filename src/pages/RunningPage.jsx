@@ -159,6 +159,11 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
         const stopBackgroundTracking = () => {
             if (window.cordova) {
                 BackgroundGeolocation.stop();
+                window.powerManagement.release(function() {
+                    console.log('Wakelock released');
+                }, function() {
+                    console.log('Failed to release wakelock');
+                });
             }
         };
 
@@ -173,7 +178,7 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
 
                 permissions.checkPermission(permissions.POST_NOTIFICATIONS, (status) => {
                     if (status.hasPermission) {
-                        startBackgroundTracking();
+                        window.powerManagement.acquire(startBackgroundTracking(), startBackgroundTracking());
                     } else {
                         permissions.requestPermission(permissions.POST_NOTIFICATIONS, (statusAfterRequest) => {
                             if (statusAfterRequest.hasPermission) {
@@ -187,7 +192,8 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
             }
         };
 
-        checkNotificationPermissionAndStartTracking();
+        if(window.cordova) checkNotificationPermissionAndStartTracking();
+        else getMapLocation();
 
         return () => {
             stopBackgroundTracking();

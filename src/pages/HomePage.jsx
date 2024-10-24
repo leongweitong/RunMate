@@ -72,7 +72,7 @@ const HomePage = () => {
                 
                 // Calculate the difference between currentDate and activityDate in days
                 const diffInDays = Math.floor((currentDate - activityDate) / (1000 * 60 * 60 * 24));
-                console.log(currentDate.getTime(), activityDate.getTime())
+
                 // If the activity happened today or yesterday
                 if (dateHaveCheck && currentDate.getTime() === activityDate.getTime()) {
                     continue; 
