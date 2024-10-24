@@ -84,7 +84,8 @@
                 "indexeddb-error": "打开IndexedDB时出错。",
                 "fetch-error": "从IndexedDB获取数据时出错。",
                 "file-error": "保存文件时出错"
-            }
+            },
+            "no-wifi": "没有网络连接。请检查您的 Wi-Fi 或数据连接。"
         },
         "clearActivity": {
             "confirmMessage": "您想清除所有活动吗？",
