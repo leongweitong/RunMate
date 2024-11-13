@@ -238,7 +238,7 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
 
     return (
         position && (<>
-            <MapContainer center={position} doubleClickZoom={false} dragging={false} touchZoom={false} boxZoom={false} zoom={17} zoomControl={false} scrollWheelZoom={false}>
+            <MapContainer center={position} doubleClickZoom={false} dragging={false} touchZoom={false} boxZoom={false} zoom={18} zoomControl={false} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"

@@ -194,14 +194,14 @@ const HomePage = () => {
                     <div className='bg-white p-4 rounded-lg shadow flex items-center gap-2 mb-2'>
                         {
                            activity.type === 'running' ? 
-                           (<img src="/runmateIcon.png" alt="runmate-image" className='h-16 w-16 rounded-xl' />) :
-                           (<img src="/runmateIcon.png" alt="runmate-image" className='h-16 w-16 rounded-xl' />)
+                           (<img src="/runmateIcon.png" alt="runmate-image" className='h-14 w-14 rounded-xl' />) :
+                           (<img src="/runmateIcon.png" alt="runmate-image" className='h-14 w-14 rounded-xl' />)
                         } 
                         
                         <div>
-                        <p className='font-bold opacity-80'>{t(`general.${activity.type}`)} - {new Date(activity.createTime).toLocaleDateString()}</p>
-                        <p className='font-bold text-xl'>{(activity.totalDistance).toFixed(2)} km</p>
-                        <p>{formatTime(activity.time)}</p>
+                        <p className='font-bold opacity-80 text-sm'>{t(`general.${activity.type}`)} - {new Date(activity.createTime).toLocaleDateString()}</p>
+                        <p className='font-bold'>{(activity.totalDistance).toFixed(2)} km</p>
+                        <p className='text-sm'>{formatTime(activity.time)}</p>
                         </div>
                     </div>
                     </Link>
