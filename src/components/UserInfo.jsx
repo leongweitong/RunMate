@@ -36,42 +36,42 @@ const UserInfo = ({ user }) => {
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2">
                     <ul className="text-gray-600">
-                        <li className="flex items-center justify-between mb-2">
+                        <li className="flex items-center justify-between mb-2 text-sm">
                             <span className="flex items-center gap-1">
-                            <BsGeoAltFill /> <span className='text-sm'>{t('general.total-distance')}:</span>
+                            <BsGeoAltFill /> <span>{t('general.total-distance')}:</span>
                             </span>
                             <span>{totalDistance.toFixed(2)}</span>
                         </li>
-                        <li className="flex items-center justify-between mb-2">
+                        <li className="flex items-center justify-between mb-2 text-sm">
                             <span className="flex items-center gap-1">
-                            <BsActivity /> <span className='text-sm'>{t('general.total-activities')}:</span>
+                            <BsActivity /> <span>{t('general.total-activities')}:</span>
                             </span>
                             <span>{totalActivities}</span>
                         </li>
-                        <li className="flex items-center justify-between mb-2">
+                        <li className="flex items-center justify-between mb-2 text-sm">
                             <span className="flex items-center gap-1">
-                            <FaClock /> <span className='text-sm'>{t('general.total-time')}:</span>
+                            <FaClock /> <span>{t('general.total-time')}:</span>
                             </span>
                             <span>{(totalTimeRunning / 1000 / 60 / 60).toFixed(2)}</span>
                         </li>
                     </ul>
 
                     <ul className="text-gray-600">
-                        <li className="flex items-center justify-between mb-2">
+                        <li className="flex items-center justify-between mb-2 text-sm">
                             <span className="flex items-center gap-1">
-                            <BsCardChecklist /> <span className='text-sm'>{t('general.streak')}:</span>
+                            <BsCardChecklist /> <span>{t('general.streak')}:</span>
                             </span>
                             <span>{streak}</span>
                         </li>
-                        <li className="flex items-center justify-between mb-2">
+                        <li className="flex items-center justify-between mb-2 text-sm">
                             <span className="flex items-center gap-1">
-                            <FaRunning /> <span className='text-sm'>{t('general.longest-run')}:</span>
+                            <FaRunning /> <span>{t('general.longest-run')}:</span>
                             </span>
                             <span>{longestRun.toFixed(2)}</span>
                         </li>
-                        <li className="flex items-center justify-between mb-2">
+                        <li className="flex items-center justify-between mb-2 text-sm">
                             <span className="flex items-center gap-1">
-                            <FaTasks /> <span className='text-sm'>{t('general.goals-completed')}:</span>
+                            <FaTasks /> <span>{t('general.goals-completed')}:</span>
                             </span>
                             <span>{goalsCompleted}</span>
                         </li>
