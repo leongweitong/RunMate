@@ -20,13 +20,16 @@
 }
 
 .leaflet-container {
-    height: 100vh;
+    height: 80vh;
     width: 100vw;
     z-index: 0;
 }
 /* Hide the Leaflet attribution */
 .leaflet-control-attribution {
     display: none;
+}
+.running-info-container{
+  height: 20vh;
 }
 
 .Overlay{

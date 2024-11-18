@@ -54,7 +54,7 @@ const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, p
             const { latitude, longitude, speed, accuracy } = pos.coords;
             const newPosition = [latitude, longitude];
 
-            if (accuracy > accuracyThreshold && gpsCounter < 5) {
+            if (accuracy > accuracyThreshold && gpsCounter < 3) {
                 setGpsCounter(prevCount => prevCount + 1);
                 return;
             }

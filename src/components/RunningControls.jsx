@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import { BsPauseFill, BsStopFill, BsCaretRightFill } from 'react-icons/bs'
+import { BsPauseFill, BsStop, BsCaretRightFill, BsArrowLeftShort } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import { useIndexedDB } from "react-indexed-db-hook";
@@ -138,28 +138,47 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
         }
     }
 
+    const checkGoBack = () => {
+        if (totalDistance === 0) {
+            clearInterval(timerRef.current);
+            navigate(-1);
+            return;
+        }
+
+        const userConfirmed = window.confirm('Are you sure you want to end this activity?');
+        if(userConfirmed) navigate(-1);
+    }
+
     return (
-        <div className="fixed bottom-10 left-0 w-full p-4 text-white z-10">
-            <div className="bg-black p-4 flex justify-between items-center rounded-xl">
-                <div>
-                    <div>
-                    {t("general.duration")}: <span className='font-bold'>{formatTime(elapsedTime)}</span>
-                    </div>
-                    <div>{t("general.kilometers")}: <span className='font-bold'>{distance.toFixed(2)} km</span></div>
+        <div className="running-info-container p-4 flex flex-col justify-between">
+            <div className="flex gap-4">
+                <div className="flex flex-1 flex-col items-center justify-center">
+                    <div className='text-2xl font-bold'>{formatTime(elapsedTime)}</div>
+                    <div>{t("general.duration")}</div>
                 </div>
-                <div className="flex gap-6">
-                    <div className='rounded-full bg-white p-2' onClick={togglePlayPause}>
-                        {keepTrack ? (
-                        <BsPauseFill className='text-4xl text-primary' />
-                        ) : (
-                        <BsCaretRightFill className='text-4xl text-primary' />
-                        )}
-                    </div>
-                    <div className='rounded-full bg-white p-2' onClick={endRunning}>
-                        <BsStopFill className='text-4xl text-primary' />
-                    </div>
+
+                <div className="flex flex-1 flex-col items-center justify-center">
+                    <div className='text-2xl font-bold'>{distance.toFixed(2)} km</div>
+                    <div>{t("general.kilometers")}</div>
                 </div>
             </div>
+
+            <div className="flex items-center justify-center gap-6">
+                <div className='border border-2 border-primary rounded-full bg-white p-2' onClick={checkGoBack}>
+                    <BsArrowLeftShort className='text-4xl text-primary' />
+                </div>
+                <div className='border border-2 border-primary rounded-full bg-white p-2' onClick={togglePlayPause}>
+                    {keepTrack ? (
+                    <BsPauseFill className='text-5xl text-primary' />
+                    ) : (
+                    <BsCaretRightFill className='text-5xl text-primary' />
+                    )}
+                </div>
+                <div className='border border-2 border-primary rounded-full bg-white p-2' onClick={endRunning}>
+                    <BsStop className='text-4xl text-primary' />
+                </div>
+            </div>
+
             {showAlertBox && (
                 <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} />
             )}
