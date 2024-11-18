@@ -138,7 +138,7 @@ const ActivityDetailsPage = () => {
               // Adjust page canvas height to accommodate both the map and captureRef
               const finalCanvas = document.createElement("canvas");
               finalCanvas.width = mapWidth
-              finalCanvas.height = mapHeight
+              finalCanvas.height = mapHeight + pageHeight
 
               const finalCtx = finalCanvas.getContext("2d");
 
@@ -153,7 +153,7 @@ const ActivityDetailsPage = () => {
               finalCtx.drawImage(
                   pageCanvas,
                   0, 0, pageWidth, pageHeight,
-                  0, mapHeight - pageHeight, pageWidth, pageHeight
+                  0, mapHeight, pageWidth, pageHeight
               );
 
               // Convert the final canvas to a PNG Blob
@@ -220,8 +220,8 @@ const ActivityDetailsPage = () => {
           <FitBounds path={isMultiSegment ? activity.path.flat() : activity.path} />
         </MapContainer>
 
-        <div ref={captureRef} className="fixed bottom-10 left-0 w-full p-4">
-          <div className="bg-white border border-black p-4 rounded-xl">
+        <div ref={captureRef} className="running-info-container border-t border-black p-4">
+          <div className='h-full flex flex-col justify-center'>
             <div className='text-center mb-4 font-semibold text-2xl'>
               <div>{formatTime(activity.time)}</div>
             </div>
