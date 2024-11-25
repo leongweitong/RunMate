@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom'
 
-const ConfirmBox = ({text='Error', setShowConfirmBox, haveNavigate=false, navigatePage=''}) => {
+const ConfirmBox = ({text='Error', setShowConfirmBox, user={haveNavigate: false, navigatePage:'', haveFunction:false, fn}}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -18,8 +18,10 @@ const ConfirmBox = ({text='Error', setShowConfirmBox, haveNavigate=false, naviga
 
     const handleConfirm = () => {
         setShowConfirmBox(false);
-        if(!haveNavigate) return;
-        navigate(navigatePage);
+        user.haveFunction && user.fn();
+
+        if(!user.haveNavigate) return;
+        navigate(user.navigatePage);
     }
 
     return (

@@ -19,6 +19,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
     const [showAlertBox, setShowAlertBox] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const [guide, setGuide] = useState({});
 
     const handleAlertBox = (text) => {
         setAlertMessage(text);
@@ -123,8 +124,13 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
             return;
         }
 
-        const userConfirmed = window.confirm('Are you sure you want to end this activity?');
-        if (userConfirmed && totalDistance > 0) {
+        setAlertMessage(t("quote.alert.end-activity"));
+        setGuide({haveNavigate:true, navigatePage:-1, haveFunction:true, fn: saveActivityData});
+        setShowConfirmBox(true);
+    }
+
+    const saveActivityData = () => {
+        if (totalDistance > 0) {
             const createTime = new Date().toISOString();
             const finalPath = JSON.parse(JSON.stringify(multiPath));
             path.length > 0 && finalPath.push(path);
@@ -147,7 +153,8 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
             return;
         }
 
-        setAlertMessage('Are you sure you want to end this activity?');
+        setAlertMessage(t("quote.alert.end-activity"));
+        setGuide({haveNavigate:true, navigatePage:-1 });
         setShowConfirmBox(true);
     }
 
@@ -186,7 +193,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
             )}
 
             {showConfirmBox && (
-                <ConfirmBox text={alertMessage} setShowConfirmBox={setShowConfirmBox} haveNavigate={true} navigatePage={-1} />
+                <ConfirmBox text={alertMessage} setShowConfirmBox={setShowConfirmBox} user={guide} />
             )}
 
         </div>

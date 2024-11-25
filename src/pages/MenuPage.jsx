@@ -4,12 +4,15 @@ import { BsTranslate, BsActivity, BsChevronRight, BsTrash, BsShieldCheck, BsClou
 import { Link } from 'react-router-dom';
 import { useIndexedDB } from "react-indexed-db-hook";
 import AlertBox from '../components/AlertBox';
+import ConfirmBox from '../components/ConfirmBox';
 
 const MenuPage = () => {
   const { clear } = useIndexedDB("activity");
   const { t, i18n } = useTranslation();
   const [showAlertBox, setShowAlertBox] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [showConfirmBox, setShowConfirmBox] = useState(false);
+  const [guide, setGuide] = useState({});
 
   const handleAlertBox = (text) => {
       setAlertMessage(text);
@@ -23,10 +26,12 @@ const MenuPage = () => {
   };
 
   const handleClear = () => {
-    const confirm = window.confirm(t('quote.clearActivity.confirmMessage'));
+    setAlertMessage(t('quote.clearActivity.confirmMessage'))
+    setGuide({haveFunction:true, fn:clearActivities})
+    setShowConfirmBox(true)
+  }
 
-    if(!confirm) return 
-
+  const clearActivities = () => {
     clear().then(() => {
       handleAlertBox(t('quote.clearActivity.successMessage'));
     });
@@ -97,6 +102,10 @@ const MenuPage = () => {
 
         {showAlertBox && (
             <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} />
+        )}
+
+        {showConfirmBox && (
+          <ConfirmBox text={alertMessage} setShowConfirmBox={setShowConfirmBox} user={guide} />
         )}
       </div>
     </div>

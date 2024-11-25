@@ -87,7 +87,12 @@
                 "fetch-error": "从IndexedDB获取数据时出错。",
                 "file-error": "保存文件时出错"
             },
-            "no-wifi": "没有网络连接。请检查您的 Wi-Fi 或数据连接。"
+            "no-wifi": "没有网络连接。请检查您的 Wi-Fi 或数据连接。",
+            "end-activity": "您确定要结束此活动吗? "
+        },
+        "confirm": {
+            "delete-activity": "您确定要删除此活动吗？",
+            "delete-goal": "您确定要删除这个目标吗？"
         },
         "clearActivity": {
             "confirmMessage": "您想清除所有活动吗？",

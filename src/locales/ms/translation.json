@@ -88,7 +88,12 @@
                 "fetch-error": "Ralat mendapatkan data daripada IndexedDB.",
                 "file-error": "Ralat menyimpan fail"
             },
-            "no-wifi": "Tiada sambungan internet. Sila periksa sambungan Wi-Fi atau data anda."
+            "no-wifi": "Tiada sambungan internet. Sila periksa sambungan Wi-Fi atau data anda.",
+            "end-activity": "Adakah anda pasti mahu menamatkan aktiviti ini?"
+        },
+        "confirm": {
+            "delete-activity": "Adakah anda pasti mahu memadamkan aktiviti ini?",
+            "delete-goal": "Adakah anda pasti mahu memadamkan matlamat ini?"
         },
         "clearActivity": {
             "confirmMessage": "Adakah anda mahu mengosongkan semua aktiviti?",
