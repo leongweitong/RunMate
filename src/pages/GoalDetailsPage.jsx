@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom';
 import { calcGoalProgress } from '../utils/calcGoalProgress';
 import AlertBox from '../components/AlertBox';
+import ConfirmBox from '../components/ConfirmBox';
 
 const GoalDetailsPage = () => {
     const navigate = useNavigate()
@@ -17,6 +18,8 @@ const GoalDetailsPage = () => {
     const [progress, setProgress] = useState(0);
     const [showAlertBox, setShowAlertBox] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const [guide, setGuide] = useState({});
 
     const handleAlertBox = (text) => {
         setAlertMessage(text);
@@ -24,10 +27,12 @@ const GoalDetailsPage = () => {
     };
 
     const handleDelete = () => {
-        const userConfirmed = window.confirm("Are you sure you want to delete this goal?");
+        setGuide({haveFunction:true, fn:deleteGoal})
+        setAlertMessage(t("quote.confirm.delete-goal"))
+        setShowConfirmBox(true);
+    }
 
-        if(!userConfirmed) return 
-        
+    const deleteGoal = () => {
         deleteRecord(Number(id)).then((event) => {
             handleAlertBox(t("quote.alert.goal-delete-success"));
         }).catch((error) => {
@@ -168,6 +173,10 @@ const GoalDetailsPage = () => {
 
             {showAlertBox && (
                 <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} haveNavigate={true} navigatePage={'/goal'} />
+            )}
+
+            {showConfirmBox && (
+                <ConfirmBox text={alertMessage} setShowConfirmBox={setShowConfirmBox} user={guide} />
             )}
         </div>
     )

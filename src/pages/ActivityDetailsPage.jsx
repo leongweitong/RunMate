@@ -13,6 +13,7 @@ import html2canvas from 'html2canvas';
 import leafletImage from 'leaflet-image';
 import { saveToFileCordova } from '../fileSaver';
 import AlertBox from '../components/AlertBox';
+import ConfirmBox from '../components/ConfirmBox';
 
 const ActivityDetailsPage = () => {
   const { t } = useTranslation();
@@ -25,6 +26,8 @@ const ActivityDetailsPage = () => {
   const [showAlertBox, setShowAlertBox] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [haveNavigate, setHaveNavigate] = useState(false);
+  const [showConfirmBox, setShowConfirmBox] = useState(false);
+  const [guide, setGuide] = useState({});
 
   const handleAlertBox = (text, navigate=false) => {
       setAlertMessage(text);
@@ -59,7 +62,7 @@ const ActivityDetailsPage = () => {
     const kFilter = new KalmanFilter({
       observation: {
         sensorDimension: 2,  // Only 2 dimensions: latitude and longitude
-        sensorCovariance: 500,  // Covariance of the sensor (adjustable)
+        sensorCovariance: 1000,  // Covariance of the sensor (adjustable)
         name: 'sensor'
       },
       dynamic: {
@@ -95,17 +98,19 @@ const ActivityDetailsPage = () => {
   // At this point, latLngArray contains all the filtered coordinates
   console.log(latLngArray);
 
+  const handleDeleteActivity = () => {
+    setAlertMessage(t("quote.confirm.delete-activity"))
+    setGuide({haveFunction:true, fn:deleteActivity})
+    setShowConfirmBox(true)
+  }
+
   const deleteActivity = () => {
-    const userConfirmed = window.confirm("Are you sure you want to delete this activity?");
-  
-    if (userConfirmed) {
-      deleteRecord(activity.id).then((event) => {
-        handleAlertBox(t("quote.alert.activity-delete"),true);
-      }).catch((error) => {
-        console.error("Error deleting activity:", error);
-        handleAlertBox(t("quote.alert.activity-delete-error"),true);
-      });
-    }
+    deleteRecord(activity.id).then((event) => {
+      handleAlertBox(t("quote.alert.activity-delete"),true);
+    }).catch((error) => {
+      console.error("Error deleting activity:", error);
+      handleAlertBox(t("quote.alert.activity-delete-error"),true);
+    });
   };
 
   const captureScreenshot = () => {
@@ -201,13 +206,17 @@ const ActivityDetailsPage = () => {
       </div>
 
       <div className='fixed top-0 right-0 p-4 z-10'>
-        <div onClick={deleteActivity} className='rounded-xl bg-white border border-black p-2'>
+        <div onClick={handleDeleteActivity} className='rounded-xl bg-white border border-black p-2'>
           <BsTrash className='text-2xl' />
         </div>
       </div>
 
       {showAlertBox && (
           <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} haveNavigate={haveNavigate} navigatePage={-1} />
+      )}
+
+      {showConfirmBox && (
+        <ConfirmBox text={alertMessage} setShowConfirmBox={setShowConfirmBox} user={guide} />
       )}
 
       <div>

@@ -9,7 +9,7 @@ import * as turf from "@turf/turf";
 import { useNavigate } from 'react-router-dom';
 import AlertBox from '../components/AlertBox';
 
-const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 10, positionBufferSize = 3}) => {
+const RunningPage = ({color='rgba(230, 56, 37, 0.95)', accuracyThreshold = 8, positionBufferSize = 3}) => {
     const myIcon = new L.Icon({
         iconSize: [20,20],
         iconUrl: 'arrow-marker.png',
