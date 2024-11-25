@@ -63,7 +63,9 @@
         "ok": "Okay",
         "next": "Next",
         "back": "Back",
-        "finish": "Finish"
+        "finish": "Finish",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
     },
     "quote": {
         "alert": {

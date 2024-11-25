@@ -6,6 +6,7 @@ import { useIndexedDB } from "react-indexed-db-hook";
 import { getGoalsByStatus } from '../indexedDBUtils';
 import {formatTime} from '../utils/formatTime';
 import AlertBox from '../components/AlertBox';
+import ConfirmBox from './ConfirmBox';
 
 const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path, multiPath, coords}) => {
     const { add } = useIndexedDB("activity");
@@ -17,6 +18,7 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
     const distance = Number((totalDistance / 1000).toFixed(2))
     const [showAlertBox, setShowAlertBox] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
 
     const handleAlertBox = (text) => {
         setAlertMessage(text);
@@ -145,8 +147,8 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
             return;
         }
 
-        const userConfirmed = window.confirm('Are you sure you want to end this activity?');
-        if(userConfirmed) navigate(-1);
+        setAlertMessage('Are you sure you want to end this activity?');
+        setShowConfirmBox(true);
     }
 
     return (
@@ -182,6 +184,11 @@ const RunningControls = ({keepTrack, handleChangeKeepTrack, totalDistance, path,
             {showAlertBox && (
                 <AlertBox text={alertMessage} setShowAlertBox={setShowAlertBox} />
             )}
+
+            {showConfirmBox && (
+                <ConfirmBox text={alertMessage} setShowConfirmBox={setShowConfirmBox} haveNavigate={true} navigatePage={-1} />
+            )}
+
         </div>
     )
 }

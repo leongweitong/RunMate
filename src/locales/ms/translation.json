@@ -63,7 +63,9 @@
         "ok": "Okay",
         "next": "Seterusnya",
         "back": "Kembali",
-        "finish": "Selesai"
+        "finish": "Selesai",
+        "cancel": "Batal",
+        "confirm": "Sahkan"
     },
     
     "quote": {
