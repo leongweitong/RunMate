@@ -96,7 +96,7 @@ RunMate uses `react-indexed-db-hook` to store activity data locally. Ensure that
 
 ## Contributing
 
-Contributions are welcome! If you'd like to contribute to RunMate, you can contact my email for details: weitong0724@gmail.com
+Contributions are welcome! If you'd like to contribute to RunMate, you can contact my email for details: tongweileong0724@gmail.com
 
 ## License
 
