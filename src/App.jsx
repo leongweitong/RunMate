@@ -10,6 +10,7 @@ import RunningPage from './pages/RunningPage';
 import GoalDetailsPage from './pages/GoalDetailsPage';
 import ActivityPage from './pages/ActivityPage';
 import ActivityDetailsPage from './pages/ActivityDetailsPage';
+import TrainingPage from './pages/TrainingPage';
 import ImportExportDataPage from './pages/ImportExportDataPage';
 import InitialPage from './pages/InitialPage';
 import "./i18n";
@@ -42,6 +43,7 @@ function App() {
             <Route path="menu" element={<MenuPage />} />
             <Route path="activity" element={<ActivityPage />} />
             <Route path="importexportdata" element={<ImportExportDataPage />} />
+            <Route path="training" element={<TrainingPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
           <Route path="/running" element={<RunningPage />} />

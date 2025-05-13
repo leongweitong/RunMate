@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { useTranslation } from "react-i18next";
 import { BsTranslate, BsActivity, BsChevronRight, BsTrash, BsShieldCheck, BsCloudArrowDown } from 'react-icons/bs';
+import { FaDumbbell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useIndexedDB } from "react-indexed-db-hook";
 import AlertBox from '../components/AlertBox';
@@ -39,9 +40,9 @@ const MenuPage = () => {
 
   const openPrivacyPolicy = () => {
     if (window.cordova) {
-      cordova.InAppBrowser.open('https://leongweitong.com/runmate-privacy', '_blank', 'location=yes');
+      cordova.InAppBrowser.open('https://dulcet-fudge-8e047f.netlify.app/runmate-privacy', '_blank', 'location=yes');
     } else {
-      window.open('https://leongweitong.com/runmate-privacy', '_blank');
+      window.open('https://dulcet-fudge-8e047f.netlify.app/runmate-privacy', '_blank');
     }
   };
 
@@ -95,6 +96,16 @@ const MenuPage = () => {
             <div className="flex items-center gap-4">
               <BsCloudArrowDown className='text-2xl' />
               <div>{t("import-export-data")}</div>
+            </div>
+            <BsChevronRight className='text-xl' />
+          </div>
+        </Link>
+
+        <Link to='/training'>
+          <div className='flex items-center justify-between pb-4 border-b'>
+            <div className="flex items-center gap-4">
+              <FaDumbbell className='text-2xl' />
+              <div>{t("training")}</div>
             </div>
             <BsChevronRight className='text-xl' />
           </div>
